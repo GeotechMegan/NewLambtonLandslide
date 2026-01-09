@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mapped Evidence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin=""
+  />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      font-weight: normal;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1500px;
+      margin: 0 auto 20px auto;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #000;
+      font-size: 1.1rem;
+    }
+
+    .intro {
+      max-width: 1500px;
+      margin: 0 auto 20px auto;
+      font-size: 0.95rem;
+    }
+
+    /* map + layers layout */
+    .map-layout {
+  display: flex;
+  height: 70vh;
+  max-width: 1500px;   /* controls left/right margin */
+  margin: 0 auto;      /* centres the whole map block */
+}
+
+
+    #map {
+      flex: 1;
+      height: 100%;
+      background: #e0e0e0;
+    }
+
+    .layers {
+      width: 300px;
+      border-left: 1px solid #ccc;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    .layers details {
+  margin-bottom: 10px;
+}
+
+.layers summary {
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+.layer-item {
+  margin-left: 16px;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.layer-item label {
+  cursor: pointer;
+}
+
+.layer-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.layer-row label {
+  flex: 1; /* pushes the button to the right */
+}
+
+.layer-item input[type="range"] {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.layer-note {
+  font-size: 0.8rem;   /* adjust as needed */
+  color: #555;         /* optional: de-emphasise */
+  margin-left: 16px;   /* aligns with layer items */
+  margin-top: 4px;
+}
+
+ /* Tooltip scrolling */
+.leaflet-tooltip.article-preview {
+  max-height: min(60vh, 520px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px;
+}
+
+/* Make the image responsive inside the tooltip */
+.leaflet-tooltip.article-preview img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Hover-preview popup: scrollable and clickable */
+.article-preview-popup .leaflet-popup-content {
+  width: 280px;          /* tweak */
+  max-height: 60vh;      /* prevents running off-screen */
+  overflow: auto;        /* enables scrolling */
+  margin: 10px;
+}
+
+.article-preview-popup img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #ccc;
+}
+
+    
+  </style>
+</head>
+
+<body>
+
+  <h1>New Lambton Landslide</h1>
+
+  <nav>
+    <a href="Home.html">Home</a>
+    <a href="Mapped_Evidence.html">Mapped Evidence</a>
+    <a href="Files_Sources.html">Files and Sources</a>
+    <a href="Contact_About.html">Contact and About</a>
+    <a href="Forum.html">Forum</a>
+  </nav>
+
+  <div class="intro">
+    <p>This tool shares and explains much of what has been gathered in relation to the New Lambton Landslide thus far and landslides in Australia. Information has been categorised chronologically. Please navigate to the bottom of the page for an index of all contents.</p>
+    <p>Tip: If a layer isn't loading, give it a few more seconds. Some images are quite large and may take a little while.</p>
+  </div>
+
+  <div class="map-layout">
+    <div id="map">
+  </div>
+    
+  <div class="layers">
+
+    
+  <details>
+    <summary>1901</summary>
+    <!-- empty for now -->
+  </details>
+    
+  <details>
+    <summary>1902</summary>
+    <div class="layer-item">
+      <input type="checkbox" id="layer-1902-example">
+      <label for="layer-1902-example">
+        Example layer
+      </label>
+    </div>
+  </details>
+
+  <details>
+    <summary>1917</summary>
+    <div class="layer-item">
+      <input type="checkbox" id="layer-1917-title">
+      <label for="layer-1917-title">Certificate of Title – 119 Victoria Rd</label>
+    </div>
+   <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1917-waterboard">
+    <label for="layer-1917-waterboard">Water Board Survey Map</label>
+    <button type="button" id="zoom-1917-waterboard">Zoom to</button>
+  </div>
+  <input
+    type="range"
+    id="opacity-1917-waterboard"
+    min="0"
+    max="1"
+    step="0.05"
+    value="0.7"
+  >
+</div>
+  </details>
+
+<details>
+  <summary>1936</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1936-parish">
+      <label for="layer-1936-parish">1936 Newcastle Parish Map</label>
+      <button type="button" id="zoom-1936-parish">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1936-parish"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+  <div class="layer-note">(Note that the Slip Creek is marked out the same as all the other creeks in the Parish)</div>
+</details>
+    
+<details>
+  <summary>1944</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1944">
+      <label for="layer-1944">1944 Aerial Photography</label>
+      <button type="button" id="zoom-1944">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1944"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+</details>
+
+<details>
+  <summary>1949</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+    <input type="checkbox" id="layer-1949-families-move-out-of-creep-damaged-flats">
+    <label for="layer-1949-families-move-out-of-creep-damaged-flats">Newspaper article titled "Families Move Out of Creep-Damaged Flats", 21st of June, 1949</label>
+      <button type="button" id="zoom-1949-families-move-out-of-creep-damaged-flats">Zoom to</button>
+  </div>
+  </div>
+  <div class="layer-note">(The article mentions 2 other falls of ground in addition to the one at Apsley Court))</div>
+</details>
+    
+<details>
+  <summary>1950</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+    <input type="checkbox" id="layer-1950-addison-boy-walking">
+    <label for="layer-1950-addison-boy-walking">Boy walking west near Addison Rd landslide, April 1950</label>
+      <button type="button" id="zoom-1950-addison-boy-walking">Zoom to</button>
+  </div>
+  </div>
+</details>
+
+    
+<details>
+  <summary>1959</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1959-parish">
+      <label for="layer-1959-parish">1959 Newcastle Parish Map</label>
+      <button type="button" id="zoom-1959-parish">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1959-parish"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+  <div>(Note again that the Slip Creek is mapped)</div>
+</details>
+
+<details>
+  <summary>1969</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1969-midwest">
+      <label for="layer-1969-midwest">1969 MidWest Ward Map</label>
+      <button type="button" id="zoom-1969-midwest">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1969-midwest"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+</details>
+
+
+</div>
+
+  </div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    crossorigin=""
+  ></script>
+
+  <!-- Initialise map -->
+  <script>
+  const streetMap = L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 22
+  }
+);
+
+const satelliteMap = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  {
+    attribution: 'Tiles © Esri',
+    maxZoom: 22
+  }
+);
+
+const map = L.map('map', {
+  maxZoom: 22,
+  layers: [streetMap]
+}).setView([-32.93, 151.68], 15);
+
+const baseMaps = {
+  "Street map": streetMap,
+  "Satellite imagery": satelliteMap
+};
+
+L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
+
+
+
+  let waterboard1917 = null;
+   const opacitySlider = document.getElementById('opacity-1917-waterboard');
+   const checkbox = document.getElementById('layer-1917-waterboard');
+
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      if (!waterboard1917) {
+       const imageUrl = 'data/1917/water_board_map_1917.png';
+
+        const bounds = [
+          [-32.927362, 151.702385],  // south-west
+          [-32.921030, 151.712207]   // north-east
+        ];
+
+        waterboard1917 = L.imageOverlay(imageUrl, bounds, {
+  opacity: parseFloat(opacitySlider.value)
+});
+
+      }
+
+      waterboard1917.addTo(map);
+    } else {
+      if (waterboard1917) {
+        map.removeLayer(waterboard1917);
+      }
+    }
+  }); //This line ends the checkbox handler
+    
+  //This is the slider listener  
+    opacitySlider.addEventListener('input', () => {
+  if (waterboard1917) {
+    waterboard1917.setOpacity(parseFloat(opacitySlider.value));
+  }
+}); //This line ends the slider listener
+
+
+    document.getElementById('zoom-1917-waterboard').addEventListener('click', () => {
+  if (waterboard1917) {
+    map.fitBounds(waterboard1917.getBounds());
+  }
+});
+
+let parish1936 = null;
+
+const checkbox1936 = document.getElementById('layer-1936-parish');
+const opacitySlider1936 = document.getElementById('opacity-1936-parish');
+
+checkbox1936.addEventListener('change', () => {
+  if (checkbox1936.checked) {
+    if (!parish1936) {
+      const imageUrl = 'data/1936/newcastle_parish_map_1936.png';
+      
+      const bounds = [
+        [-32.947076, 151.663018],  // south-west
+        [-32.875890, 151.755627]   // north-east
+      ];
+
+      parish1936 = L.imageOverlay(imageUrl, bounds, {
+        opacity: parseFloat(opacitySlider1936.value)
+      });
+    }
+
+    parish1936.addTo(map);
+  } else {
+    if (parish1936) map.removeLayer(parish1936);
+  }
+});
+
+opacitySlider1936.addEventListener('input', () => {
+  if (parish1936) parish1936.setOpacity(parseFloat(opacitySlider1936.value));
+});
+
+document.getElementById('zoom-1936-parish').addEventListener('click', () => {
+  if (parish1936) map.fitBounds(parish1936.getBounds());
+});
+
+    // 1944 (7-image layer group)
+let layer1944 = null;
+let layer1944Bounds = null;
+
+const checkbox1944 = document.getElementById('layer-1944');
+const opacitySlider1944 = document.getElementById('opacity-1944');
+
+checkbox1944.addEventListener('change', () => {
+  if (checkbox1944.checked) {
+
+    if (!layer1944) {
+      const op = () => parseFloat(opacitySlider1944.value);
+
+      // Format: [[southWestLat, southWestLng], [northEastLat, northEastLng]]
+      const overlays = [
+        L.imageOverlay('data/1944/1944_1.png', [[-32.923947, 151.702660], [-32.921560, 151.707930]], { opacity: op() }),
+        L.imageOverlay('data/1944/1944_2.png', [[-32.923948, 151.706285], [-32.921676, 151.711515]], { opacity: op() }),
+        L.imageOverlay('data/1944/1944_3.png', [[-32.925811, 151.706475], [-32.923578, 151.711834]], { opacity: op() }),
+        L.imageOverlay('data/1944/1944_4.png', [[-32.925101, 151.698681], [-32.921265, 151.706880]], { opacity: op() }),
+        L.imageOverlay('data/1944/1944_5.png', [[-32.957315, 151.622776], [-32.953600, 151.631125]], { opacity: op() }),
+        L.imageOverlay('data/1944/1944_6.png', [[-32.960778, 151.622817], [-32.957005, 151.631085]], { opacity: op() }),
+        L.imageOverlay('data/1944/1944_7.png', [[-32.965233, 151.625086], [-32.961603, 151.633358]], { opacity: op() })
+      ];
+
+      layer1944 = L.layerGroup(overlays);
+
+      // Combined bounds for Zoom to
+      layer1944Bounds = overlays.reduce((b, o) => {
+        const ob = o.getBounds();
+        return b ? b.extend(ob) : ob;
+      }, null);
+    }
+
+    layer1944.addTo(map);
+
+  } else {
+    if (layer1944) map.removeLayer(layer1944);
+  }
+});
+
+// Opacity slider controls all 7 images
+opacitySlider1944.addEventListener('input', () => {
+  if (layer1944) {
+    const v = parseFloat(opacitySlider1944.value);
+    layer1944.eachLayer(l => l.setOpacity(v));
+  }
+});
+
+// Zoom-to button zooms to the full extent of all 7 images
+document.getElementById('zoom-1944').addEventListener('click', () => {
+  if (layer1944Bounds) map.fitBounds(layer1944Bounds);
+});
+
+
+
+    
+     // Families move out of creep-damaged flats, 21st of June 1949
+  let FamiliesMoveOutOfFlats1949 = null;
+
+const FamiliesMoveOutOfFlatsCheckbox = document.getElementById('layer-1949-families-move-out-of-creep-damaged-flats');
+const zoomFamiliesMoveOutOfFlats = document.getElementById('zoom-1949-families-move-out-of-creep-damaged-flats');
+const FamiliesMoveOutOfFlatsLatLng = [-32.92818, 151.77485];
+
+
+FamiliesMoveOutOfFlatsCheckbox.addEventListener('change', () => {
+  if (FamiliesMoveOutOfFlatsCheckbox.checked) {
+
+    if (!FamiliesMoveOutOfFlats1949) {
+      const latlng = FamiliesMoveOutOfFlatsLatLng; 
+
+      const previewImg = 'data/1949/19490621_FamiliesMoveOutOfCreepDamagedFlats.jpg';
+      const pngUrl = 'data/1949/19490621_FamiliesMoveOutOfCreepDamagedFlats.jpg';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      FamiliesMoveOutOfFlats1949 = L.marker(latlng, { icon: markerIcon });
+
+     // Hover preview (popup that stays open when you move onto it)
+const previewHtml = `
+  <div>
+    <div style="font-size:12px;margin-bottom:6px">
+      Newcastle Morning Herald and Miners' Advocate, pg 2, 21st June 1949
+    </div>
+    <img src="${previewImg}">
+  </div>
+`;
+
+const previewPopup = L.popup({
+  closeButton: false,
+  autoClose: false,
+  closeOnClick: false,
+  className: 'article-preview-popup',
+  offset: [0, -10]
+}).setContent(previewHtml);
+
+let previewPinnedOpen = false;
+let closeTimer = null;
+
+FamiliesMoveOutOfFlats1949.on('mouseover', (e) => {
+  previewPopup.setLatLng(e.latlng);
+  previewPopup.openOn(map);
+
+  // Wire mouse enter/leave on the popup element so it doesn't vanish
+  setTimeout(() => {
+    const el = previewPopup.getElement();
+    if (!el) return;
+
+    el.addEventListener('mouseenter', () => {
+      previewPinnedOpen = true;
+      if (closeTimer) clearTimeout(closeTimer);
+    });
+
+    el.addEventListener('mouseleave', () => {
+      previewPinnedOpen = false;
+      map.closePopup(previewPopup);
+    });
+  }, 0);
+});
+
+FamiliesMoveOutOfFlats1949.on('mouseout', () => {
+  // Give you time to move from marker → popup without it closing
+  closeTimer = setTimeout(() => {
+    if (!previewPinnedOpen) map.closePopup(previewPopup);
+  }, 200);
+});
+
+
+      // Click popup with explicit download link
+      FamiliesMoveOutOfFlats1949.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download full-resolution image (JPG, ~86 KB)?</div>
+           <a href="${pngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download JPG
+           </a>
+         </div>`
+      );
+    }
+
+    FamiliesMoveOutOfFlats1949.addTo(map);
+
+  } else {
+    if (FamiliesMoveOutOfFlats1949) map.removeLayer(FamiliesMoveOutOfFlats1949);
+  }
+});
+    
+// Zoom-to button
+zoomFamiliesMoveOutOfFlats.addEventListener('click', () => {
+  map.setView(FamiliesMoveOutOfFlatsLatLng, 18);
+});
+
+    // Boy walking west near Addison rd landslide, 1950
+  let addison1950 = null;
+
+const addisonCheckbox = document.getElementById('layer-1950-addison-boy-walking');
+const zoomAddison = document.getElementById('zoom-1950-addison-boy-walking');
+const addisonLatLng = [-32.92601, 151.709641];
+
+
+addisonCheckbox.addEventListener('change', () => {
+  if (addisonCheckbox.checked) {
+
+    if (!addison1950) {
+      const latlng = addisonLatLng; 
+
+      const previewImg = 'data/1950/addison_rd_facing_east_preview.jpg';
+      const pngUrl = 'data/1950/addison_rd_facing_east_fullres.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      addison1950 = L.marker(latlng, { icon: markerIcon });
+
+      // Hover preview (tooltip)
+      addison1950.bindTooltip(
+        `<div style="width:260px">
+           <div style="font-size:12px;margin-bottom:6px">Addison Rd facing East, landslide visible in foreground (1st Sep 1950)</div>
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup with explicit download link
+      addison1950.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download full-resolution image (PNG, ~43 MB)?</div>
+           <a href="${pngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download PNG
+           </a>
+         </div>`
+      );
+    }
+
+    addison1950.addTo(map);
+
+  } else {
+    if (addison1950) map.removeLayer(addison1950);
+  }
+});
+    
+// Zoom-to button
+zoomAddison.addEventListener('click', () => {
+  map.setView(addisonLatLng, 18);
+});
+
+    // 1959 Newcastle Parish Map
+let parish1959 = null;
+
+const checkbox1959 = document.getElementById('layer-1959-parish');
+const opacitySlider1959 = document.getElementById('opacity-1959-parish');
+
+checkbox1959.addEventListener('change', () => {
+  if (checkbox1959.checked) {
+    if (!parish1959) {
+      const imageUrl = 'data/1959/newcastle_parish_map_1959.png';
+      
+      const bounds = [
+        [-32.941910, 151.692189],  // south-west
+        [-32.912286, 151.739504]   // north-east
+      ];
+
+      parish1959 = L.imageOverlay(imageUrl, bounds, {
+        opacity: parseFloat(opacitySlider1959.value)
+      });
+    }
+
+    parish1959.addTo(map);
+  } else {
+    if (parish1959) map.removeLayer(parish1959);
+  }
+});
+
+opacitySlider1959.addEventListener('input', () => {
+  if (parish1959) parish1959.setOpacity(parseFloat(opacitySlider1959.value));
+});
+
+document.getElementById('zoom-1959-parish').addEventListener('click', () => {
+  if (parish1959) map.fitBounds(parish1959.getBounds());
+});
+
+
+// 1969 MidWest Ward Map
+let midwest1969 = null;
+
+const checkbox1969 = document.getElementById('layer-1969-midwest');
+const opacitySlider1969 = document.getElementById('opacity-1969-midwest');
+
+checkbox1969.addEventListener('change', () => {
+  if (checkbox1969.checked) {
+    if (!midwest1969) {
+      const imageUrl = 'data/1969/1969_MidWestWard_Map.png';
+
+      // Placeholder bounds - tune after you see it
+      const bounds = [
+        [-32.926804, 151.697313],  // south-west
+        [-32.919876, 151.706994]   // north-east
+      ];
+
+      midwest1969 = L.imageOverlay(imageUrl, bounds, {
+        opacity: parseFloat(opacitySlider1969.value)
+      });
+    }
+
+    midwest1969.addTo(map);
+  } else {
+    if (midwest1969) map.removeLayer(midwest1969);
+  }
+});
+
+opacitySlider1969.addEventListener('input', () => {
+  if (midwest1969) midwest1969.setOpacity(parseFloat(opacitySlider1969.value));
+});
+
+document.getElementById('zoom-1969-midwest').addEventListener('click', () => {
+  if (midwest1969) map.fitBounds(midwest1969.getBounds());
+});
+
+
+    // Always start with no layers selected (even after refresh/back)
+window.addEventListener('pageshow', () => {
+  document.querySelectorAll('.layers input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+    cb.dispatchEvent(new Event('change'));
+  });
+});
+
+</script>
+
+
+</body>
+</html>
