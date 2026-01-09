@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>New Lambton Landslide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 60px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: #000000;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 50px;
+      font-size: 2.2rem;
+      font-weight: normal;
+    }
+
+    .login-box {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 8px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .access-note {
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>New Lambton Landslide</h1>
+
+  <div class="login-box">
+    <label for="username">Login name</label>
+    <input id="username" type="text">
+
+    <label for="password">Password</label>
+    <input id="password" type="password">
+
+    <button onclick="login()">Log In</button>
+
+    <div class="access-note">
+      For log in access, please email mathewsmegan@hotmail.com
+    </div>
+  </div>
+
+  <script>
+    function login() {window.location.href = "home.html";}
+  </script>
+
+</body>
+</html>
