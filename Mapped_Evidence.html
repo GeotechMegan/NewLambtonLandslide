@@ -164,6 +164,48 @@
     
   <div class="layers">
 
+    <details>
+  <summary>Geology etc.</summary>
+
+  <!-- NSW 5m Hillshade -->
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-geology-hillshade">
+      <label for="layer-geology-hillshade">NSW 5m Hillshade</label>
+      <button type="button" id="zoom-geology-hillshade">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-geology-hillshade"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+
+  <!-- Simplified Regional Geology -->
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-geology-regional">
+      <label for="layer-geology-regional">Simplified Regional Geology</label>
+      <button type="button" id="zoom-geology-regional">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-geology-regional"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+    <div style="margin-top:6px;">
+      <button type="button" id="download-geology-legend">Download Geology Legend</button>
+    </div>
+  </div>
+
+</details>
+
     
   <details>
     <summary>1901</summary>
@@ -245,6 +287,7 @@
 
 <details>
   <summary>1949</summary>
+  
   <div class="layer-item">
     <div class="layer-row">
     <input type="checkbox" id="layer-1949-families-move-out-of-creep-damaged-flats">
@@ -253,6 +296,32 @@
   </div>
   </div>
   <div class="layer-note">(The article mentions 2 other falls of ground in addition to the one at Apsley Court))</div>
+
+    <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1949-landslide-endangers-flats">
+      <label for="layer-1949-landslide-endangers-flats">Newspaper image: "Landslide Endangers Flats" (21st Jun 1949)</label>
+      <button type="button" id="zoom-1949-landslide-endangers-flats">Zoom to</button>
+    </div>
+  </div>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1949-threat-to-boolaroo">
+      <label for="layer-1949-threat-to-boolaroo">Newspaper Article: "Threat to Boolaroo", The Inverell Times, pg1, 2 Sep 1949</label>
+      <button type="button" id="zoom-1949-threat-to-boolaroo">Zoom to</button>
+    </div>
+  </div>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1949-threat-of-landslide">
+      <label for="layer-1949-threat-of-landslide">Newspaper article: "Threat of Landslide", the Northern Star, 3 Sep 1949</label>
+      <button type="button" id="zoom-1949-threat-of-landslide">Zoom to</button>
+    </div>
+  </div>
+
+  
 </details>
     
 <details>
@@ -260,12 +329,46 @@
   <div class="layer-item">
     <div class="layer-row">
     <input type="checkbox" id="layer-1950-addison-boy-walking">
-    <label for="layer-1950-addison-boy-walking">Boy walking west near Addison Rd landslide, April 1950</label>
+    <label for="layer-1950-addison-boy-walking">Boy walking west near Addison Rd landslide, 21 April 1950</label>
       <button type="button" id="zoom-1950-addison-boy-walking">Zoom to</button>
   </div>
   </div>
+
+    <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1950-addison-28-30-32">
+      <label for="layer-1950-addison-28-30-32">Woman in car looking at The Slip, with 28, 30 & 32 Addison Rd in mid-ground. (21 Apr 1950)</label>
+      <button type="button" id="zoom-1950-addison-28-30-32">Zoom to</button>
+    </div>
+  </div>
+
 </details>
 
+
+<details>
+  <summary>1951</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1951-road-collapses">
+      <label for="layer-1951-road-collapses">"Road collapses" from Newcastle Morning Herald and Miners' Advocate, 17 Jan 1951</label>
+      <button type="button" id="zoom-1951-road-collapses">Zoom to</button>
+    </div>
+  </div>
+</details>
+    
+
+    <details>
+  <summary>1953</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1953-addison-facing-w">
+      <label for="layer-1953-addison-facing-w">"The Slip" moved again. Photo, 22 Mar 1953</label>
+      <button type="button" id="zoom-1953-addison-facing-w">Zoom to</button>
+    </div>
+  </div>
+</details>
+
+    
     
 <details>
   <summary>1959</summary>
@@ -708,6 +811,251 @@ opacitySlider1969.addEventListener('input', () => {
 
 document.getElementById('zoom-1969-midwest').addEventListener('click', () => {
   if (midwest1969) map.fitBounds(midwest1969.getBounds());
+});
+
+    // ---------- Helpers (reuse everywhere) ----------
+function makeRedDotIcon() {
+  return L.divIcon({
+    className: 'photo-marker',
+    html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+    iconSize: [12, 12],
+    iconAnchor: [6, 6]
+  });
+}
+
+function wireOverlayLayer({
+  checkboxId,
+  sliderId,
+  zoomBtnId,
+  imageUrl,
+  bounds
+}) {
+  let overlay = null;
+
+  const cb = document.getElementById(checkboxId);
+  const slider = document.getElementById(sliderId);
+  const zoomBtn = document.getElementById(zoomBtnId);
+
+  cb.addEventListener('change', () => {
+    if (cb.checked) {
+      if (!overlay) {
+        overlay = L.imageOverlay(imageUrl, bounds, { opacity: parseFloat(slider.value) });
+      }
+      overlay.addTo(map);
+    } else {
+      if (overlay) map.removeLayer(overlay);
+    }
+  });
+
+  slider.addEventListener('input', () => {
+    if (overlay) overlay.setOpacity(parseFloat(slider.value));
+  });
+
+  zoomBtn.addEventListener('click', () => {
+    if (overlay) map.fitBounds(overlay.getBounds());
+    else map.fitBounds(bounds);
+  });
+}
+
+function wireHoverPreviewAndDownload({
+  checkboxId,
+  zoomBtnId,
+  latLng,
+  titleLine,
+  previewImgUrl,
+  downloadUrl,
+  downloadLabel,
+  downloadName,
+  zoomLevel = 18
+}) {
+  let marker = null;
+
+  const cb = document.getElementById(checkboxId);
+  const zoomBtn = document.getElementById(zoomBtnId);
+
+  cb.addEventListener('change', () => {
+    if (cb.checked) {
+      if (!marker) {
+        marker = L.marker(latLng, { icon: makeRedDotIcon() });
+
+        // Hover preview = popup that stays open when you move onto it
+        const previewHtml = `
+          <div>
+            <div style="font-size:12px;margin-bottom:6px">${titleLine}</div>
+            <img src="${previewImgUrl}">
+          </div>
+        `;
+
+        const previewPopup = L.popup({
+          closeButton: false,
+          autoClose: false,
+          closeOnClick: false,
+          className: 'article-preview-popup',
+          offset: [0, -10]
+        }).setContent(previewHtml);
+
+        let previewPinnedOpen = false;
+        let closeTimer = null;
+
+        marker.on('mouseover', (e) => {
+          previewPopup.setLatLng(e.latlng);
+          previewPopup.openOn(map);
+
+          // Allow cursor to move onto popup without it disappearing
+          setTimeout(() => {
+            const el = previewPopup.getElement();
+            if (!el) return;
+
+            el.addEventListener('mouseenter', () => {
+              previewPinnedOpen = true;
+              if (closeTimer) clearTimeout(closeTimer);
+            });
+
+            el.addEventListener('mouseleave', () => {
+              previewPinnedOpen = false;
+              map.closePopup(previewPopup);
+            });
+          }, 0);
+        });
+
+        marker.on('mouseout', () => {
+          closeTimer = setTimeout(() => {
+            if (!previewPinnedOpen) map.closePopup(previewPopup);
+          }, 200);
+        });
+
+        // Click popup = explicit download
+        marker.bindPopup(
+          `<div style="width:260px">
+             <div style="margin-bottom:8px">Download file?</div>
+             <a href="${downloadUrl}" download="${downloadName || ''}"
+                style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+               ${downloadLabel}
+             </a>
+           </div>`
+        );
+      }
+
+      marker.addTo(map);
+    } else {
+      if (marker) map.removeLayer(marker);
+    }
+  });
+
+  zoomBtn.addEventListener('click', () => {
+    map.setView(latLng, zoomLevel);
+  });
+}
+
+// ---------- Geology etc. overlays ----------
+wireOverlayLayer({
+  checkboxId: 'layer-geology-hillshade',
+  sliderId: 'opacity-geology-hillshade',
+  zoomBtnId: 'zoom-geology-hillshade',
+  imageUrl: 'data/Geology_etc/NSW_5m_Hillshade.png',
+  bounds: [
+    [-32.975861, 151.630040], // SW
+    [-32.914990, 151.782160]  // NE
+  ]
+});
+
+wireOverlayLayer({
+  checkboxId: 'layer-geology-regional',
+  sliderId: 'opacity-geology-regional',
+  zoomBtnId: 'zoom-geology-regional',
+  imageUrl: 'data/Geology_etc/SimplifiedRegionalGeology.png',
+  bounds: [
+    [-33.151983, 151.185300], // SW
+    [-32.653123, 151.803738]  // NE
+  ]
+});
+
+// Legend download button
+document.getElementById('download-geology-legend').addEventListener('click', () => {
+  const a = document.createElement('a');
+  a.href = 'data/Geology_etc/SimplifiedGeologyLegend.jpg';
+  a.download = 'SimplifiedGeologyLegend.jpg';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+
+// ---------- 1949 markers ----------
+
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1949-landslide-endangers-flats',
+  zoomBtnId: 'zoom-1949-landslide-endangers-flats',
+  latLng: [-32.92828, 151.77475],
+  titleLine: 'Newspaper article: "Landslide Endangers Flats" (1949)',
+  previewImgUrl: 'data/1949/19490621_LandslideEndangersFlats_Image.png',
+  downloadUrl: 'data/1949/19490621_LandslideEndangersFlats_Image.png',
+  downloadLabel: 'Download PNG',
+  downloadName: '1949_Landslide_Endangers_Flats.png',
+  zoomLevel: 18
+});
+
+// Boolaroo placeholders (change later once you pick exact dot locations)
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1949-threat-to-boolaroo',
+  zoomBtnId: 'zoom-1949-threat-to-boolaroo',
+  latLng: [-32.9560, 151.6205], // placeholder near Boolaroo
+  titleLine: 'Threat to Boolaroo (2 Sep 1949)',
+  previewImgUrl: 'data/1949/19490902_ThreatToBoolaroo.jpg',
+  downloadUrl: 'data/1949/19490902_ThreatToBoolaroo.jpg',
+  downloadLabel: 'Download JPG',
+  downloadName: '1949-09-02_ThreatToBoolaroo.jpg',
+  zoomLevel: 16
+});
+
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1949-threat-of-landslide',
+  zoomBtnId: 'zoom-1949-threat-of-landslide',
+  latLng: [-32.9572, 151.6230], // placeholder near Boolaroo
+  titleLine: 'Threat of Landslide (3 Sep 1949)',
+  previewImgUrl: 'data/1949/19490903_ThreatOfLandslide.jpg',
+  downloadUrl: 'data/1949/19490903_ThreatOfLandslide.jpg',
+  downloadLabel: 'Download JPG',
+  downloadName: '1949-09-03_ThreatOfLandslide.jpg',
+  zoomLevel: 16
+});
+
+// ---------- 1950 marker (28/30/32 Addison Rd) ----------
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1950-addison-28-30-32',
+  zoomBtnId: 'zoom-1950-addison-28-30-32',
+  latLng: [-32.926461, 151.708670],
+  titleLine: '28, 30, 32 Addison Rd (1950)',
+  previewImgUrl: 'data/1950/28_30_32_AddisonRd_preview.jpg',
+  downloadUrl: 'data/1950/28_30_32_AddisonRd_fullres.png',
+  downloadLabel: 'Download PNG',
+  downloadName: '1950_28_30_32_AddisonRd_fullres.png',
+  zoomLevel: 18
+});
+
+// ---------- 1951 marker ----------
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1951-road-collapses',
+  zoomBtnId: 'zoom-1951-road-collapses',
+  latLng: [-32.926608, 151.708110],
+  titleLine: 'Rainfall figures soaring again – road collapses (17 Jan 1951)',
+  previewImgUrl: 'data/1951/19510117_RainfallFiguresSoaringAgain_RoadCollapses.png',
+  downloadUrl: 'data/1951/19510117_RainfallFiguresSoaringAgain_RoadCollapses.png',
+  downloadLabel: 'Download PNG',
+  downloadName: '1951-01-17_RoadCollapses.png',
+  zoomLevel: 18
+});
+
+// ---------- 1953 marker (single file used for both preview + download) ----------
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1953-addison-facing-w',
+  zoomBtnId: 'zoom-1953-addison-facing-w',
+  latLng: [-32.92682, 151.70782],
+  titleLine: 'The Slip (22 Mar 1953)',
+  previewImgUrl: 'data/1953/19530322_AddisonRdFacingW.png',
+  downloadUrl: 'data/1953/19530322_AddisonRdFacingW.png',
+  downloadLabel: 'Download PNG',
+  downloadName: '1953-03-22_AddisonRdFacingW.png',
+  zoomLevel: 18
 });
 
 
