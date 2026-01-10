@@ -307,6 +307,17 @@
   </div>
 
   <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1949-2thirdst-damage">
+    <label for="layer-1949-2thirdst-damage">
+      Photo: Damage to 2 Third St, Boolaroo, 1st of Sep 1949. Landslide flow visible in background.
+    </label>
+    <button type="button" id="zoom-1949-2thirdst-damage">Zoom to</button>
+  </div>
+</div>
+
+
+  <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1949-threat-to-boolaroo">
       <label for="layer-1949-threat-to-boolaroo">Newspaper Article: "Threat to Boolaroo", The Inverell Times, pg1, 2 Sep 1949</label>
@@ -685,6 +696,63 @@ zoomFamiliesMoveOutOfFlats.addEventListener('click', () => {
   map.setView(FamiliesMoveOutOfFlatsLatLng, 18);
 });
 
+    // Photo: Damage to 2 Third St, Boolaroo, 1st Sep 1949 (preview + download)
+let photoDamage2ThirdSt1949 = null;
+
+const photoDamage2ThirdStCheckbox = document.getElementById('layer-1949-2thirdst-damage');
+const zoomPhotoDamage2ThirdSt = document.getElementById('zoom-1949-2thirdst-damage');
+
+const photoDamage2ThirdStLatLng = [-32.95227, 151.62711];
+
+photoDamage2ThirdStCheckbox.addEventListener('change', () => {
+  if (photoDamage2ThirdStCheckbox.checked) {
+
+    if (!photoDamage2ThirdSt1949) {
+      const previewImg = 'data/1949/19490901_2ThirdStBoolaroo_preview.jpg';
+      const fullresUrl = 'data/1949/19490901_2ThirdStBoolaroo_fullres.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      photoDamage2ThirdSt1949 = L.marker(photoDamage2ThirdStLatLng, { icon: markerIcon });
+
+      // Hover preview (tooltip)
+      photoDamage2ThirdSt1949.bindTooltip(
+        `<div style="width:260px">
+           <div style="font-size:12px;margin-bottom:6px">Boolaroo 1949, facing SE</div>
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup with explicit download link
+      photoDamage2ThirdSt1949.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download full-resolution image (PNG)?</div>
+           <a href="${fullresUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download PNG
+           </a>
+         </div>`
+      );
+    }
+
+    photoDamage2ThirdSt1949.addTo(map);
+
+  } else {
+    if (photoDamage2ThirdSt1949) map.removeLayer(photoDamage2ThirdSt1949);
+  }
+});
+
+// Zoom-to button
+zoomPhotoDamage2ThirdSt.addEventListener('click', () => {
+  map.setView(photoDamage2ThirdStLatLng, 18);
+});
+
+    
     // Boy walking west near Addison rd landslide, 1950
   let addison1950 = null;
 
