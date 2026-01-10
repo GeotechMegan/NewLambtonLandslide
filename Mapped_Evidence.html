@@ -368,6 +368,15 @@
     </div>
   </div>
 
+<div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1950-landslide-at-lake">
+      <label for="layer-1950-landslide-at-lake">Newspaper article: "Landslide At Lake / HOMES DAMAGED BY LANDSLIDE", the Newcastle Morning Herald and Miners’ Advocate, pg 1, 18th of July 1950</label>
+      <button type="button" id="zoom-1950-landslide-at-lake">Zoom to</button>
+    </div>
+  </div>
+<div class="layer-note">Precise location undetermined</div>
+  
 </details>
 
 
@@ -1199,6 +1208,19 @@ wireHoverPreviewAndDownload({
   downloadUrl: 'data/1949/19490902_CreepThreatAtBoolaroo.pdf',
   downloadLabel: 'Download PDF',
   downloadName: '1949-09-02_Creep-Threat-At-Boolaroo.pdf',
+  zoomLevel: 16
+});
+
+// ---------- 1950 marker ----------
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1950-landslide-at-lake',
+  zoomBtnId: 'zoom-1950-landslide-at-lake',
+  latLng: [-32.036285, 151.610252],
+  titleLine: 'Landslide, Coal Point, 18 Jul 1950',
+  previewImgUrl: 'data/1950/19500718_LandslideAtLake.jpg',
+  downloadUrl: 'data/1950/19500718_LandslideAtLake.pdf',
+  downloadLabel: 'Download PDF',
+  downloadName: '1950-07-18_Landslide-At-Lake.pdf',
   zoomLevel: 16
 });
 
