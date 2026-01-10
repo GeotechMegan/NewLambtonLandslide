@@ -368,6 +368,15 @@
     </div>
   </div>
 
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1950-this-road-is-bad">
+      <label for="layer-1950-this-road-is-bad">Newspaper article titled "This Road Is Bad", the Newcastle Morning Herald and Miners’ Advocate, pg 3, 21st April 1950</label>
+      <button type="button" id="zoom-1950-this-road-is-bad">Zoom to</button>
+    </div>
+  </div>
+<div class="layer-note">Article discusses the ongoing issues with Addison Road</div>
+
 <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1950-landslide-at-lake">
@@ -1211,7 +1220,19 @@ wireHoverPreviewAndDownload({
   zoomLevel: 16
 });
 
-// ---------- 1950 marker ----------
+// ---------- 1950 markers ----------
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1950-this-road-is-bad',
+  zoomBtnId: 'zoom-1950-this-road-is-bad',
+  latLng: [-32.926352, 151.708845],
+  titleLine: '"This Road Is Bad", 21st of April 1950',
+  previewImgUrl: 'data/1950/ThisRdIsBad_NewcastleMorningHerald_21Apr1950.jpg',
+  downloadUrl: 'data/1950/ThisRdIsBad_NewcastleMorningHerald_21Apr1950.pdf',
+  downloadLabel: 'Download PDF',
+  downloadName: '1950-04-21_This-Road-Is-Bad.pdf',
+  zoomLevel: 16
+});
+    
 wireHoverPreviewAndDownload({
   checkboxId: 'layer-1950-landslide-at-lake',
   zoomBtnId: 'zoom-1950-landslide-at-lake',
