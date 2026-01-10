@@ -936,7 +936,8 @@ function wireHoverPreviewAndDownload({
   downloadUrl,
   downloadLabel,
   downloadName,
-  zoomLevel = 18
+  zoomLevel = 18,
+  previewWidth = 280   // ← DEFAULT stays small
 }) {
   let marker = null;
 
@@ -950,11 +951,12 @@ function wireHoverPreviewAndDownload({
 
         // Hover preview = popup that stays open when you move onto it
         const previewHtml = `
-          <div>
-            <div style="font-size:12px;margin-bottom:6px">${titleLine}</div>
-            <img src="${previewImgUrl}">
-          </div>
-        `;
+  <div style="width:${previewWidth}px">
+    <div style="font-size:12px;margin-bottom:6px">${titleLine}</div>
+    <img src="${previewImgUrl}"
+         style="width:100%;height:auto;display:block;border:1px solid #ccc">
+  </div>
+`;
 
         const previewPopup = L.popup({
           closeButton: false,
@@ -1098,7 +1100,8 @@ wireHoverPreviewAndDownload({
   downloadUrl: 'data/1950/28_30_32_AddisonRd_fullres.png',
   downloadLabel: 'Download PNG',
   downloadName: '1950_28_30_32_AddisonRd_fullres.png',
-  zoomLevel: 18
+  zoomLevel: 18,
+  previewWidth: 560
 });
 
 // ---------- 1951 marker ----------
