@@ -377,6 +377,15 @@
   </div>
 <div class="layer-note">Article discusses the ongoing issues with Addison Road</div>
 
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1950-creep-in-new-lambton-yard">
+      <label for="layer-1950-creep-in-new-lambton-yard">Newspaper article, "CREEP" IN NEW LAMBTON YARD, the Newcastle Morning Herald and Miners’ Advocate, pg 2, 23rd of June 1950</label>
+      <button type="button" id="zoom-1950-creep-in-new-lambton-yard">Zoom to</button>
+    </div>
+  </div>
+<div class="layer-note">Article describes extensive "subsidence". Note that causes of subsidence are not always anthropogenic.</div>
+
 <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1950-landslide-at-lake">
@@ -1230,6 +1239,18 @@ wireHoverPreviewAndDownload({
   downloadUrl: 'data/1950/ThisRdIsBad_NewcastleMorningHerald_21Apr1950.pdf',
   downloadLabel: 'Download PDF',
   downloadName: '1950-04-21_This-Road-Is-Bad.pdf',
+  zoomLevel: 16
+});
+
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1950-creep-in-new-lambton-yard',
+  zoomBtnId: 'zoom-1950-creep-in-new-lambton-yard',
+  latLng: [-30.926352, 151.708845],
+  titleLine: '"CREEP" IN NEW LAMBTON YARD, 23/06/1950',
+  previewImgUrl: 'data/1950/CreepInNewLambtonYard_NMHandMA_pg2_23Jun1950.jpg',
+  downloadUrl: 'data/1950/CreepInNewLambtonYard_NMHandMA_pg2_23Jun1950.jpg',
+  downloadLabel: 'Download JPG',
+  downloadName: '1950-06-23_CREEP-IN-NEW-LAMBTON-YARD.jpg',
   zoomLevel: 16
 });
     
