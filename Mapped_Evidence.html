@@ -838,7 +838,7 @@ addisonCheckbox.addEventListener('change', () => {
       // Hover preview (tooltip)
       addison1950.bindTooltip(
         `<div style="width:560px">
-           <div style="font-size:12px;margin-bottom:6px">Addison Rd facing East, landslide visible in foreground (1st Sep 1950)</div>
+           <div style="font-size:12px;margin-bottom:6px">Addison Rd facing East, boy walking towards camera, landslide visible in foreground (1st Sep 1950)</div>
            <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
          </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
@@ -863,6 +863,61 @@ addisonCheckbox.addEventListener('change', () => {
 // Zoom-to button
 zoomAddison.addEventListener('click', () => {
   map.setView(addisonLatLng, 18);
+});
+
+
+ // Woman in car, numbers 28-32 Addison Rd, 1950
+  let 28to32AddisonRd1950 = null;
+
+const 28to32AddisonRdCheckbox = document.getElementById('layer-1950-addison-28-30-32');
+const zoom28to32AddisonRd = document.getElementById('zoom-1950-addison-28-30-32');
+const 28to32AddisonRdLatLng = [-32.926461, 151.708670];
+
+28to32AddisonRdCheckbox.addEventListener('change', () => {
+  if (28to32AddisonRdCheckbox.checked) {
+
+    if (!28to32AddisonRd1950) {
+      const latlng = 28to32AddisonRdLatLng; 
+
+      const previewImg = 'data/1950/28_30_32_AddisonRd_preview.jpg';
+      const pngUrl = 'data/1950/28_30_32_AddisonRd_fullres.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      28to32AddisonRd1950 = L.marker(latlng, { icon: markerIcon });
+      // Hover preview (tooltip)
+      28to32AddisonRd1950.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">“The Slip”, New Lambton, 1st Sep 1950. 28, 30 & 32 Addison Rd can be seen on the right.</div>
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+      // Click popup with explicit download link
+      28to32AddisonRd1950.bindPopup(
+        `<div style="width:560px">
+           <div style="margin-bottom:8px">Download full-resolution image (PNG, ~43 MB)?</div>
+           <a href="${pngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download PNG
+           </a>
+         </div>`
+      );
+    }
+
+    28to32AddisonRd1950.addTo(map);
+
+  } else {
+    if (28to32AddisonRd1950) map.removeLayer(28to32AddisonRd1950);
+  }
+});
+// Zoom-to button
+zoom28to32AddisonRd.addEventListener('click', () => {
+  map.setView(28to32AddisonRdLatLng, 18);
 });
     
 
@@ -1143,20 +1198,6 @@ wireHoverPreviewAndDownload({
   downloadLabel: 'Download JPG',
   downloadName: '1949-09-03_ThreatOfLandslide.jpg',
   zoomLevel: 16
-});
-
-// ---------- 1950 marker (28/30/32 Addison Rd) ----------
-wireHoverPreviewAndDownload({
-  checkboxId: 'layer-1950-addison-28-30-32',
-  zoomBtnId: 'zoom-1950-addison-28-30-32',
-  latLng: [-32.926461, 151.708670],
-  titleLine: '28, 30, 32 Addison Rd (1950)',
-  previewImgUrl: 'data/1950/28_30_32_AddisonRd_preview.jpg',
-  downloadUrl: 'data/1950/28_30_32_AddisonRd_fullres.png',
-  downloadLabel: 'Download PNG',
-  downloadName: '1950_28_30_32_AddisonRd_fullres.png',
-  zoomLevel: 18,
-  previewWidth: 560
 });
 
 // ---------- 1951 marker ----------
