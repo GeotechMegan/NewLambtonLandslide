@@ -308,6 +308,18 @@
 
   <div class="layer-item">
   <div class="layer-row">
+    <input type="checkbox" id="layer-1949-boolaroo-scarps">
+    <label for="layer-1949-boolaroo-scarps">Photo: Boolaroo landslide scarps, 1st Sep 1949</label>
+    <button type="button" id="zoom-1949-boolaroo-scarps">Zoom to</button>
+  </div>
+</div>
+<div class="layer-note">
+  Image shows tension cracks in the foreground, a new scarp in mid-ground, old scarp below that and the main scarp in the background.
+</div>
+
+  
+  <div class="layer-item">
+  <div class="layer-row">
     <input type="checkbox" id="layer-1949-2thirdst-damage">
     <label for="layer-1949-2thirdst-damage">
       Photo: Damage to house & fence at 2 Third St, Boolaroo, 1st of Sep 1949. Landslide flow visible from background to in front of house.
@@ -540,7 +552,8 @@ document.getElementById('zoom-1936-parish').addEventListener('click', () => {
   if (parish1936) map.fitBounds(parish1936.getBounds());
 });
 
-    // 1944 (7-image layer group)
+    
+    // 1944 (multi-image layer group)
 let layer1944 = null;
 let layer1944Bounds = null;
 
@@ -552,7 +565,6 @@ checkbox1944.addEventListener('change', () => {
 
     if (!layer1944) {
       const op = () => parseFloat(opacitySlider1944.value);
-
       // Format: [[southWestLat, southWestLng], [northEastLat, northEastLng]]
       const overlays = [
         L.imageOverlay('data/1944/1944_1.png', [[-32.923947, 151.702660], [-32.921560, 151.707930]], { opacity: op() }),
@@ -566,7 +578,6 @@ checkbox1944.addEventListener('change', () => {
       ];
 
       layer1944 = L.layerGroup(overlays);
-
       // Combined bounds for Zoom to
       layer1944Bounds = overlays.reduce((b, o) => {
         const ob = o.getBounds();
@@ -580,21 +591,17 @@ checkbox1944.addEventListener('change', () => {
     if (layer1944) map.removeLayer(layer1944);
   }
 });
-
-// Opacity slider controls all 7 images
+// Opacity slider controls all images
 opacitySlider1944.addEventListener('input', () => {
   if (layer1944) {
     const v = parseFloat(opacitySlider1944.value);
     layer1944.eachLayer(l => l.setOpacity(v));
   }
 });
-
-// Zoom-to button zooms to the full extent of all 7 images
+// Zoom-to button zooms to the full extent of all images
 document.getElementById('zoom-1944').addEventListener('click', () => {
   if (layer1944Bounds) map.fitBounds(layer1944Bounds);
 });
-
-
 
     
      // Families move out of creep-damaged flats, 21st of June 1949
@@ -622,7 +629,6 @@ FamiliesMoveOutOfFlatsCheckbox.addEventListener('change', () => {
       });
 
       FamiliesMoveOutOfFlats1949 = L.marker(latlng, { icon: markerIcon });
-
      // Hover preview (popup that stays open when you move onto it)
 const previewHtml = `
   <div>
@@ -671,8 +677,6 @@ FamiliesMoveOutOfFlats1949.on('mouseout', () => {
     if (!previewPinnedOpen) map.closePopup(previewPopup);
   }, 200);
 });
-
-
       // Click popup with explicit download link
       FamiliesMoveOutOfFlats1949.bindPopup(
         `<div style="width:260px">
@@ -690,12 +694,69 @@ FamiliesMoveOutOfFlats1949.on('mouseout', () => {
     if (FamiliesMoveOutOfFlats1949) map.removeLayer(FamiliesMoveOutOfFlats1949);
   }
 });
-    
 // Zoom-to button
 zoomFamiliesMoveOutOfFlats.addEventListener('click', () => {
   map.setView(FamiliesMoveOutOfFlatsLatLng, 18);
 });
 
+// Photo: Boolaroo landslide scarps, 1st Sep 1949
+let boolarooScarps1949Marker = null;
+
+const boolarooScarps1949Checkbox = document.getElementById('layer-1949-boolaroo-scarps');
+const zoomBoolarooScarps1949 = document.getElementById('zoom-1949-boolaroo-scarps');
+
+const boolarooScarps1949LatLng = [-32.954528, 151.629154];
+
+boolarooScarps1949Checkbox.addEventListener('change', () => {
+  if (boolarooScarps1949Checkbox.checked) {
+
+    if (!boolarooScarps1949Marker) {
+      const previewImg = 'data/1949/19490901_BoolarooLandslide_preview.jpg';
+      const fullresPngUrl = 'data/1949/19490901_BoolarooLandslide_fullres.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      boolarooScarps1949Marker = L.marker(boolarooScarps1949LatLng, { icon: markerIcon });
+
+      // Hover preview (tooltip) - wider preview (560px)
+      boolarooScarps1949Marker.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">
+             Boolaroo landslide 1949, facing N(?) atop Munibung Hill
+           </div>
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup with explicit download link
+      boolarooScarps1949Marker.bindPopup(
+        `<div style="width:280px">
+           <div style="margin-bottom:8px">Download full-resolution image (PNG)?</div>
+           <a href="${fullresPngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download PNG
+           </a>
+         </div>`
+      );
+    }
+
+    boolarooScarps1949Marker.addTo(map);
+
+  } else {
+    if (boolarooScarps1949Marker) map.removeLayer(boolarooScarps1949Marker);
+  }
+});
+// Zoom-to button
+zoomBoolarooScarps1949.addEventListener('click', () => {
+  map.setView(boolarooScarps1949LatLng, 18);
+});
+
+    
     // Photo: Damage to 2 Third St, Boolaroo, 1st Sep 1949 (preview + download)
 let photoDamage2ThirdSt1949 = null;
 
@@ -719,7 +780,6 @@ photoDamage2ThirdStCheckbox.addEventListener('change', () => {
       });
 
       photoDamage2ThirdSt1949 = L.marker(photoDamage2ThirdStLatLng, { icon: markerIcon });
-
       // Hover preview (tooltip)
       photoDamage2ThirdSt1949.bindTooltip(
         `<div style="width:560px">
@@ -728,7 +788,6 @@ photoDamage2ThirdStCheckbox.addEventListener('change', () => {
          </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
       );
-
       // Click popup with explicit download link
       photoDamage2ThirdSt1949.bindPopup(
         `<div style="width:260px">
@@ -746,7 +805,6 @@ photoDamage2ThirdStCheckbox.addEventListener('change', () => {
     if (photoDamage2ThirdSt1949) map.removeLayer(photoDamage2ThirdSt1949);
   }
 });
-
 // Zoom-to button
 zoomPhotoDamage2ThirdSt.addEventListener('click', () => {
   map.setView(photoDamage2ThirdStLatLng, 18);
@@ -759,7 +817,6 @@ zoomPhotoDamage2ThirdSt.addEventListener('click', () => {
 const addisonCheckbox = document.getElementById('layer-1950-addison-boy-walking');
 const zoomAddison = document.getElementById('zoom-1950-addison-boy-walking');
 const addisonLatLng = [-32.92601, 151.709641];
-
 
 addisonCheckbox.addEventListener('change', () => {
   if (addisonCheckbox.checked) {
@@ -778,7 +835,6 @@ addisonCheckbox.addEventListener('change', () => {
       });
 
       addison1950 = L.marker(latlng, { icon: markerIcon });
-
       // Hover preview (tooltip)
       addison1950.bindTooltip(
         `<div style="width:560px">
@@ -787,7 +843,6 @@ addisonCheckbox.addEventListener('change', () => {
          </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
       );
-
       // Click popup with explicit download link
       addison1950.bindPopup(
         `<div style="width:560px">
@@ -805,11 +860,11 @@ addisonCheckbox.addEventListener('change', () => {
     if (addison1950) map.removeLayer(addison1950);
   }
 });
-    
 // Zoom-to button
 zoomAddison.addEventListener('click', () => {
   map.setView(addisonLatLng, 18);
 });
+    
 
     // 1959 Newcastle Parish Map
 let parish1959 = null;
