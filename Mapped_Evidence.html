@@ -866,18 +866,18 @@ zoomAddison.addEventListener('click', () => {
 });
 
 
- // Woman in car, numbers 28-32 Addison Rd, 1950
-  let 28to32AddisonRd1950 = null;
+  // Woman in car, numbers 28-32 Addison Rd, 1950
+  let addison28to32_1950 = null;
 
-const 28to32AddisonRdCheckbox = document.getElementById('layer-1950-addison-28-30-32');
-const zoom28to32AddisonRd = document.getElementById('zoom-1950-addison-28-30-32');
-const 28to32AddisonRdLatLng = [-32.926461, 151.708670];
+const addison28to32Checkbox = document.getElementById('layer-1950-addison-28-30-32');
+const zoomaddison28to32 = document.getElementById('zoom-1950-addison-28-30-32');
+const addison28to32LatLng = [-32.926461, 151.708670];
 
-28to32AddisonRdCheckbox.addEventListener('change', () => {
-  if (28to32AddisonRdCheckbox.checked) {
+addison28to32Checkbox.addEventListener('change', () => {
+  if (addison28to32Checkbox.checked) {
 
-    if (!28to32AddisonRd1950) {
-      const latlng = 28to32AddisonRdLatLng; 
+    if (!addison28to32_1950) {
+      const latlng = addison28to32LatLng; 
 
       const previewImg = 'data/1950/28_30_32_AddisonRd_preview.jpg';
       const pngUrl = 'data/1950/28_30_32_AddisonRd_fullres.png';
@@ -889,9 +889,9 @@ const 28to32AddisonRdLatLng = [-32.926461, 151.708670];
         iconAnchor: [6, 6]
       });
 
-      28to32AddisonRd1950 = L.marker(latlng, { icon: markerIcon });
+      addison28to32_1950 = L.marker(latlng, { icon: markerIcon });
       // Hover preview (tooltip)
-      28to32AddisonRd1950.bindTooltip(
+      addison28to32_1950.bindTooltip(
         `<div style="width:560px">
            <div style="font-size:12px;margin-bottom:6px">“The Slip”, New Lambton, 1st Sep 1950. 28, 30 & 32 Addison Rd can be seen on the right.</div>
            <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
@@ -899,7 +899,7 @@ const 28to32AddisonRdLatLng = [-32.926461, 151.708670];
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
       );
       // Click popup with explicit download link
-      28to32AddisonRd1950.bindPopup(
+      addison28to32_1950.bindPopup(
         `<div style="width:560px">
            <div style="margin-bottom:8px">Download full-resolution image (PNG, ~43 MB)?</div>
            <a href="${pngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
@@ -909,15 +909,15 @@ const 28to32AddisonRdLatLng = [-32.926461, 151.708670];
       );
     }
 
-    28to32AddisonRd1950.addTo(map);
+    addison28to32_1950.addTo(map);
 
   } else {
-    if (28to32AddisonRd1950) map.removeLayer(28to32AddisonRd1950);
+    if (addison28to32_1950) map.removeLayer(addison28to32_1950);
   }
 });
 // Zoom-to button
-zoom28to32AddisonRd.addEventListener('click', () => {
-  map.setView(28to32AddisonRdLatLng, 18);
+zoomaddison28to32.addEventListener('click', () => {
+  map.setView(addison28to32LatLng, 18);
 });
     
 
