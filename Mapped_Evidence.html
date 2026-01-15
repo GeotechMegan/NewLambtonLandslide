@@ -403,6 +403,7 @@
 
 
 <details>
+  
   <summary>1951</summary>
   <div class="layer-item">
     <div class="layer-row">
@@ -411,10 +412,22 @@
       <button type="button" id="zoom-1951-road-collapses">Zoom to</button>
     </div>
   </div>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1951-chelston-st">
+    <label for="layer-1951-chelston-st">
+      Photo: 19th Jan 1951 Chelston St Landslide.
+    </label>
+    <button type="button" id="zoom-1951-chelston-st">Zoom to</button>
+  </div>
+</div>
+
 </details>
     
 
     <details>
+      
   <summary>1953</summary>
   <div class="layer-item">
     <div class="layer-row">
@@ -423,6 +436,7 @@
       <button type="button" id="zoom-1953-addison-facing-w">Zoom to</button>
     </div>
   </div>
+      
 </details>
 
     
@@ -967,7 +981,80 @@ zoomaddison28to32.addEventListener('click', () => {
   map.setView(addison28to32LatLng, 18);
 });
     
+// Photo: 19th Jan 1951 Chelston St Landslide
+let chelstonSt1951 = null;
 
+const chelstonStCheckbox = document.getElementById('layer-1951-chelston-st');
+const zoomChelstonSt = document.getElementById('zoom-1951-chelston-st');
+
+// Converted from 32°57'41"S 151°38'25"E
+const chelstonStLatLng = [-32.96139, 151.64028];
+
+chelstonStCheckbox.addEventListener('change', () => {
+  if (chelstonStCheckbox.checked) {
+
+    if (!chelstonSt1951) {
+      const previewImg = 'data/1951/19510119_ChelstonStLandslide.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: `
+          <div style="
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            background:#d00;
+            border:2px solid #fff;
+            box-shadow:0 0 2px rgba(0,0,0,0.5);
+          "></div>
+        `,
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      chelstonSt1951 = L.marker(chelstonStLatLng, { icon: markerIcon });
+
+      // Hover preview
+      chelstonSt1951.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">
+             Mr & Mrs Howell’s house stood at what is now 20 Chelston St, Warners Bay.
+           </div>
+           <img src="${previewImg}"
+                style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup – external thesis link (no download attribute)
+      chelstonSt1951.bindPopup(
+        `<div style="width:300px">
+           <div style="margin-bottom:8px">
+             Source document:
+           </div>
+           <a href="https://unsworks.unsw.edu.au/entities/publication/8ef29976-5802-4702-9719-52f913e3f133"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Thesis: Three-dimensional, transient piezometric response in landslides to rainfall. Williams-Sweeney, Kelly S.
+           </a>
+         </div>`
+      );
+    }
+
+    chelstonSt1951.addTo(map);
+
+  } else {
+    if (chelstonSt1951) map.removeLayer(chelstonSt1951);
+  }
+});
+
+// Zoom-to button
+zoomChelstonSt.addEventListener('click', () => {
+  map.setView(chelstonStLatLng, 18);
+});
+
+  
     // 1959 Newcastle Parish Map
 let parish1959 = null;
 
@@ -1303,6 +1390,8 @@ wireHoverPreviewAndDownload({
   downloadName: '1951-01-17_RoadCollapses.png',
   zoomLevel: 18
 });
+
+  
 
 // ---------- 1953 marker (single file used for both preview + download) ----------
 wireHoverPreviewAndDownload({
