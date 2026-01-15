@@ -1104,7 +1104,7 @@ function wireHoverPreviewAndDownload({
   downloadLabel,
   downloadName,
   zoomLevel = 18,
-  previewWidth = 280,   // ← DEFAULT stays small
+  previewWidth = 280,
   dotColour = '#d00'
 }) {
   let marker = null;
@@ -1112,19 +1112,24 @@ function wireHoverPreviewAndDownload({
   const cb = document.getElementById(checkboxId);
   const zoomBtn = document.getElementById(zoomBtnId);
 
+  // 🔒 HARD GUARD — prevents script death
+  if (!cb || !zoomBtn) {
+    console.warn(`Layer skipped (missing elements):`, checkboxId, zoomBtnId);
+    return;
+  }
+
   cb.addEventListener('change', () => {
     if (cb.checked) {
       if (!marker) {
         marker = L.marker(latLng, { icon: makeDotIcon(dotColour) });
 
-        // Hover preview = popup that stays open when you move onto it
         const previewHtml = `
-  <div style="width:${previewWidth}px">
-    <div style="font-size:12px;margin-bottom:6px">${titleLine}</div>
-    <img src="${previewImgUrl}"
-         style="width:100%;height:auto;display:block;border:1px solid #ccc">
-  </div>
-`;
+          <div style="width:${previewWidth}px">
+            <div style="font-size:12px;margin-bottom:6px">${titleLine}</div>
+            <img src="${previewImgUrl}"
+                 style="width:100%;height:auto;display:block;border:1px solid #ccc">
+          </div>
+        `;
 
         const previewPopup = L.popup({
           closeButton: false,
@@ -1134,46 +1139,34 @@ function wireHoverPreviewAndDownload({
           offset: [0, -10]
         }).setContent(previewHtml);
 
-        let previewPinnedOpen = false;
+        let pinned = false;
         let closeTimer = null;
 
-        marker.on('mouseover', (e) => {
-          previewPopup.setLatLng(e.latlng);
-          previewPopup.openOn(map);
-
-          // Allow cursor to move onto popup without it disappearing
+        marker.on('mouseover', e => {
+          previewPopup.setLatLng(e.latlng).openOn(map);
           setTimeout(() => {
             const el = previewPopup.getElement();
             if (!el) return;
-
-            el.addEventListener('mouseenter', () => {
-              previewPinnedOpen = true;
-              if (closeTimer) clearTimeout(closeTimer);
-            });
-
-            el.addEventListener('mouseleave', () => {
-              previewPinnedOpen = false;
-              map.closePopup(previewPopup);
-            });
+            el.onmouseenter = () => { pinned = true; };
+            el.onmouseleave = () => { pinned = false; map.closePopup(previewPopup); };
           }, 0);
         });
 
         marker.on('mouseout', () => {
           closeTimer = setTimeout(() => {
-            if (!previewPinnedOpen) map.closePopup(previewPopup);
+            if (!pinned) map.closePopup(previewPopup);
           }, 200);
         });
 
-        // Click popup = explicit download
-        marker.bindPopup(
-          `<div style="width:260px">
-             <div style="margin-bottom:8px">Download file?</div>
-             <a href="${downloadUrl}" download="${downloadName || ''}"
-                style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
-               ${downloadLabel}
-             </a>
-           </div>`
-        );
+        marker.bindPopup(`
+          <div style="width:260px">
+            <div style="margin-bottom:8px">Download file?</div>
+            <a href="${downloadUrl}" download="${downloadName || ''}"
+               style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+              ${downloadLabel}
+            </a>
+          </div>
+        `);
       }
 
       marker.addTo(map);
@@ -1187,6 +1180,7 @@ function wireHoverPreviewAndDownload({
   });
 }
 
+  
 // ---------- Geology etc. overlays ----------
 wireOverlayLayer({
   checkboxId: 'layer-geology-hillshade',
