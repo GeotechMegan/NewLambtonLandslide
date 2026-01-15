@@ -492,6 +492,7 @@
 
   <!-- Initialise map -->
   <script>
+document.addEventListener('DOMContentLoaded', () => {
   const streetMap = L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
@@ -1342,6 +1343,7 @@ window.addEventListener('pageshow', () => {
     cb.checked = false;
     cb.dispatchEvent(new Event('change'));
   });
+});
 });
 
 </script>
