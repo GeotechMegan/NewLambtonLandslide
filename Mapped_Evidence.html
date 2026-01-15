@@ -422,6 +422,16 @@
     <button type="button" id="zoom-1951-chelston-st">Zoom to</button>
   </div>
 </div>
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1951-chelston-st-flowpath">
+    <label for="layer-1951-chelston-st-flowpath">
+      Photo: 19th Jan 1951 Chelston St Landslide.
+    </label>
+    <button type="button" id="zoom-1951-chelston-st-flowpath">Zoom to</button>
+  </div>
+</div>
+
 
 </details>
     
@@ -1052,6 +1062,76 @@ chelstonStCheckbox.addEventListener('change', () => {
 // Zoom-to button
 zoomChelstonSt.addEventListener('click', () => {
   map.setView(chelstonStLatLng, 18);
+});
+  
+// Photo: 19th Jan 1951 Chelston St Landslide (flow path)
+let chelstonSt1951FlowPath = null;
+
+const chelstonStFlowCheckbox = document.getElementById('layer-1951-chelston-st-flowpath');
+const zoomChelstonStFlow = document.getElementById('zoom-1951-chelston-st-flowpath');
+
+const chelstonStFlowLatLng = [-32.960548, 151.639414];
+
+chelstonStFlowCheckbox.addEventListener('change', () => {
+  if (chelstonStFlowCheckbox.checked) {
+
+    if (!chelstonSt1951FlowPath) {
+      const previewImg = 'data/1951/19510119_ChelstonStLandslide_FlowPath.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: `
+          <div style="
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            background:#fff;
+            border:2px solid #000;
+            box-shadow:0 0 2px rgba(0,0,0,0.6);
+          "></div>
+        `,
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      chelstonSt1951FlowPath = L.marker(chelstonStFlowLatLng, { icon: markerIcon });
+
+      // Hover preview (tooltip)
+      chelstonSt1951FlowPath.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">
+             The 1951 Chelston St landslide in Warners Bay covered 3–4 ha and created scarps up to 2.5 m high.
+           </div>
+           <img src="${previewImg}"
+                style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup – external thesis link
+      chelstonSt1951FlowPath.bindPopup(
+        `<div style="width:320px">
+           <div style="margin-bottom:8px">Source document:</div>
+           <a href="https://unsworks.unsw.edu.au/entities/publication/8ef29976-5802-4702-9719-52f913e3f133"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Thesis: Three-dimensional, transient piezometric response in landslides to rainfall. Williams-Sweeney, Kelly S.
+           </a>
+         </div>`
+      );
+    }
+
+    chelstonSt1951FlowPath.addTo(map);
+
+  } else {
+    if (chelstonSt1951FlowPath) map.removeLayer(chelstonSt1951FlowPath);
+  }
+});
+
+// Zoom-to button
+zoomChelstonStFlow.addEventListener('click', () => {
+  map.setView(chelstonStFlowLatLng, 18);
 });
 
   
