@@ -466,6 +466,19 @@
   </div>
 </details>
 
+<details>
+  <summary>2025</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-LakeMacLocalsFBpost23rdMay2025">
+      <label for="layer-LakeMacLocalsFBpost23rdMay2025">Landslip on Munibung Hill caused power outage- FaceBook post, 23rd May 2025</label>
+      <button type="button" id="zoom-LakeMacLocalsFBpost23rdMay2025">Zoom to</button>
+    </div>
+  </div>
+
+</details>
+
 
 </div>
 
@@ -1296,6 +1309,20 @@ wireHoverPreviewAndDownload({
   zoomLevel: 18
 });
 
+
+// ---------- 2025 marker (single file used for both preview + download) ----------
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-LakeMacLocalsFBpost23rdMay2025',
+  zoomBtnId: 'zoom-LakeMacLocalsFBpost23rdMay2025',
+  latLng: [-32.949896, 151.635760],
+  titleLine: 'Rain causes further slip on virgin hill- FaceBook post in “Lake Macquarie Locals”, 23rd May 2025',
+  previewImgUrl: 'data/2025/20250523_LakeMacLocalsFBpost.png',
+  downloadUrl: 'data/2025/20250523_LakeMacLocalsFBpost.png',
+  downloadLabel: 'Download PNG',
+  downloadName: '20250523_LakeMacLocalsFBpost_LandslideBoolaroo.png',
+  zoomLevel: 18
+});
+    
 
     // Always start with no layers selected (even after refresh/back)
 window.addEventListener('pageshow', () => {
