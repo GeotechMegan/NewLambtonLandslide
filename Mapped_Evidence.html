@@ -471,6 +471,7 @@
   <div class="layer-note">(Note again that the Slip Creek is mapped)</div>
 </details>
 
+    
 <details>
   <summary>1969</summary>
   <div class="layer-item">
@@ -489,6 +490,22 @@
     >
   </div>
 </details>
+
+    
+<details>
+  <summary>1988</summary>
+  
+    <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1988-chelston-st-29apr">
+    <label for="layer-1988-chelston-st-29apr">
+      Photo: 29th April 1988 Chelston St Landslide.
+    </label>
+    <button type="button" id="zoom-1988-chelston-st-29apr">Zoom to</button>
+  </div>
+</div>
+</details>
+    
 
 <details>
   <summary>2025</summary>
@@ -1346,6 +1363,65 @@ function wireHoverPreviewAndDownload({
     map.setView(latLng, zoomLevel);
   });
 }
+
+
+// Photo: 29th April 1988 Chelston St Landslide (preview + download)
+let chelstonSt1988_29Apr = null;
+
+const chelstonSt1988Checkbox = document.getElementById('layer-1988-chelston-st-29apr');
+const zoomChelstonSt1988 = document.getElementById('zoom-1988-chelston-st-29apr');
+
+const chelstonSt1988LatLng = [-32.959730, 151.637663];
+
+chelstonSt1988Checkbox.addEventListener('change', () => {
+  if (chelstonSt1988Checkbox.checked) {
+
+    if (!chelstonSt1988_29Apr) {
+      const previewImg = 'data/1988/ChelstonStreetLandslide_29Apr1988.jpg';
+      const fullresUrl = 'data/1988/ChelstonStreetLandslide_29Apr1988.jpg';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      chelstonSt1988_29Apr = L.marker(chelstonSt1988LatLng, { icon: markerIcon });
+
+      // Hover preview (tooltip)
+      chelstonSt1988_29Apr.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">
+             Monitoring stations captured movement in the 1988 Chelston St landslide from 12 Apr, and the major mvmt was on the 29th.
+           </div>
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup with explicit download link
+      chelstonSt1988_29Apr.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download image (JPG)?</div>
+           <a href="${fullresUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download JPG
+           </a>
+         </div>`
+      );
+    }
+
+    chelstonSt1988_29Apr.addTo(map);
+
+  } else {
+    if (chelstonSt1988_29Apr) map.removeLayer(chelstonSt1988_29Apr);
+  }
+});
+
+// Zoom-to button
+zoomChelstonSt1988.addEventListener('click', () => {
+  map.setView(chelstonSt1988LatLng, 18);
+});
 
   
 // ---------- Geology etc. overlays ----------
