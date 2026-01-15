@@ -1040,14 +1040,24 @@ document.getElementById('zoom-1969-midwest').addEventListener('click', () => {
 });
 
     // ---------- Helpers (reuse everywhere) ----------
-function makeRedDotIcon() {
+function makeDotIcon(colour = '#d00') {
   return L.divIcon({
     className: 'photo-marker',
-    html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+    html: `
+      <div style="
+        width:12px;
+        height:12px;
+        border-radius:50%;
+        background:${colour};
+        border:2px solid #fff;
+        box-shadow:0 0 2px rgba(0,0,0,0.5);
+      "></div>
+    `,
     iconSize: [12, 12],
     iconAnchor: [6, 6]
   });
 }
+
 
 function wireOverlayLayer({
   checkboxId,
@@ -1094,6 +1104,7 @@ function wireHoverPreviewAndDownload({
   downloadName,
   zoomLevel = 18,
   previewWidth = 280   // ← DEFAULT stays small
+  dotColour = '#d00'
 }) {
   let marker = null;
 
@@ -1103,7 +1114,7 @@ function wireHoverPreviewAndDownload({
   cb.addEventListener('change', () => {
     if (cb.checked) {
       if (!marker) {
-        marker = L.marker(latLng, { icon: makeRedDotIcon() });
+        marker = L.marker(latLng, { icon: makeDotIcon(dotColour) });
 
         // Hover preview = popup that stays open when you move onto it
         const previewHtml = `
@@ -1232,6 +1243,7 @@ wireHoverPreviewAndDownload({
   downloadLabel: 'Download JPG',
   downloadName: '1949-09-02_ThreatToBoolaroo.jpg',
   zoomLevel: 16
+  dotColour: '#ffffff'
 });
 
 wireHoverPreviewAndDownload({
@@ -1336,8 +1348,9 @@ window.addEventListener('pageshow', () => {
 
 <div>
   <p>Phone viewing: Hold your device in landscape orientation.</p>
+  <p>Red dots are unique events. White dots are supplementary information to a given event.</p>
   <p>Tip: If a layer or preview isn't loading, give it a few more seconds. Some images are quite large and may take a little while.</p>
-    <p>Files >25 MB are currenty not able to be downloaded, sorry. For now you'll have to email me & I'll send it as soon as I can. mathewsmegan@hotmail.com.</p>
+  <p>Files >25 MB are currenty not able to be downloaded, sorry. For now you'll have to email me & I'll send it as soon as I can. mathewsmegan@hotmail.com.</p>
 </div>
 </body>
 </html>
