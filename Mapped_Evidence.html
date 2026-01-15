@@ -398,6 +398,17 @@
     </div>
   </div>
 <div class="layer-note">Precise location undetermined</div>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1950-letter-isaac-hoare">
+    <label for="layer-1950-letter-isaac-hoare">
+      Letter to the editor, from Isaac Hoare, 14th Oct 1950. Mentions another area nearby “which has also suffered”. Exact location unknown.
+    </label>
+    <button type="button" id="zoom-1950-letter-isaac-hoare">Zoom to</button>
+  </div>
+</div>
+
   
 </details>
 
@@ -1535,6 +1546,20 @@ wireHoverPreviewAndDownload({
   zoomLevel: 16
 });
 
+  wireHoverPreviewAndDownload({
+  checkboxId: 'layer-1950-letter-isaac-hoare',
+  zoomBtnId: 'zoom-1950-letter-isaac-hoare',
+  latLng: [-32.925961, 151.710657],
+  titleLine: '&nbsp;', // no hover text
+  previewImgUrl: 'data/1950/NMHandMA_LetterToTheEditorAddisonRdSlideIsaacHoare14thOct1950.png',
+  downloadUrl: 'data/1950/NMHandMA_LettersToTheEditor14thOct1950.pdf',
+  downloadLabel: 'Download PDF',
+  downloadName: 'NMHandMA_LettersToTheEditor14thOct1950.pdf',
+  zoomLevel: 18,
+  dotColour: '#ffffff'
+});
+
+  
 // ---------- 1951 marker ----------
 wireHoverPreviewAndDownload({
   checkboxId: 'layer-1951-road-collapses',
