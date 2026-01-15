@@ -1337,13 +1337,13 @@ wireHoverPreviewAndDownload({
 });
     
 
-    // Always start with no layers selected (even after refresh/back)
-window.addEventListener('pageshow', () => {
+   // Always start with no layers selected on load
+document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.layers input[type="checkbox"]').forEach(cb => {
     cb.checked = false;
-    cb.dispatchEvent(new Event('change'));
   });
 });
+
 });
 
 </script>
