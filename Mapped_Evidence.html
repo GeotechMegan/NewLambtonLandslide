@@ -342,9 +342,9 @@
 
   <div class="layer-item">
     <div class="layer-row">
-      <input type="checkbox" id="layer--creep-threat-at-boolaroo">
-      <label for="layer--creep-threat-at-boolaroo">Newspaper article: "”Creep” Threat At Boolaroo", the Newcastle Morning Herald and Miners’ Advocate, pg 1, 2 Sep </label>
-      <button type="button" id="zoom--creep-threat-at-boolaroo">Zoom to</button>
+      <input type="checkbox" id="layer-1949-creep-threat-at-boolaroo">
+<label for="layer-1949-creep-threat-at-boolaroo"> ... </label>
+<button type="button" id="zoom-1949-creep-threat-at-boolaroo">Zoom to</button>
     </div>
   </div>
 <div class="layer-note">Reports that landslides were not uncommon in the hills.</div>
@@ -807,8 +807,8 @@ zoomBoolarooScarps1949.addEventListener('click', () => {
     // Photo: Damage to 2 Third St, Boolaroo, 1st Sep 1949 (preview + download)
 let photoDamage2ThirdSt1949 = null;
 
-const photoDamage2ThirdStCheckbox = document.getElementById('layer-1949-2thirdst-damage');
-const zoomPhotoDamage2ThirdSt = document.getElementById('zoom-1949-2thirdst-damage');
+const photoDamage2ThirdStCheckbox = document.getElementById('layer-2thirdst-damage');
+const zoomPhotoDamage2ThirdSt = document.getElementById('zoom-2thirdst-damage');
 
 const photoDamage2ThirdStLatLng = [-32.95227, 151.62711];
 
@@ -1332,11 +1332,10 @@ wireHoverPreviewAndDownload({
     
 
    // Always start with no layers selected on load
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.layers input[type="checkbox"]').forEach(cb => {
-    cb.checked = false;
-  });
+document.querySelectorAll('.layers input[type="checkbox"]').forEach(cb => {
+  cb.checked = false;
 });
+
 
 });
 
