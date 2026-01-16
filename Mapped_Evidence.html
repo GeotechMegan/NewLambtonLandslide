@@ -472,17 +472,17 @@
 
 
 <details>
-  <summary>1954</summary>
+  <summary></summary>
   
   <div class="layer-item">
     <div class="layer-row">
-      <input type="checkbox" id="layer-1954-imagery">
-      <label for="layer-1954-imagery">1954 Aerial Photography</label>
-      <button type="button" id="zoom-1954-imagery">Zoom to</button>
+      <input type="checkbox" id="layer--imagery">
+      <label for="layer--imagery"> Aerial Photography</label>
+      <button type="button" id="zoom--imagery">Zoom to</button>
     </div>
     <input
       type="range"
-      id="opacity-1954-imagery"
+      id="opacity--imagery"
       min="0"
       max="1"
       step="0.05"
@@ -1411,9 +1411,9 @@ zoomResidentsSurveying1953.addEventListener('click', () => {
 });
 
 
-// 1954 Imagery (multi-image layer group)
-let layer1954imagery = null;
-let layer1954imageryBounds = null;
+//  Imagery (multi-image layer group)
+let layerimagery = null;
+let layerimageryBounds = null;
 
 const checkbox1954imagery = document.getElementById('layer-1954-imagery');
 const opacitySlider1954imagery = document.getElementById('opacity-1954-imagery');
@@ -1423,11 +1423,11 @@ checkbox1954imagery.addEventListener('change', () => {
 
     if (!layer1954imagery) {
       const op = () => parseFloat(opacitySlider1954imagery.value);
-
+// Format: [[southWestLat, southWestLng], [northEastLat, northEastLng]]
       const overlays = [
         L.imageOverlay('data/1954/1954_1.png', [[-32.968806, 151.623713], [-32.958380, 151.642633]], { opacity: op() }),
         L.imageOverlay('data/1954/1954_2.png', [[-32.960026, 151.624051], [-32.947956, 151.644110]], { opacity: op() }),
-        L.imageOverlay('data/1954/1954_3.png', [[-32.930206, 151.699698], [-32.920282, 151.715371]], { opacity: op() }),
+        L.imageOverlay('data/1954/1954_3.png', [[-32.930206, 151.699598], [-32.920282, 151.715371]], { opacity: op() }),
         L.imageOverlay('data/1954/1954_4.png', [[-32.968806, 151.623713], [-32.958380, 151.642633]], { opacity: op() })
       ];
 
