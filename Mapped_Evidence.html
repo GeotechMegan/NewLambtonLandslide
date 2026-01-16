@@ -210,8 +210,31 @@
 </details>
 
 
-  <details>
+<details>
+  <summary>1913</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1913-subdivision-ad">
+      <label for="layer-1913-subdivision-ad">Subdivision advertisement, 1913 (exact date unknown)</label>
+      <button type="button" id="zoom-1913-subdivision-ad">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1913-subdivision-ad"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+  
+</details>
+
+    
+<details>
     <summary>1917</summary>
+  
     <div class="layer-item">
       <input type="checkbox" id="layer-1917-title">
       <label for="layer-1917-title">Certificate of Title – 119 Victoria Rd</label>
@@ -231,10 +254,13 @@
     value="0.7"
   >
 </div>
-  </details>
+  
+</details>
 
+    
 <details>
   <summary>1936</summary>
+  
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1936-parish">
@@ -251,10 +277,13 @@
     >
   </div>
   <div class="layer-note">(Note that the Slip Creek is marked out the same as all the other creeks in the Parish)</div>
+
 </details>
+
     
 <details>
   <summary>1944</summary>
+  
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1944">
@@ -605,6 +634,48 @@ const baseMaps = {
 L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
 
 
+
+// 1913 Subdivision advertisement (single-image overlay)
+let ad1913Overlay = null;
+
+const checkbox1913Ad = document.getElementById('layer-1913-subdivision-ad');
+const opacitySlider1913Ad = document.getElementById('opacity-1913-subdivision-ad');
+
+const ad1913Bounds = [
+  [-32.92992, 151.70620],   // south-west
+  [-32.920401, 151.717322]  // north-east
+];
+
+checkbox1913Ad.addEventListener('change', () => {
+  if (checkbox1913Ad.checked) {
+
+    if (!ad1913Overlay) {
+      const imageUrl = 'data/1913/M1651 - New Lambton Subdivision Plan_1913_rotated.png';
+
+      ad1913Overlay = L.imageOverlay(imageUrl, ad1913Bounds, {
+        opacity: parseFloat(opacitySlider1913Ad.value)
+      });
+    }
+
+    ad1913Overlay.addTo(map);
+
+  } else {
+    if (ad1913Overlay) map.removeLayer(ad1913Overlay);
+  }
+});
+
+// Opacity slider controls the image
+opacitySlider1913Ad.addEventListener('input', () => {
+  if (ad1913Overlay) ad1913Overlay.setOpacity(parseFloat(opacitySlider1913Ad.value));
+});
+
+// Zoom-to button
+document.getElementById('zoom-1913-subdivision-ad').addEventListener('click', () => {
+  if (ad1913Overlay) map.fitBounds(ad1913Overlay.getBounds());
+  else map.fitBounds(ad1913Bounds);
+});
+
+  
 
   let waterboard1917 = null;
    const opacitySlider = document.getElementById('opacity-1917-waterboard');
