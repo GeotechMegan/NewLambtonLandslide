@@ -453,18 +453,33 @@
   </div>
 </div>
 
-
 </details>
     
 
-    <details>
-      
+<details>
   <summary>1953</summary>
+  
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1953-addison-facing-w">
       <label for="layer-1953-addison-facing-w">"The Slip" moved again. Photo, 22 Mar 1953</label>
       <button type="button" id="zoom-1953-addison-facing-w">Zoom to</button>
+    </div>
+  </div>
+
+   <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1953-addison-men-and-children">
+      <label for="layer-1953-addison-men-and-children">Photo: Men & children surveying renewed movement in "The Slip". 22 Mar 1953</label>
+      <button type="button" id="zoom-1953-addison-men-and-children">Zoom to</button>
+    </div>
+  </div>
+  
+<div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1953-addison-residents-surveying-movement">
+      <label for="layer-1953-addison-residents-surveying-movement">Photo: "The Slip", 22nd March, 1953.</label>
+      <button type="button" id="zoom-1953-addison-residents-surveying-movement">Zoom to</button>
     </div>
   </div>
       
@@ -1236,6 +1251,157 @@ TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
 
 zoomTheSlipMovedAgain1953.addEventListener('click', () => {
   map.setView(TheSlipMovedAgain1953LatLng, 18);
+});
+
+// Photo: Men & children surveying renewed movement in "The Slip", 22 Mar 1953
+let menAndChildren1953 = null;
+
+const menAndChildren1953Checkbox =
+  document.getElementById('layer-1953-addison-men-and-children');
+const zoomMenAndChildren1953 =
+  document.getElementById('zoom-1953-addison-men-and-children');
+
+const menAndChildren1953LatLng = [-32.926549, 151.708099];
+
+menAndChildren1953Checkbox.addEventListener('change', () => {
+  if (menAndChildren1953Checkbox.checked) {
+
+    if (!menAndChildren1953) {
+      const imgUrl = 'data/1953/19530322_AddisonRdMenAndChildren.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: `
+          <div style="
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            background:#d00;
+            border:2px solid #fff;
+            box-shadow:0 0 2px rgba(0,0,0,0.6);
+          "></div>
+        `,
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      menAndChildren1953 = L.marker(menAndChildren1953LatLng, {
+        icon: markerIcon
+      });
+
+      // Hover preview
+      menAndChildren1953.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">
+             Men & children surveying The Slip. Addison Rd facing west, 22nd March 1953
+           </div>
+           <img src="${imgUrl}"
+                style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup (download)
+      menAndChildren1953.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">
+             Download full-resolution image (PNG, ~18&nbsp;MB)?
+           </div>
+           <a href="${imgUrl}" download
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;
+                     text-decoration:none;color:#000">
+             Download PNG
+           </a>
+         </div>`
+      );
+    }
+
+    menAndChildren1953.addTo(map);
+
+  } else {
+    if (menAndChildren1953) map.removeLayer(menAndChildren1953);
+  }
+});
+
+// Zoom-to
+zoomMenAndChildren1953.addEventListener('click', () => {
+  map.setView(menAndChildren1953LatLng, 18);
+});
+
+
+// Photo: Residents surveying "The Slip", 22 Mar 1953
+let residentsSurveying1953 = null;
+
+const residentsSurveying1953Checkbox =
+  document.getElementById('layer-1953-addison-residents-surveying-movement');
+const zoomResidentsSurveying1953 =
+  document.getElementById('zoom-1953-addison-residents-surveying-movement');
+
+const residentsSurveying1953LatLng = [-32.926549, 151.707994];
+
+residentsSurveying1953Checkbox.addEventListener('change', () => {
+  if (residentsSurveying1953Checkbox.checked) {
+
+    if (!residentsSurveying1953) {
+      const imgUrl = 'data/1953/19530322_MenStandingAddisonRdLandslide.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: `
+          <div style="
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            background:#fff;
+            border:2px solid #000;
+            box-shadow:0 0 2px rgba(0,0,0,0.6);
+          "></div>
+        `,
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      residentsSurveying1953 = L.marker(residentsSurveying1953LatLng, {
+        icon: markerIcon
+      });
+
+      // Hover preview
+      residentsSurveying1953.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">
+             Residents surveying The Slip. Addison Rd facing west, 22nd March 1953
+           </div>
+           <img src="${imgUrl}"
+                style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup (download)
+      residentsSurveying1953.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">
+             Download full-resolution image (PNG, ~6&nbsp;MB)?
+           </div>
+           <a href="${imgUrl}" download
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;
+                     text-decoration:none;color:#000">
+             Download PNG
+           </a>
+         </div>`
+      );
+    }
+
+    residentsSurveying1953.addTo(map);
+
+  } else {
+    if (residentsSurveying1953) map.removeLayer(residentsSurveying1953);
+  }
+});
+
+// Zoom-to
+zoomResidentsSurveying1953.addEventListener('click', () => {
+  map.setView(residentsSurveying1953LatLng, 18);
 });
 
 
