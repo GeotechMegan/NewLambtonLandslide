@@ -683,7 +683,7 @@ document.getElementById('zoom-1936-parish').addEventListener('click', () => {
 });
 
     
-    // 1944 (multi-image layer group)
+    // 1944 ( layer group)
 let layer1944 = null;
 let layer1944Bounds = null;
 
@@ -1411,7 +1411,7 @@ zoomResidentsSurveying1953.addEventListener('click', () => {
 });
 
 
- // 1954 Imagery (multi-image layer group)
+// 1954 Imagery (multi-image layer group)
 let layer1954imagery = null;
 let layer1954imageryBounds = null;
 
@@ -1423,7 +1423,7 @@ checkbox1954imagery.addEventListener('change', () => {
 
     if (!layer1954imagery) {
       const op = () => parseFloat(opacitySlider1954imagery.value);
-      // Format: [[southWestLat, southWestLng], [northEastLat, northEastLng]]
+
       const overlays = [
         L.imageOverlay('data/1954/1954_1.png', [[-32.968806, 151.623713], [-32.958380, 151.642633]], { opacity: op() }),
         L.imageOverlay('data/1954/1954_2.png', [[-32.960026, 151.624051], [-32.947956, 151.644110]], { opacity: op() }),
@@ -1431,8 +1431,9 @@ checkbox1954imagery.addEventListener('change', () => {
       ];
 
       layer1954imagery = L.layerGroup(overlays);
+
       // Combined bounds for Zoom to
-      layer1954imagery = overlays.reduce((b, o) => {
+      layer1954imageryBounds = overlays.reduce((b, o) => {
         const ob = o.getBounds();
         return b ? b.extend(ob) : ob;
       }, null);
@@ -1444,6 +1445,7 @@ checkbox1954imagery.addEventListener('change', () => {
     if (layer1954imagery) map.removeLayer(layer1954imagery);
   }
 });
+
 // Opacity slider controls all images
 opacitySlider1954imagery.addEventListener('input', () => {
   if (layer1954imagery) {
@@ -1451,10 +1453,12 @@ opacitySlider1954imagery.addEventListener('input', () => {
     layer1954imagery.eachLayer(l => l.setOpacity(v));
   }
 });
+
 // Zoom-to button zooms to the full extent of all images
 document.getElementById('zoom-1954-imagery').addEventListener('click', () => {
   if (layer1954imageryBounds) map.fitBounds(layer1954imageryBounds);
 });
+
 
 
 // 1969 MidWest Ward Map
