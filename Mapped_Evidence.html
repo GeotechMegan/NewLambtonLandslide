@@ -643,6 +643,28 @@
   </div>
 </div>
 </details>
+
+
+<details>
+  <summary>2023</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-2023-sat">
+      <label for="layer-2023-sat">Satellite imagery, 15th of October, 2023.</label>
+      <button type="button" id="zoom-2023-sat">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-2023-sat"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+</details>
+
     
 
 <details>
@@ -1945,6 +1967,20 @@ zoomChelstonSt1988.addEventListener('click', () => {
   map.setView(chelstonSt1988LatLng, 18);
 });
 
+
+// ---------- 2023 Satellite imagery (single image overlay) ----------
+wireOverlayLayer({
+  checkboxId: 'layer-2023-sat',
+  sliderId: 'opacity-2023-sat',
+  zoomBtnId: 'zoom-2023-sat',
+  imageUrl: 'data/2023/MetroMap_Download_Newcastle_2023_13_GM_2023-10-15.jpg',
+  bounds: [
+    [-32.92453, 151.70690], // SW
+    [-32.92225, 151.71041]  // NE
+  ]
+});
+
+  
 
     // ---------- Helpers (reuse everywhere) ----------
 function makeDotIcon(colour = '#d00') {
