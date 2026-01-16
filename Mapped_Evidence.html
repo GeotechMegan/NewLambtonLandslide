@@ -161,6 +161,24 @@
     <p>Take a journey through time and space in the understanding of slope instability in Newcastle, NSW, & geologically-relevant surrounds. This is an evolving curation of everything possible testifying to prevalence, awareness, mechanisms, outcomes, responsibilities and more, when it comes to Newcastle-relevant slope instability issues.</p>
     </div>
 
+  <div style="max-width:1500px;margin:0 auto 12px auto;text-align:left;">
+  <button
+    id="back-to-new-lambton"
+    type="button"
+    style="
+      padding:8px 14px;
+      border:1px solid #000;
+      background:#fff;
+      color:#000;
+      cursor:pointer;
+      font-size:0.95rem;
+    "
+  >
+    Back to New Lambton
+  </button>
+</div>
+
+
   <div class="map-layout">
     <div id="map">
   </div>
@@ -667,7 +685,11 @@ const baseMaps = {
 
 L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
 
-
+  //back-to-New-Lambton button
+document.getElementById('back-to-new-lambton').addEventListener('click', () => {
+  map.setView([-32.923512, 151.708520], 16);
+});
+  
 
 // 1913 Subdivision advertisement (single-image overlay)
 let ad1913Overlay = null;
