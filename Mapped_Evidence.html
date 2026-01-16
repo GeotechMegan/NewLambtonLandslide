@@ -1173,7 +1173,7 @@ zoomChelstonStFlow.addEventListener('click', () => {
 });
 
 
-// Photo: 19th Jan 1953 The Slip moved again
+// Photo: 22 Mar 1953 – The Slip moved again
 let TheSlipMovedAgain1953 = null;
 
 const TheSlipMovedAgain1953Checkbox = document.getElementById('layer-1953-addison-facing-w');
@@ -1186,6 +1186,7 @@ TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
 
     if (!TheSlipMovedAgain1953) {
       const previewImg = 'data/1953/19530322_AddisonRdFacingW.png';
+      const pngUrl = 'data/1953/19530322_AddisonRdFacingW.png'; // or your full-res file
 
       const markerIcon = L.divIcon({
         className: 'photo-marker',
@@ -1205,23 +1206,21 @@ TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
 
       TheSlipMovedAgain1953 = L.marker(TheSlipMovedAgain1953LatLng, { icon: markerIcon });
 
-      // Hover preview (tooltip)
       TheSlipMovedAgain1953.bindTooltip(
         `<div style="width:560px">
            <div style="font-size:12px;margin-bottom:6px">
              Earthworks being undertaken after further movement.
            </div>
-           <img src="${previewImg}"
-                style="width:100%;height:auto;display:block;border:1px solid #ccc">
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
          </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
       );
 
-      // Click popup w download link
-       TheSlipMovedAgain1953.bindPopup(
+      TheSlipMovedAgain1953.bindPopup(
         `<div style="width:560px">
            <div style="margin-bottom:8px">Download full-resolution image (PNG, ~18 MB)?</div>
-           <a href="${pngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+           <a href="${pngUrl}" download
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
              Download PNG
            </a>
          </div>`
@@ -1235,46 +1234,10 @@ TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
   }
 });
 
-// Zoom-to button
-zoomTheSlipMovedAgain1953 .addEventListener('click', () => {
-  map.setView(TheSlipMovedAgain1953 LatLng, 18);
-});
-  
-  
-    // 1959 Newcastle Parish Map
-let parish1959 = null;
-
-const checkbox1959 = document.getElementById('layer-1959-parish');
-const opacitySlider1959 = document.getElementById('opacity-1959-parish');
-
-checkbox1959.addEventListener('change', () => {
-  if (checkbox1959.checked) {
-    if (!parish1959) {
-      const imageUrl = 'data/1959/newcastle_parish_map_1959.png';
-      
-      const bounds = [
-        [-32.941910, 151.692189],  // south-west
-        [-32.912286, 151.739504]   // north-east
-      ];
-
-      parish1959 = L.imageOverlay(imageUrl, bounds, {
-        opacity: parseFloat(opacitySlider1959.value)
-      });
-    }
-
-    parish1959.addTo(map);
-  } else {
-    if (parish1959) map.removeLayer(parish1959);
-  }
+zoomTheSlipMovedAgain1953.addEventListener('click', () => {
+  map.setView(TheSlipMovedAgain1953LatLng, 18);
 });
 
-opacitySlider1959.addEventListener('input', () => {
-  if (parish1959) parish1959.setOpacity(parseFloat(opacitySlider1959.value));
-});
-
-document.getElementById('zoom-1959-parish').addEventListener('click', () => {
-  if (parish1959) map.fitBounds(parish1959.getBounds());
-});
 
 
 // 1969 MidWest Ward Map
