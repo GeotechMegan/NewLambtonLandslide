@@ -1036,7 +1036,7 @@ let chelstonSt1951 = null;
 const chelstonStCheckbox = document.getElementById('layer-1951-chelston-st');
 const zoomChelstonSt = document.getElementById('zoom-1951-chelston-st');
 
-const chelstonStLatLng = [-32.96149, 151.64039];
+const chelstonStLatLng = [-32.96151, 151.64054];
 
 chelstonStCheckbox.addEventListener('change', () => {
   if (chelstonStCheckbox.checked) {
@@ -1172,6 +1172,74 @@ zoomChelstonStFlow.addEventListener('click', () => {
   map.setView(chelstonStFlowLatLng, 18);
 });
 
+
+// Photo: 19th Jan 1953 The Slip moved again
+let TheSlipMovedAgain1953 = null;
+
+const TheSlipMovedAgain1953Checkbox = document.getElementById('layer-1953-addison-facing-w');
+const zoomTheSlipMovedAgain1953 = document.getElementById('zoom-1953-addison-facing-w');
+
+const TheSlipMovedAgain1953LatLng = [-32.926608, 151.708110];
+
+TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
+  if (TheSlipMovedAgain1953Checkbox.checked) {
+
+    if (!TheSlipMovedAgain1953) {
+      const previewImg = 'data/1953/19530322_AddisonRdFacingW.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: `
+          <div style="
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            background:#fff;
+            border:2px solid #000;
+            box-shadow:0 0 2px rgba(0,0,0,0.6);
+          "></div>
+        `,
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      TheSlipMovedAgain1953 = L.marker(TheSlipMovedAgain1953LatLng, { icon: markerIcon });
+
+      // Hover preview (tooltip)
+      TheSlipMovedAgain1953.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">
+             Earthworks being undertaken after further movement.
+           </div>
+           <img src="${previewImg}"
+                style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup w download link
+       TheSlipMovedAgain1953.bindPopup(
+        `<div style="width:560px">
+           <div style="margin-bottom:8px">Download full-resolution image (PNG, ~18 MB)?</div>
+           <a href="${pngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download PNG
+           </a>
+         </div>`
+      );
+    }
+
+    TheSlipMovedAgain1953.addTo(map);
+
+  } else {
+    if (TheSlipMovedAgain1953) map.removeLayer(TheSlipMovedAgain1953);
+  }
+});
+
+// Zoom-to button
+zoomTheSlipMovedAgain1953 .addEventListener('click', () => {
+  map.setView(TheSlipMovedAgain1953 LatLng, 18);
+});
+  
   
     // 1959 Newcastle Parish Map
 let parish1959 = null;
