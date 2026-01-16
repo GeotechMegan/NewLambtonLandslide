@@ -596,6 +596,21 @@
 
 </details>
 
+
+<details>
+  <summary>1984</summary>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1984-lmcc-first-geotech-zoning">
+    <label for="layer-1984-lmcc-first-geotech-zoning">LMCC commission and produce their first geotechnical zoning map.</label>
+    <button type="button" id="zoom-1984-lmcc-first-geotech-zoning">Zoom to</button>
+  </div>
+</div>
+
+  
+</details>
+
     
     
 <details>
@@ -1825,7 +1840,62 @@ zoomCoffeyCommission1983.addEventListener('click', () => {
   map.setView(coffeyCommission1983LatLng, 18);
 });
 
-  
+
+// 1984 — LMCC first geotechnical zoning map (marker + hover preview + PDF download)
+let lmccGeotechZoning1984Marker = null;
+
+const lmccGeotechZoning1984Checkbox = document.getElementById('layer-1984-lmcc-first-geotech-zoning');
+const zoomLmccGeotechZoning1984 = document.getElementById('zoom-1984-lmcc-first-geotech-zoning');
+
+const lmccGeotechZoning1984LatLng = [-32.96022, 151.62376];
+
+lmccGeotechZoning1984Checkbox.addEventListener('change', () => {
+  if (lmccGeotechZoning1984Checkbox.checked) {
+
+    if (!lmccGeotechZoning1984Marker) {
+      const previewImg = 'data/1992/LMCC_GeotechZoning1984_Fell_R.1992.png';
+      const pdfUrl = 'data/1992/R.Fell_1992_LandslideRiskZoningSchemesInUse.pdf';
+
+      const markerIcon = L.icon({
+        iconUrl: 'data/soil_investigation_marker.png',
+        iconSize: [15, 15],
+        iconAnchor: [7, 7]
+      });
+
+      lmccGeotechZoning1984Marker = L.marker(lmccGeotechZoning1984LatLng, { icon: markerIcon });
+
+      // Hover preview (tooltip)
+      lmccGeotechZoning1984Marker.bindTooltip(
+        `<div style="width:480px">
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup (download PDF)
+      lmccGeotechZoning1984Marker.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download PDF (~0.6 MB)?</div>
+           <a href="${pdfUrl}" download
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download PDF
+           </a>
+         </div>`
+      );
+    }
+
+    lmccGeotechZoning1984Marker.addTo(map);
+
+  } else {
+    if (lmccGeotechZoning1984Marker) map.removeLayer(lmccGeotechZoning1984Marker);
+  }
+});
+
+// Zoom-to button
+zoomLmccGeotechZoning1984.addEventListener('click', () => {
+  map.setView(lmccGeotechZoning1984LatLng, 16);
+});
+
   
 
 // Photo: 29th April 1988 Chelston St Landslide (preview + download)
