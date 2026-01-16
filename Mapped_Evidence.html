@@ -1683,9 +1683,16 @@ if (!councilAcq11Addison1957Checkbox || !zoomCouncilAcq11Addison1957Btn) {
       if (!councilAcq11Addison1957) {
         const markerImgUrl = 'data/1992/CouncilAcquisition11Addison.jpg';
 
-        councilAcq11Addison1957 = L.imageOverlay(markerImgUrl, councilAcq11Addison1957Bounds, {
-          opacity: 1
-        });
+        councilAcq11Addison1957 = L.imageOverlay(
+  markerImgUrl,
+  councilAcq11Addison1957Bounds,
+  {
+    opacity: 1,
+    interactive: true,   // ← REQUIRED for hover/click
+    zIndex: 400          // ← keeps it above imagery
+  }
+);
+
 
         // Hover preview (popup with image + caption, 560px wide)
         const previewImgUrl = 'data/1992/SaleOf11AddisonToNCC14thAug1957Vol-Fol3860-53.png';
@@ -1755,9 +1762,13 @@ if (!councilAcq11Addison1957Checkbox || !zoomCouncilAcq11Addison1957Btn) {
   });
 
   // Zoom-to button
-  zoomCouncilAcq11Addison1957Btn.addEventListener('click', () => {
-    map.fitBounds(councilAcq11Addison1957Bounds);
+ zoomCouncilAcq11Addison1957Btn.addEventListener('click', () => {
+  map.fitBounds(councilAcq11Addison1957Bounds, {
+    padding: [40, 40],
+    maxZoom: 19
   });
+});
+
 
 }
 
