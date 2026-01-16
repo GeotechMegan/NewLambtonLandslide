@@ -538,6 +538,23 @@
   </div>
   
 </details>
+
+
+<details>
+  <summary>1957</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1957-council-acquisition-11-addison">
+      <label for="layer-1957-council-acquisition-11-addison">
+        The Council of the City of Newcastle purchase part of 11 Addison Rd to deal with The Slip.
+      </label>
+      <button type="button" id="zoom-1957-council-acquisition-11-addison">Zoom to</button>
+    </div>
+  </div>
+
+</details>
+
     
     
 <details>
@@ -1642,6 +1659,282 @@ document.getElementById('zoom-1969-midwest').addEventListener('click', () => {
   if (midwest1969) map.fitBounds(midwest1969.getBounds());
 });
 
+
+// ---------- 1957 overlay "marker" (Council acquisition of part of 11 Addison Rd) ----------
+let councilAcq11Addison1957 = null;
+
+const councilAcq11Addison1957Checkbox = document.getElementById('layer-1957-council-acquisition-11-addison');
+const zoomCouncilAcq11Addison1957Btn = document.getElementById('zoom-1957-council-acquisition-11-addison');
+
+// Bounds (SW, NE)
+const councilAcq11Addison1957Bounds = [
+  [-32.926215, 151.709023], // SW
+  [-32.926142, 151.709220]  // NE
+];
+
+// Guard (prevents script death if IDs are wrong)
+if (!councilAcq11Addison1957Checkbox || !zoomCouncilAcq11Addison1957Btn) {
+  console.warn('1957 council acquisition UI elements missing');
+} else {
+
+  councilAcq11Addison1957Checkbox.addEventListener('change', () => {
+    if (councilAcq11Addison1957Checkbox.checked) {
+
+      if (!councilAcq11Addison1957) {
+        const markerImgUrl = 'data/1992/CouncilAcquisition11Addison.jpg';
+
+        councilAcq11Addison1957 = L.imageOverlay(markerImgUrl, councilAcq11Addison1957Bounds, {
+          opacity: 1
+        });
+
+        // Hover preview (popup with image + caption, 560px wide)
+        const previewImgUrl = 'data/1992/SaleOf11AddisonToNCC14thAug1957Vol-Fol3860-53.png';
+        const previewTitle = 'Vol-fol 3860-53';
+
+        const previewHtml = `
+          <div style="width:560px">
+            <div style="font-size:12px;margin-bottom:6px">${previewTitle}</div>
+            <img src="${previewImgUrl}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+          </div>
+        `;
+
+        const previewPopup = L.popup({
+          closeButton: false,
+          autoClose: false,
+          closeOnClick: false,
+          className: 'article-preview-popup',
+          offset: [0, -10]
+        }).setContent(previewHtml);
+
+        let pinned = false;
+        let closeTimer = null;
+
+        councilAcq11Addison1957.on('mouseover', (e) => {
+          previewPopup.setLatLng(e.latlng).openOn(map);
+
+          setTimeout(() => {
+            const el = previewPopup.getElement();
+            if (!el) return;
+            el.onmouseenter = () => { pinned = true; };
+            el.onmouseleave = () => { pinned = false; map.closePopup(previewPopup); };
+          }, 0);
+        });
+
+        councilAcq11Addison1957.on('mouseout', () => {
+          closeTimer = setTimeout(() => {
+            if (!pinned) map.closePopup(previewPopup);
+          }, 200);
+        });
+
+        // Click popup (download button)
+        const downloadDocUrl = 'data/HowToFindVol-Fol.odt';
+
+        councilAcq11Addison1957.on('click', (e) => {
+          L.popup({ offset: [0, -10] })
+            .setLatLng(e.latlng)
+            .setContent(`
+              <div style="width:320px">
+                <div style="margin-bottom:8px">
+                  Sale is documented in Certificate of Title (CoT), vol-fol 3860-53
+                </div>
+                <a href="${downloadDocUrl}" download
+                   style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+                  Download “How to find CoT by vol-fol” (~0.1 MB)
+                </a>
+              </div>
+            `)
+            .openOn(map);
+        });
+      }
+
+      councilAcq11Addison1957.addTo(map);
+
+    } else {
+      if (councilAcq11Addison1957) map.removeLayer(councilAcq11Addison1957);
+    }
+  });
+
+  // Zoom-to button
+  zoomCouncilAcq11Addison1957Btn.addEventListener('click', () => {
+    map.fitBounds(councilAcq11Addison1957Bounds);
+  });
+
+}
+
+
+// 1983: LMCC commissions Coffey (soil investigation marker + download prompt)
+let coffeyCommission1983Marker = null;
+
+const coffeyCommission1983Checkbox = document.getElementById('layer-1983-coffey-commissioned');
+const zoomCoffeyCommission1983 = document.getElementById('zoom-1983-coffey-commissioned');
+
+const coffeyCommission1983LatLng = [-32.953867, 151.640977];
+
+// Marker icon (SVG file stored under /data/)
+const soilInvestigationIcon = L.icon({
+  iconUrl: 'data/soil_investigation_marker.png',
+  iconSize: [15, 15],
+  iconAnchor: [7, 12]
+});
+
+coffeyCommission1983Checkbox.addEventListener('change', () => {
+  if (coffeyCommission1983Checkbox.checked) {
+
+    if (!coffeyCommission1983Marker) {
+      coffeyCommission1983Marker = L.marker(coffeyCommission1983LatLng, { icon: soilInvestigationIcon });
+
+      // Hover tooltip (your "download prompt" on hover)
+      coffeyCommission1983Marker.bindTooltip(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download file “PlaceHolder”?</div>
+           <a href="#" onclick="return false;"
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             PlaceHolder (not available yet)
+           </a>
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Optional: also show same prompt on click (keeps behaviour consistent on mobile)
+      coffeyCommission1983Marker.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download file “PlaceHolder”?</div>
+           <a href="#" onclick="return false;"
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             PlaceHolder (not available yet)
+           </a>
+         </div>`
+      );
+    }
+
+    coffeyCommission1983Marker.addTo(map);
+
+  } else {
+    if (coffeyCommission1983Marker) map.removeLayer(coffeyCommission1983Marker);
+  }
+});
+
+// Zoom-to button
+zoomCoffeyCommission1983.addEventListener('click', () => {
+  map.setView(coffeyCommission1983LatLng, 18);
+});
+
+
+// 1984 — LMCC first geotechnical zoning map (marker + hover preview + PDF download)
+let lmccGeotechZoning1984Marker = null;
+
+const lmccGeotechZoning1984Checkbox = document.getElementById('layer-1984-lmcc-first-geotech-zoning');
+const zoomLmccGeotechZoning1984 = document.getElementById('zoom-1984-lmcc-first-geotech-zoning');
+const lmccGeotechZoning1984LatLng = [-32.96022, 151.62376];
+
+lmccGeotechZoning1984Checkbox.addEventListener('change', () => {
+  if (lmccGeotechZoning1984Checkbox.checked) {
+
+    if (!lmccGeotechZoning1984Marker) {
+      const previewImg = 'data/1992/LMCC_GeotechZoning1984_Fell_R.1992.png';
+      const pdfUrl = 'data/1992/R.Fell_1992_LandslideRiskZoningSchemesInUse.pdf';
+
+      const markerIcon = L.icon({
+        iconUrl: 'data/soil_investigation_marker.png',
+        iconSize: [15, 15],
+        iconAnchor: [7, 7]
+      });
+
+      lmccGeotechZoning1984Marker = L.marker(lmccGeotechZoning1984LatLng, { icon: markerIcon });
+
+      // Hover preview (tooltip)
+      lmccGeotechZoning1984Marker.bindTooltip(
+        `<div style="width:480px">
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup (download PDF)
+      lmccGeotechZoning1984Marker.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download PDF (~0.6 MB)?</div>
+           <a href="${pdfUrl}" download
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download PDF
+           </a>
+         </div>`
+      );
+    }
+
+    lmccGeotechZoning1984Marker.addTo(map);
+
+  } else {
+    if (lmccGeotechZoning1984Marker) map.removeLayer(lmccGeotechZoning1984Marker);
+  }
+});
+
+// Zoom-to button
+zoomLmccGeotechZoning1984.addEventListener('click', () => {
+  map.setView(lmccGeotechZoning1984LatLng, 16);
+});
+
+  
+
+// Photo: 29th April 1988 Chelston St Landslide (preview + download)
+let chelstonSt1988_29Apr = null;
+
+const chelstonSt1988Checkbox = document.getElementById('layer-1988-chelston-st-29apr');
+const zoomChelstonSt1988 = document.getElementById('zoom-1988-chelston-st-29apr');
+
+const chelstonSt1988LatLng = [-32.959730, 151.637663];
+
+chelstonSt1988Checkbox.addEventListener('change', () => {
+  if (chelstonSt1988Checkbox.checked) {
+
+    if (!chelstonSt1988_29Apr) {
+      const previewImg = 'data/1988/ChelstonStreetLandslide_29Apr1988.jpg';
+      const fullresUrl = 'data/1988/ChelstonStreetLandslide_29Apr1988.jpg';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      chelstonSt1988_29Apr = L.marker(chelstonSt1988LatLng, { icon: markerIcon });
+
+      // Hover preview (tooltip)
+      chelstonSt1988_29Apr.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">
+             Monitoring stations captured movement in the 1988 Chelston St landslide from 12 Apr, and the major mvmt was on the 29th.
+           </div>
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Click popup with explicit download link
+      chelstonSt1988_29Apr.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download image (JPG)?</div>
+           <a href="${fullresUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download JPG
+           </a>
+         </div>`
+      );
+    }
+
+    chelstonSt1988_29Apr.addTo(map);
+
+  } else {
+    if (chelstonSt1988_29Apr) map.removeLayer(chelstonSt1988_29Apr);
+  }
+});
+
+// Zoom-to button
+zoomChelstonSt1988.addEventListener('click', () => {
+  map.setView(chelstonSt1988LatLng, 18);
+});
+
+
     // ---------- Helpers (reuse everywhere) ----------
 function makeDotIcon(colour = '#d00') {
   return L.divIcon({
@@ -1782,179 +2075,6 @@ function wireHoverPreviewAndDownload({
   });
 }
 
-
-// 1983: LMCC commissions Coffey (soil investigation marker + download prompt)
-let coffeyCommission1983Marker = null;
-
-const coffeyCommission1983Checkbox = document.getElementById('layer-1983-coffey-commissioned');
-const zoomCoffeyCommission1983 = document.getElementById('zoom-1983-coffey-commissioned');
-
-const coffeyCommission1983LatLng = [-32.953867, 151.640977];
-
-// Marker icon (SVG file stored under /data/)
-const soilInvestigationIcon = L.icon({
-  iconUrl: 'data/soil_investigation_marker.png',
-  iconSize: [15, 15],
-  iconAnchor: [7, 12]
-});
-
-coffeyCommission1983Checkbox.addEventListener('change', () => {
-  if (coffeyCommission1983Checkbox.checked) {
-
-    if (!coffeyCommission1983Marker) {
-      coffeyCommission1983Marker = L.marker(coffeyCommission1983LatLng, { icon: soilInvestigationIcon });
-
-      // Hover tooltip (your "download prompt" on hover)
-      coffeyCommission1983Marker.bindTooltip(
-        `<div style="width:260px">
-           <div style="margin-bottom:8px">Download file “PlaceHolder”?</div>
-           <a href="#" onclick="return false;"
-              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
-             PlaceHolder (not available yet)
-           </a>
-         </div>`,
-        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
-      );
-
-      // Optional: also show same prompt on click (keeps behaviour consistent on mobile)
-      coffeyCommission1983Marker.bindPopup(
-        `<div style="width:260px">
-           <div style="margin-bottom:8px">Download file “PlaceHolder”?</div>
-           <a href="#" onclick="return false;"
-              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
-             PlaceHolder (not available yet)
-           </a>
-         </div>`
-      );
-    }
-
-    coffeyCommission1983Marker.addTo(map);
-
-  } else {
-    if (coffeyCommission1983Marker) map.removeLayer(coffeyCommission1983Marker);
-  }
-});
-
-// Zoom-to button
-zoomCoffeyCommission1983.addEventListener('click', () => {
-  map.setView(coffeyCommission1983LatLng, 18);
-});
-
-
-// 1984 — LMCC first geotechnical zoning map (marker + hover preview + PDF download)
-let lmccGeotechZoning1984Marker = null;
-
-const lmccGeotechZoning1984Checkbox = document.getElementById('layer-1984-lmcc-first-geotech-zoning');
-const zoomLmccGeotechZoning1984 = document.getElementById('zoom-1984-lmcc-first-geotech-zoning');
-
-const lmccGeotechZoning1984LatLng = [-32.96022, 151.62376];
-
-lmccGeotechZoning1984Checkbox.addEventListener('change', () => {
-  if (lmccGeotechZoning1984Checkbox.checked) {
-
-    if (!lmccGeotechZoning1984Marker) {
-      const previewImg = 'data/1992/LMCC_GeotechZoning1984_Fell_R.1992.png';
-      const pdfUrl = 'data/1992/R.Fell_1992_LandslideRiskZoningSchemesInUse.pdf';
-
-      const markerIcon = L.icon({
-        iconUrl: 'data/soil_investigation_marker.png',
-        iconSize: [15, 15],
-        iconAnchor: [7, 7]
-      });
-
-      lmccGeotechZoning1984Marker = L.marker(lmccGeotechZoning1984LatLng, { icon: markerIcon });
-
-      // Hover preview (tooltip)
-      lmccGeotechZoning1984Marker.bindTooltip(
-        `<div style="width:480px">
-           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
-         </div>`,
-        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
-      );
-
-      // Click popup (download PDF)
-      lmccGeotechZoning1984Marker.bindPopup(
-        `<div style="width:260px">
-           <div style="margin-bottom:8px">Download PDF (~0.6 MB)?</div>
-           <a href="${pdfUrl}" download
-              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
-             Download PDF
-           </a>
-         </div>`
-      );
-    }
-
-    lmccGeotechZoning1984Marker.addTo(map);
-
-  } else {
-    if (lmccGeotechZoning1984Marker) map.removeLayer(lmccGeotechZoning1984Marker);
-  }
-});
-
-// Zoom-to button
-zoomLmccGeotechZoning1984.addEventListener('click', () => {
-  map.setView(lmccGeotechZoning1984LatLng, 16);
-});
-
-  
-
-// Photo: 29th April 1988 Chelston St Landslide (preview + download)
-let chelstonSt1988_29Apr = null;
-
-const chelstonSt1988Checkbox = document.getElementById('layer-1988-chelston-st-29apr');
-const zoomChelstonSt1988 = document.getElementById('zoom-1988-chelston-st-29apr');
-
-const chelstonSt1988LatLng = [-32.959730, 151.637663];
-
-chelstonSt1988Checkbox.addEventListener('change', () => {
-  if (chelstonSt1988Checkbox.checked) {
-
-    if (!chelstonSt1988_29Apr) {
-      const previewImg = 'data/1988/ChelstonStreetLandslide_29Apr1988.jpg';
-      const fullresUrl = 'data/1988/ChelstonStreetLandslide_29Apr1988.jpg';
-
-      const markerIcon = L.divIcon({
-        className: 'photo-marker',
-        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-      });
-
-      chelstonSt1988_29Apr = L.marker(chelstonSt1988LatLng, { icon: markerIcon });
-
-      // Hover preview (tooltip)
-      chelstonSt1988_29Apr.bindTooltip(
-        `<div style="width:560px">
-           <div style="font-size:12px;margin-bottom:6px">
-             Monitoring stations captured movement in the 1988 Chelston St landslide from 12 Apr, and the major mvmt was on the 29th.
-           </div>
-           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
-         </div>`,
-        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
-      );
-
-      // Click popup with explicit download link
-      chelstonSt1988_29Apr.bindPopup(
-        `<div style="width:260px">
-           <div style="margin-bottom:8px">Download image (JPG)?</div>
-           <a href="${fullresUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
-             Download JPG
-           </a>
-         </div>`
-      );
-    }
-
-    chelstonSt1988_29Apr.addTo(map);
-
-  } else {
-    if (chelstonSt1988_29Apr) map.removeLayer(chelstonSt1988_29Apr);
-  }
-});
-
-// Zoom-to button
-zoomChelstonSt1988.addEventListener('click', () => {
-  map.setView(chelstonSt1988LatLng, 18);
-});
 
   
 // ---------- Geology etc. overlays ----------
