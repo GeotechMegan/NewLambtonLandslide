@@ -562,6 +562,23 @@
   </div>
 </details>
 
+
+<details>
+  <summary>1983</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1983-coffey-commissioned">
+      <label for="layer-1983-coffey-commissioned">
+        1982 to 1983: Lake Macquarie Munincipal Council commission Coffey to do a geotechnical investigation &amp; report
+      </label>
+      <button type="button" id="zoom-1983-coffey-commissioned">Zoom to</button>
+    </div>
+  </div>
+
+</details>
+
+    
     
 <details>
   <summary>1988</summary>
@@ -1728,6 +1745,66 @@ function wireHoverPreviewAndDownload({
   });
 }
 
+
+// 1983: LMCC commissions Coffey (soil investigation marker + download prompt)
+let coffeyCommission1983Marker = null;
+
+const coffeyCommission1983Checkbox = document.getElementById('layer-1983-coffey-commissioned');
+const zoomCoffeyCommission1983 = document.getElementById('zoom-1983-coffey-commissioned');
+
+const coffeyCommission1983LatLng = [-32.953867, 151.640977];
+
+// Marker icon (SVG file stored under /data/)
+const soilInvestigationIcon = L.icon({
+  iconUrl: 'data/soil_investigation_marker.svg',
+  iconSize: [14, 14],
+  iconAnchor: [7, 12]
+});
+
+coffeyCommission1983Checkbox.addEventListener('change', () => {
+  if (coffeyCommission1983Checkbox.checked) {
+
+    if (!coffeyCommission1983Marker) {
+      coffeyCommission1983Marker = L.marker(coffeyCommission1983LatLng, { icon: soilInvestigationIcon });
+
+      // Hover tooltip (your "download prompt" on hover)
+      coffeyCommission1983Marker.bindTooltip(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download file “PlaceHolder”?</div>
+           <a href="#" onclick="return false;"
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             PlaceHolder (not available yet)
+           </a>
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+      );
+
+      // Optional: also show same prompt on click (keeps behaviour consistent on mobile)
+      coffeyCommission1983Marker.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download file “PlaceHolder”?</div>
+           <a href="#" onclick="return false;"
+              style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             PlaceHolder (not available yet)
+           </a>
+         </div>`
+      );
+    }
+
+    coffeyCommission1983Marker.addTo(map);
+
+  } else {
+    if (coffeyCommission1983Marker) map.removeLayer(coffeyCommission1983Marker);
+  }
+});
+
+// Zoom-to button
+zoomCoffeyCommission1983.addEventListener('click', () => {
+  map.setView(coffeyCommission1983LatLng, 18);
+});
+
+  
+  
 
 // Photo: 29th April 1988 Chelston St Landslide (preview + download)
 let chelstonSt1988_29Apr = null;
