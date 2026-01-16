@@ -589,6 +589,23 @@
     </div>
   </div>
 
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2025-satellite-2025-07-20">
+    <label for="layer-2025-satellite-2025-07-20">Satellite imagery, 20th July 2025</label>
+    <button type="button" id="zoom-2025-satellite-2025-07-20">Zoom to</button>
+  </div>
+  <input
+    type="range"
+    id="opacity-2025-satellite-2025-07-20"
+    min="0"
+    max="1"
+    step="0.05"
+    value="0.7"
+  >
+</div>
+
+
 </details>
 
 
@@ -1935,7 +1952,19 @@ wireHoverPreviewAndDownload({
   downloadName: '20250523_LakeMacLocalsFBpost_LandslideBoolaroo.png',
   zoomLevel: 18
 });
-    
+
+  // 2025 – Satellite imagery, 20th July 2025 (single image overlay)
+wireOverlayLayer({
+  checkboxId: 'layer-2025-satellite-2025-07-20',
+  sliderId: 'opacity-2025-satellite-2025-07-20',
+  zoomBtnId: 'zoom-2025-satellite-2025-07-20',
+  imageUrl: 'data/2025/MetroMap_Download_Newcastle_2025_4_GM_2025-07-20.jpg',
+  bounds: [
+    [-32.92445, 151.70701], // SW
+    [-32.92229, 151.71001]  // NE
+  ]
+});
+
 
    // Always start with no layers selected on load
 document.querySelectorAll('.layers input[type="checkbox"]').forEach(cb => {
