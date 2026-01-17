@@ -571,6 +571,21 @@
 
 </details>
 
+
+<details>
+  <summary>1958</summary>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1958-addison15-acq">
+    <label for="layer-1958-addison15-acq">
+      The Council of the City of Newcastle purchase part of 15 Addison Rd to deal with The Slip.
+    </label>
+    <button type="button" id="zoom-1958-addison15-acq">Zoom to</button>
+  </div>
+</div>
+
+</details>
     
     
 <details>
@@ -1935,6 +1950,67 @@ if (!cbAcq13 || !zoomAcq13 || !opAcq13) {
 
   zoomAcq13.addEventListener('click', () => {
     map.fitBounds(acq13Addison1957Bounds, { maxZoom: 20 }); // stops it zooming in beyond reason
+  });
+}
+
+  
+// 1958: Council acquisition part of 15 Addison Rd (image "marker" overlay + hover preview + click download)
+let acquisition15Addison1958 = null;
+
+const cb1958 = document.getElementById('layer-1958-addison15-acq');
+const zoom1958 = document.getElementById('zoom-1958-addison15-acq');
+
+// Guard
+if (!cb1958 || !zoom1958) {
+  console.warn('1958 layer UI elements missing');
+} else {
+  const bounds1958 = L.latLngBounds(
+    [-32.926379, 151.708531], // SW
+    [-32.926264, 151.708799]  // NE
+  );
+
+  cb1958.addEventListener('change', () => {
+    if (cb1958.checked) {
+      if (!acquisition15Addison1958) {
+        // Overlay image used as the "marker"
+        acquisition15Addison1958 = L.imageOverlay(
+          'data/1958/CouncilAcquisition15Addison.png',
+          bounds1958,
+          { interactive: true, opacity: 1 }
+        );
+
+        // Hover preview (tooltip)
+        const previewImg = 'data/1958/SaleOfPart15AddisonToNCC21stMay1958Vol-Fol3859-233.png';
+        acquisition15Addison1958.bindTooltip(
+          `<div style="width:560px">
+             <div style="font-size:12px;margin-bottom:6px">Vol-fol 3859-233</div>
+             <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+           </div>`,
+          { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+        );
+
+        // Click popup with download button (ODT)
+        const odtUrl = 'data/HowToFindVol-Fol.odt';
+        acquisition15Addison1958.bindPopup(
+          `<div style="width:300px">
+             <div style="margin-bottom:8px">Sale is documented in Certificate of Title (CoT), vol-fol 3859-233</div>
+             <a href="${odtUrl}" download
+                style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+               Download “How to find CoT by vol-fol” (~0.1 MB)
+             </a>
+           </div>`
+        );
+      }
+
+      acquisition15Addison1958.addTo(map);
+    } else {
+      if (acquisition15Addison1958) map.removeLayer(acquisition15Addison1958);
+    }
+  });
+
+  // Zoom-to button (don’t zoom past your basemap)
+  zoom1958.addEventListener('click', () => {
+    map.fitBounds(bounds1958, { maxZoom: 20 });
   });
 }
 
