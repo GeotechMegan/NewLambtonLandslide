@@ -585,6 +585,27 @@
   <div class="layer-note">(Note again that the Slip Creek is mapped)</div>
 </details>
 
+
+<details>
+  <summary>1966</summary>
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1966-imagery">
+        <label for="layer-1966-imagery">Aerial imagery, 1966.</label>
+        <button type="button" id="zoom-1966-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1966-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+    
     
 <details>
   <summary>1969</summary>
@@ -1647,6 +1668,48 @@ if (!checkbox1954imagery || !opacitySlider1954imagery || !zoomBtn1954imagery) {
 
   zoomBtn1954imagery.addEventListener('click', () => {
     if (layer1954imageryBounds) map.fitBounds(layer1954imageryBounds);
+  });
+}
+
+
+// 1966 Aerial imagery (single image overlay)
+let imagery1966Overlay = null;
+
+const imagery1966Checkbox = document.getElementById('layer-1966-imagery');
+const imagery1966OpacitySlider = document.getElementById('opacity-1966-imagery');
+const imagery1966ZoomBtn = document.getElementById('zoom-1966-imagery');
+
+if (!imagery1966Checkbox || !imagery1966OpacitySlider || !imagery1966ZoomBtn) {
+  console.warn('1966 imagery UI elements missing');
+} else {
+  const imagery1966Bounds = L.latLngBounds(
+    [-32.92907, 151.69575], // SW
+    [-32.91194, 151.71308]  // NE
+  );
+
+  imagery1966Checkbox.addEventListener('change', () => {
+    if (imagery1966Checkbox.checked) {
+      if (!imagery1966Overlay) {
+        imagery1966Overlay = L.imageOverlay(
+          'data/1966/AerialImagery1966.png',
+          imagery1966Bounds,
+          { opacity: parseFloat(imagery1966OpacitySlider.value) }
+        );
+      }
+      imagery1966Overlay.addTo(map);
+    } else {
+      if (imagery1966Overlay) map.removeLayer(imagery1966Overlay);
+    }
+  });
+
+  imagery1966OpacitySlider.addEventListener('input', () => {
+    if (imagery1966Overlay) {
+      imagery1966Overlay.setOpacity(parseFloat(imagery1966OpacitySlider.value));
+    }
+  });
+
+  imagery1966ZoomBtn.addEventListener('click', () => {
+    map.fitBounds(imagery1966Bounds, { maxZoom: 20 });
   });
 }
 
