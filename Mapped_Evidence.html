@@ -498,7 +498,7 @@
   <div class="layer-row">
     <input type="checkbox" id="layer-1951-chelston-st">
     <label for="layer-1951-chelston-st">
-      Photo: Mr & Mrs Howell's house. 19th Jan 1951 Chelston St Landslide.
+      Photo: Mr & Mrs Howells' house. 19th Jan 1951 Chelston St Landslide.
     </label>
     <button type="button" id="zoom-1951-chelston-st">Zoom to</button>
   </div>
@@ -739,6 +739,23 @@
   </div>
 </div>
 </details>
+
+
+<details>
+  <summary>2007</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-2007-wondabyne-rail-slide">
+      <label for="layer-2007-wondabyne-rail-slide">
+        8th June 2007 (Pasha Bulker Storm), the proximity of a quarry and the high rate of flux of stormwater caused a landslide over the rail line at Wondabyne.
+      </label>
+      <button type="button" id="zoom-2007-wondabyne-rail-slide">Zoom to</button>
+    </div>
+  </div>
+
+</details>
+
 
 
 <details>
@@ -1367,7 +1384,7 @@ zoomaddison28to32.addEventListener('click', () => {
   map.setView(addison28to32LatLng, 18);
 });
     
-// Photo: 19th Jan 1951 Chelston St Landslide Mr & Mrs Howell's house
+// Photo: 19th Jan 1951 Chelston St Landslide Mr & Mrs Howells' house
 let chelstonSt1951 = null;
 
 const chelstonStCheckbox = document.getElementById('layer-1951-chelston-st');
@@ -1403,7 +1420,7 @@ chelstonStCheckbox.addEventListener('change', () => {
       chelstonSt1951.bindTooltip(
         `<div style="width:560px">
            <div style="font-size:12px;margin-bottom:6px">
-             Mr & Mrs Howell’s house stood at what is now 20 Chelston St, Warners Bay.
+             Mr & Mrs Howells' house stood at what is now 20 Chelston St, Warners Bay.
            </div>
            <img src="${previewImg}"
                 style="width:100%;height:auto;display:block;border:1px solid #ccc">
@@ -2690,6 +2707,21 @@ wireHoverPreviewAndDownload({
   downloadName: '20250523_LakeMacLocalsFBpost_LandslideBoolaroo.png',
   zoomLevel: 18
 });
+
+wireHoverPreviewAndDownload({
+  checkboxId: 'layer-2007-wondabyne-rail-slide',
+  zoomBtnId: 'zoom-2007-wondabyne-rail-slide',
+  latLng: [-33.49089, 151.25824],
+  titleLine: 'Wondabyne rail line landslide (8 Jun 2007, Pasha Bulker storm)',
+  previewImgUrl: '', // no hover preview image
+  downloadUrl: 'data/verdon-kidd_2010_east_coast_lows_pasha_bluker_storm.pdf',
+  downloadLabel: 'Download PDF',
+  downloadName: 'verdon-kidd_2010_east_coast_lows_pasha_bluker_storm.pdf',
+  zoomLevel: 16,
+  dotColour: '#d00',
+  previewWidth: 280
+});
+
 
   // 2025 – Satellite imagery, 20th July 2025 (single image overlay)
 wireOverlayLayer({
