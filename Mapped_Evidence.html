@@ -275,6 +275,22 @@
   
 </details>
 
+
+<details>
+ <summary>1935</summary>
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1935-addison19to31">
+    <label for="layer-1935-addison19to31">
+      Document: 17 May 1935. The Council of the Municipality of New Lambton purchase 19 to 31 Addison Rd. Vol-fol 4688-179.
+    </label>
+    <button type="button" id="zoom-1935-addison19to31">Zoom to</button>
+  </div>
+</div>
+
+  
+</details>
+
     
 <details>
   <summary>1936</summary>
@@ -897,6 +913,45 @@ document.getElementById('zoom-1913-subdivision-ad').addEventListener('click', ()
     map.fitBounds(waterboard1917.getBounds());
   }
 });
+
+
+// 1935: Council purchase 19–31 Addison Rd (image overlay only)
+let addison1935 = null;
+
+const cb1935 = document.getElementById('layer-1935-addison19to31');
+const zoom1935 = document.getElementById('zoom-1935-addison19to31');
+
+// Guard
+if (!cb1935 || !zoom1935) {
+  console.warn('1935 layer UI elements missing');
+} else {
+  const bounds1935 = L.latLngBounds(
+    [-32.926728, 151.706758], // SW
+    [-32.925928, 151.708422]  // NE
+  );
+
+  cb1935.addEventListener('change', () => {
+    if (cb1935.checked) {
+      if (!addison1935) {
+        addison1935 = L.imageOverlay(
+          'data/1935/LambtonCouncilPurchase19to31Addison.png',
+          bounds1935,
+          { opacity: 1 }
+        );
+      }
+      addison1935.addTo(map);
+    } else {
+      if (addison1935) map.removeLayer(addison1935);
+    }
+  });
+
+  zoom1935.addEventListener('click', () => {
+    map.fitBounds(bounds1935, { maxZoom: 19 });
+  });
+}
+
+  
+  
 
 let parish1936 = null;
 
