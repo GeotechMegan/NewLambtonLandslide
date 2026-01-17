@@ -605,7 +605,7 @@
       value="0.7"
     >
   </div>
-  <div class="layer-note">(Note again that the Slip Creek is mapped)</div>
+  <div class="layer-note">(Note again that The Creek is mapped)</div>
 </details>
 
 
@@ -1694,6 +1694,43 @@ if (!checkbox1954imagery || !opacitySlider1954imagery || !zoomBtn1954imagery) {
   });
 }
 
+
+    // 1959 Newcastle Parish Map
+let parish1959 = null;
+
+const checkbox1959 = document.getElementById('layer-1959-parish');
+const opacitySlider1959 = document.getElementById('opacity-1959-parish');
+
+checkbox1959.addEventListener('change', () => {
+  if (checkbox1959.checked) {
+    if (!parish1959) {
+      const imageUrl = 'data/1959/newcastle_parish_map_1959.png';
+      
+      const bounds = [
+        [-32.941910, 151.692189],  // south-west
+        [-32.912286, 151.739504]   // north-east
+      ];
+
+      parish1959 = L.imageOverlay(imageUrl, bounds, {
+        opacity: parseFloat(opacitySlider1959.value)
+      });
+    }
+
+    parish1959.addTo(map);
+  } else {
+    if (parish1959) map.removeLayer(parish1959);
+  }
+});
+
+opacitySlider1959.addEventListener('input', () => {
+  if (parish1959) parish1959.setOpacity(parseFloat(opacitySlider1959.value));
+});
+
+document.getElementById('zoom-1959-parish').addEventListener('click', () => {
+  if (parish1959) map.fitBounds(parish1959.getBounds());
+});
+
+  
 
 // 1966 Aerial imagery (single image overlay)
 let imagery1966Overlay = null;
