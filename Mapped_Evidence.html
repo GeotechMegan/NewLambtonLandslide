@@ -553,6 +553,14 @@
     </div>
   </div>
 
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1957-acq-13-addison">
+    <label for="layer-1957-acq-13-addison">Document: 7th Nov 1957. The Council of the City of Newcastle purchase part of 13 Addison Rd to deal with The Slip.</label>
+    <button type="button" id="zoom-1957-acq-13-addison">Zoom to</button>
+  </div>
+</div>
+
 </details>
 
     
@@ -1794,6 +1802,72 @@ if (!councilAcq11Addison1957Checkbox || !zoomCouncilAcq11Addison1957Btn) {
 
 }
 
+
+// 1957: Council acquisition (part of 13 Addison Rd) — image "marker" overlay with hover preview + click download
+
+let acq13Addison1957 = null;
+let acq13Addison1957Bounds = null;
+
+const cbAcq13 = document.getElementById('layer-1957-acq-13-addison');
+const zoomAcq13 = document.getElementById('zoom-1957-acq-13-addison');
+const opAcq13 = document.getElementById('opacity-1957-acq-13-addison');
+
+if (!cbAcq13 || !zoomAcq13 || !opAcq13) {
+  console.warn('1957 acq 13 Addison UI elements missing');
+} else {
+  // Bounds (SW, NE)
+  acq13Addison1957Bounds = L.latLngBounds(
+    [-32.92629, 151.70879], // SW
+    [-32.92618, 151.70905]  // NE
+  );
+
+  cbAcq13.addEventListener('change', () => {
+    if (cbAcq13.checked) {
+      if (!acq13Addison1957) {
+        acq13Addison1957 = L.imageOverlay(
+          'data/1957/CouncilAcquisition13Addison.png',
+          acq13Addison1957Bounds,
+          { opacity: parseFloat(opAcq13.value), interactive: true } // interactive is required for hover/click
+        );
+
+        // Hover preview (tooltip)
+        acq13Addison1957.bindTooltip(
+          `<div style="width:560px">
+             <div style="font-size:12px;margin-bottom:6px">Vol-fol 5684-69</div>
+             <img src="data/1957/SaleOfPart13AddisonToNCC7thNov1957Vol-Fol5684-69.png"
+                  style="width:100%;height:auto;display:block;border:1px solid #ccc">
+           </div>`,
+          { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+        );
+
+        // Click popup with download button
+        acq13Addison1957.bindPopup(
+          `<div style="width:320px">
+             <div style="margin-bottom:8px">Sale is documented in Certificate of Title (CoT), vol-fol 5684-69</div>
+             <a href="data/HowToFindVol-Fol.odt" download
+                style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+               Download “How to find CoT by vol-fol” (~0.1 MB)
+             </a>
+           </div>`
+        );
+      }
+
+      acq13Addison1957.addTo(map);
+    } else {
+      if (acq13Addison1957) map.removeLayer(acq13Addison1957);
+    }
+  });
+
+  opAcq13.addEventListener('input', () => {
+    if (acq13Addison1957) acq13Addison1957.setOpacity(parseFloat(opAcq13.value));
+  });
+
+  zoomAcq13.addEventListener('click', () => {
+    map.fitBounds(acq13Addison1957Bounds, { maxZoom: 20 }); // stops it zooming in beyond reason
+  });
+}
+
+  
 
 // 1983: LMCC commissions Coffey (soil investigation marker + download prompt)
 let coffeyCommission1983Marker = null;
