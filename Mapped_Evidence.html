@@ -610,6 +610,23 @@
 
 
 <details>
+ <summary>1960</summary>
+  
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1960-addison19-acq">
+    <label for="layer-1960-addison19-acq">
+      Document: 17 Feb 1960. NCC purchase part of 19 Addison Rd to deal with The Slip. They also establish an easement along the rear of the property.
+    </label>
+    <button type="button" id="zoom-1960-addison19-acq">Zoom to</button>
+  </div>
+</div>
+
+  
+</details>
+    
+
+<details>
   <summary>1966</summary>
     <div class="layer-item">
       <div class="layer-row">
@@ -1729,6 +1746,67 @@ opacitySlider1959.addEventListener('input', () => {
 document.getElementById('zoom-1959-parish').addEventListener('click', () => {
   if (parish1959) map.fitBounds(parish1959.getBounds());
 });
+
+
+// 1960: Council acquisition part of 19 Addison Rd + easement (image overlay marker + hover preview + click download)
+let acquisition19Addison1960 = null;
+
+const cb1960 = document.getElementById('layer-1960-addison19-acq');
+const zoom1960 = document.getElementById('zoom-1960-addison19-acq');
+
+// Guard
+if (!cb1960 || !zoom1960) {
+  console.warn('1960 layer UI elements missing');
+} else {
+  const bounds1960 = L.latLngBounds(
+    [-32.926508, 151.708135], // SW
+    [-32.925930, 151.708429]  // NE
+  );
+
+  cb1960.addEventListener('change', () => {
+    if (cb1960.checked) {
+      if (!acquisition19Addison1960) {
+        // Overlay image used as the "marker"
+        acquisition19Addison1960 = L.imageOverlay(
+          'data/1960/CouncilAcquisition19Addison.png',
+          bounds1960,
+          { interactive: true, opacity: 1 }
+        );
+
+        // Hover preview (tooltip)
+        const previewImg = 'data/1960/SaleOfPart19AddisonToNCC17Feb1960andEasementVol-Fol6497-205.png';
+        acquisition19Addison1960.bindTooltip(
+          `<div style="width:560px">
+             <div style="font-size:12px;margin-bottom:6px">Vol-fol 6497-205</div>
+             <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+           </div>`,
+          { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
+        );
+
+        // Click popup with download button (ODT)
+        const odtUrl = 'data/HowToFindVol-Fol.odt';
+        acquisition19Addison1960.bindPopup(
+          `<div style="width:300px">
+             <div style="margin-bottom:8px">Sale is documented in Certificate of Title (CoT), vol-fol 6497-205</div>
+             <a href="${odtUrl}" download
+                style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+               Download “How to find CoT by vol-fol” (~0.1 MB)
+             </a>
+           </div>`
+        );
+      }
+
+      acquisition19Addison1960.addTo(map);
+    } else {
+      if (acquisition19Addison1960) map.removeLayer(acquisition19Addison1960);
+    }
+  });
+
+  // Zoom-to button (explicitly cap zoom so it won’t go past the basemap’s effective limit)
+  zoom1960.addEventListener('click', () => {
+    map.fitBounds(bounds1960, { maxZoom: 19 }); // change 19 → 18 if you still feel it’s too tight
+  });
+}
 
   
 
