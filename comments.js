@@ -1,5 +1,7 @@
 async function loadComments() {
   const el = document.getElementById("comments");
+  if (!el) return;
+
   const page = el.dataset.page;
 
   const r = await fetch(`/api/comments?page=${encodeURIComponent(page)}`);
@@ -62,4 +64,7 @@ function escapeHtml(s) {
   return String(s)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
-    .replaceA
+    .replaceAll(">", "&gt;");
+}
+
+addEventListener("DOMContentLoaded", loadComments);
