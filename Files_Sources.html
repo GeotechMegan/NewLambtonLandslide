@@ -2,50 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Files and Sources</title>
+  <title>Files_Sources</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body{margin:0;padding:40px 20px;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#000}
-    h1{text-align:center;margin:0 0 30px 0;font-size:2.2rem;font-weight:normal}
-    nav{display:flex;justify-content:space-between;max-width:900px;margin:0 auto 30px auto}
-    nav a{text-decoration:none;color:#000;font-size:1.2rem}
-    nav a:hover{text-decoration:underline}
-    .content{max-width:1200px;margin:0 auto;font-size:1rem;line-height:1.6;position:relative}
-    details{margin:18px 0;border:1px solid #000}
-    summary{list-style:none;cursor:pointer;padding:10px 12px;font-weight:bold}
-    summary::-webkit-details-marker{display:none}
-    summary:before{content:"▶";display:inline-block;width:18px}
-    details[open] summary:before{content:"▼"}
-    .goalwrap{padding:0 12px 12px 12px}
-    table{width:100%;border-collapse:collapse;margin:10px 0 14px 0;table-layout:fixed}
-    th,td{border:1px solid #000;padding:8px 10px;vertical-align:top;word-wrap:break-word}
-    th{font-weight:bold;text-align:left}
-    .cell{display:flex;flex-direction:column;gap:10px}
-    .cell .celltext{min-height:22px}
-    .comment-thread{border:1px solid #000;padding:10px}
-    .cwrap{display:block}
-    .cform textarea{width:100%;min-height:70px;resize:vertical;font-family:Arial,Helvetica,sans-serif;font-size:1rem;padding:8px;border:1px solid #000;box-sizing:border-box}
-    .cform button{margin-top:8px;padding:6px 10px;border:1px solid #000;background:#fff;cursor:pointer;font-size:0.95rem}
-    .clist{margin-top:10px;display:flex;flex-direction:column;gap:10px}
-    .citem{border:1px solid #000;padding:8px}
-    .chead{display:flex;justify-content:space-between;gap:10px;font-size:0.9rem}
-    .cname{font-weight:bold}
-    .ctime{opacity:0.85; font-size:0.5rem;}
-    .cbodytext{margin-top:6px;white-space:pre-wrap}
-    .cactions{margin-top:8px;display:flex;gap:8px}
-    .cactions button{padding:4px 8px;border:1px solid #000;background:#fff;cursor:pointer;font-size:0.9rem}
-    hr{border:0;border-top:1px solid #000;margin:30px 0}
-    .sidebtns{position:fixed;right:14px;top:140px;display:flex;flex-direction:column;gap:10px}
-    .sidebtns a{border:1px solid #000;padding:8px 10px;text-decoration:none;color:#000;background:#fff;font-size:0.95rem;text-align:center}
-    .sidebtns a:hover{background:#f2f2f2}
-    @media (max-width: 980px){.sidebtns{display:none} body{padding:24px 18px}}
-	  table col.col-id { width: 10%; }
-table col.col-task { width: 40%; }
-table col.col-assigned { width: 15%; }
-table col.col-status { width: 35%; }
-
+    /* NOTE: CHANGE FONT SIZE HERE */
+    body{
+      margin:0;
+      /* NOTE: CHANGE MARGIN WIDTH HERE (left/right padding) */
+      padding:30px 20px;
+      font-family:Arial,Helvetica,sans-serif;
+      background:#fff;
+      color:#000;
+      font-size:1rem;
+      line-height:1.6;
+    }
+    h1{
+      text-align:center;
+      margin:0 0 20px 0;
+      font-size:2.2rem;
+      font-weight:normal;
+    }
+    nav{
+      display:flex;
+      justify-content:space-between;
+      /* NOTE: CHANGE CONTENT WIDTH HERE */
+      max-width:1200px;
+      margin:0 auto 20px auto;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    nav a{
+      text-decoration:none;
+      color:#000;
+      font-size:1.2rem;
+    }
+    nav a:hover{ text-decoration:underline; }
+    .content{
+      /* NOTE: CHANGE CONTENT WIDTH HERE */
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .message{
+      margin:0 0 20px 0;
+    }
+    h2{
+      margin:22px 0 10px 0;
+      font-size:1.4rem;
+      font-weight:bold;
+    }
+    hr{
+      border:0;
+      border-top:1px solid #000;
+      margin:26px 0;
+    }
+    .files{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .file-row{
+      display:grid;
+      grid-template-columns: 220px 1fr;
+      gap:14px;
+      padding:10px;
+      border:1px solid #000;
+    }
+    .file-row a{
+      color:#000;
+      text-decoration:underline;
+      word-break:break-word;
+    }
+    .file-desc{
+      word-break:break-word;
+    }
+    .sources{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .sources a{ color:#000; text-decoration:underline; }
   </style>
 </head>
+
 <body id="top">
   <h1>New Lambton Landslide</h1>
   <nav>
@@ -55,765 +93,38 @@ table col.col-status { width: 35%; }
     <a href="Tasks.html">Tasks</a>
   </nav>
 
-  <div class="sidebtns">
-	<a href="#top">Back to top</a>
-    <a href="#general-comments">Down to general comments</a>
-  </div>
-
   <div class="content">
+    <p class="message">Please please please send your docs through so that we can have everything in this one central place! myemail@address.com :D</p>
 
-    <!-- Goal palette (repeat/adjust as you like) -->
-    <!-- Each goal uses its own background colour for summary + table cells. -->
-
-    <!-- GOAL 1 -->
-    <details>
-      <summary style="background:#ffd5d5;">Goal 1: Government agencies wholly rehabilitate the entire Site, and surrounds if necessary, and make good for continued residential use without the need for legal action.</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#ffd5d5;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 1</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <!-- Row 2 -->
-          <tr style="background:#ffd5d5;">
-            <td> G1T1
-		<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
-            <td>Discover existing mechanisms whereby government bodies are required to make good the Site.
-		<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
-            <td>
-		<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
-            <td>There are currently no lawful mechanisms whereby any part of the Local or State government are required to rehabilitate private land, or an area of land comprising part privately-owned land, part public land.
-		<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
-          </tr>
-          <!-- Row 3 -->
-          <tr style="background:#ffd5d5;">
-            <td> G1T2
-		<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
-            <td>Understand Council's stance on rehabilitating the entire Site.
-		<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
-            <td>
-		<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
-            <td>Newcastle Council have no intention of undertaking any works on private land, or of designing any works that will or may even have a side effect of improving private land. Source: "the recovery, reinstatement or repair of private property is the responsibility of landowners and their insurers." from <a href="https://newcastle.nsw.gov.au/about-us/emergencies/land-slip-incident">NCC Landslip incident FAQs</a>; comments made during meetings with residents; the fact that the geotechnical scope from Robert Carr & Associates (RCA ref 17653-101/1, available on the Files & Sources pg) limits the geotechnical investigation to public assets and "stabilisation", not rehabilitation: "<i>RCA understand that CoN require a geotechnical investigation of the landslide to provide...concept options for stabilisation with specific focus on the public assets (Russell Road, Victoria Street and Baker Street).</i>", 9/10 installed borehole locations were on public land (can anyone confirm that for me? -MM)
-		<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
-          </tr>
-          <!-- Row 4 -->
-          <tr style="background:#ffd5d5;">
-            <td> G1T3
-<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
-            <td>Understand the NSW Recovery Agency's stance on rehabilitating the entire Site.
-<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
-            <td>Anyone wanna take this one?
-<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
-            <td>
-<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
+    <h2>Files</h2>
+    <div class="files">
+      <div class="file-row">
+        <div><a href="/data/documents/Document1.pdf" download>Document1.pdf</a></div>
+        <div class="file-desc">Document1 was issued by Council on the 1st of December, 2025.</div>
       </div>
-    </details>
-
-    <!-- GOAL 2 -->
-    <details>
-      <summary style="background:#ffded5;">Goal 2: Government agencies buy back properties without the need for legal action.</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#ffded5;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 2</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <tr style="background:#ffded5;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
-          </tr>
-          <tr style="background:#ffded5;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
-          </tr>
-          <tr style="background:#ffded5;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
+      <div class="file-row">
+        <div><a href="/data/documents/Document2.png" download>Document2.png</a></div>
+        <div class="file-desc">Document2 is an image taken by the paper on the 1st of June, 2025.</div>
       </div>
-    </details>
 
-<!-- GOAL 3 -->
-    <details>
-      <summary style="background:#ffecd5;">Goal 3: Secure buy backs &/or land restoration &/or compensation through legal avenues.</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#ffecd5;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 3</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <!-- Row 2 -->
-          <tr style="background:#ffecd5;">
-            <td>G3T1
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
-          </tr>
-          <!-- Row 3 -->
-          <tr style="background:#ffecd5;">
-            <td>G3T2
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
-          </tr>
-          <!-- Row 4 -->
-          <tr style="background:#ffecd5;">
-            <td>G3T3
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
-            <td>Demonstrate that The Creek conducts public stormwater.
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
-            <td>MM, SH, RH, JR, NW
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
-            <td>The topography and location of the stormwater drains indicate that this is the case. But tests have been conducted with plumbers' dye and conclusive footage has been obtained of water runoff from Russell Rd, Curzon Rd & Brett St being discharged into the top of The Creek (between properties at 164 Russell Rd & 51A Curzon Rd). To do: store all footage in the one place.
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 4 -->
-    <details>
-      <summary style="background:#fff5d5;">Goal 4: Group cohesion</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#fff5d5;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 4</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <tr style="background:#fff5d5;">
-            <td>G4T1
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
-            <td>Meetings with lots of food!
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
-          </tr>
-          <tr style="background:#fff5d5;">
-            <td>G4T2
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
-            <td>Contact the McCrae landslide people.
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
-            <td>MM, JR & NW contacted Brownyn & Gerry Borghesi from McCrae. We spoke on the phone for about an hour. They were very generous with their time and are keen to speak again.
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
-          </tr>
-          <tr style="background:#fff5d5;">
-            <td>G4T3
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
-            <td>Head off any intentional "wedge insertion" (lol) from external actors by keeping everyone informed & heard.
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
-            <td>This website aims to do that. The log-ins provide security (only landslide people and their team are on the "Approved Emails List", and the number of approved emails is limited to 50), the comments feature, while ugly lol (what can I say, I'm a geotech, not a computer person hahaha), allows everyone to contribute precisely where and when they can, and the Mapped Evidence page allows everyone to get across landslide issues in this part of the world from the comfort of their own home. -MM
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 5 -->
-    <details>
-      <summary style="background:#ffffd5;">Goal 5: Prove causation (ties back into Goal 3). Causation has been determined from desktop studies and site walkovers, but the need to prove it in a way that survives legal scrutiny remains. (For the best answer as to what caused it, see the GIF on the home page :) )</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#ffffd5;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 5</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <!-- Row 2 -->
-          <tr style="background:#ffffd5;">
-            <td>G5T1
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
-            <td>Obtain raw geotechnical data (test results, bore logs, photographs, monitoring readouts etc.) from RCA's geotechnical investigation that CoN commissioned.
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
-            <td>MM via JR
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
-            <td>The results will be in the appendices, which we are unlikely to receive imo. -MM
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
-          </tr>
-          <!-- Row 3 -->
-          <tr style="background:#ffffd5;">
-            <td>G5T2
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
-            <td>Obtain a quote for an independent geotechnical investigation (geotechnical consultant, drilling & lab tests).
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
-            <td>MM
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
-            <td>Lots to update. Will fill this out later. -MM
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
-          </tr>
-          <!-- Row 4 -->
-          <tr style="background:#ffffd5;">
-            <td>G5T3
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
-            <td>Conduct a hydrology study
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
-            <td>MW via AS & MM
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 6 -->
-    <details>
-      <summary style="background:#f3ffd5;">Goal 6: Prove that NC created a de-facto urban stormwater conveyance system through The Creek (ties back into Goal 3)</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#f3ffd5;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 6</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <tr style="background:#f3ffd5;">
-            <td>G6T1
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
-          </tr>
-          <tr style="background:#f3ffd5;">
-            <td>G6T2
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
-          </tr>
-          <tr style="background:#f3ffd5;">
-            <td>G6T3
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
-            <td>
-				<div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
-      </div>
-    </details>
-
-<!-- GOAL 7 -->
-    <details>
-      <summary style="background:#deffd5;">Goal 7: Make a case that the landslide was foreseeable (ties back into Goal 3)</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#deffd5;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 7</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <!-- Row 2 -->
-          <tr style="background:#deffd5;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
-          </tr>
-          <!-- Row 3 -->
-          <tr style="background:#deffd5;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
-          </tr>
-          <!-- Row 4 -->
-          <tr style="background:#deffd5;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 8 -->
-    <details>
-      <summary style="background:#d5ffea;">Goal 8: Establish that NC breached a duty of care (ties back into Goal 3)</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#d5ffea;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 8</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <tr style="background:#d5ffea;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
-          </tr>
-          <tr style="background:#d5ffea;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
-          </tr>
-          <tr style="background:#d5ffea;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 9 -->
-    <details>
-      <summary style="background:#d5fdff;">Goal 9: Quantify losses</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#d5fdff;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 9</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <!-- Row 2 -->
-          <tr style="background:#d5fdff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
-          </tr>
-          <!-- Row 3 -->
-          <tr style="background:#d5fdff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
-          </tr>
-          <!-- Row 4 -->
-          <tr style="background:#d5fdff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 10 -->
-    <details>
-      <summary style="background:#d5eaff;">Goal 10: [placeholder for goal 10]</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#d5eaff;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 10</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <tr style="background:#d5eaff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
-          </tr>
-          <tr style="background:#d5eaff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
-          </tr>
-          <tr style="background:#d5eaff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
-      </div>
-    </details>
-
-<!-- GOAL 11 -->
-    <details>
-      <summary style="background:#d5dcff;">Goal 11: [placeholder for goal 11]</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#d5dcff;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 11</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <!-- Row 2 -->
-          <tr style="background:#d5dcff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
-          </tr>
-          <!-- Row 3 -->
-          <tr style="background:#d5dcff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
-          </tr>
-          <!-- Row 4 -->
-          <tr style="background:#d5dcff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 12 -->
-    <details>
-      <summary style="background:#dfd5ff;">Goal 12: [placeholder for goal 12]</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#dfd5ff;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 12</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <tr style="background:#dfd5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
-          </tr>
-          <tr style="background:#dfd5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
-          </tr>
-          <tr style="background:#dfd5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 13 -->
-    <details>
-      <summary style="background:#e7d5ff;">Goal 13: [placeholder for goal 13]</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#e7d5ff;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 13</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <!-- Row 2 -->
-          <tr style="background:#e7d5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
-          </tr>
-          <!-- Row 3 -->
-          <tr style="background:#e7d5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
-          </tr>
-          <!-- Row 4 -->
-          <tr style="background:#e7d5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 14 -->
-    <details>
-      <summary style="background:#f4d5ff;">Goal 14: [placeholder for goal 14]</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#f4d5ff;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 14</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <tr style="background:#f4d5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
-          </tr>
-          <tr style="background:#f4d5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
-          </tr>
-          <tr style="background:#f4d5ff;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
-      </div>
-    </details>
-
-<!-- GOAL 15 -->
-    <details>
-      <summary style="background:#ffd5fc;">Goal 15: [placeholder for goal 15]</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#ffd5fc;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 15</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <!-- Row 2 -->
-          <tr style="background:#ffd5fc;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
-          </tr>
-          <!-- Row 3 -->
-          <tr style="background:#ffd5fc;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
-          </tr>
-          <!-- Row 4 -->
-          <tr style="background:#ffd5fc;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
-      </div>
-    </details>
-
-    <!-- GOAL 16 -->
-    <details>
-      <summary style="background:#ffd5ea;">Goal 16: [placeholder for goal 16]</summary>
-      <div class="goalwrap">
-        <table>
-			<colgroup>
-  <col class="col-id">
-  <col class="col-task">
-  <col class="col-assigned">
-  <col class="col-status">
-</colgroup>
-
-          <tr style="background:#ffd5ea;">
-            <th>Task I.D.</th>
-            <th>Task to achieve Goal 16</th>
-            <th>Assigned to</th>
-            <th>Status</th>
-          </tr>
-          <tr style="background:#ffd5ea;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
-          </tr>
-          <tr style="background:#ffd5ea;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
-          </tr>
-          <tr style="background:#ffd5ea;">
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
-            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
-          </tr>
-        </table>
-        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
-      </div>
-    </details>
-
+      <div class="file-row"><div><a href="/data/documents/Document3.pdf" download>Document3.pdf</a></div><div class="file-desc">[placeholder description]</div></div>
+      <div class="file-row"><div><a href="/data/documents/Document4.pdf" download>Document4.pdf</a></div><div class="file-desc">[placeholder description]</div></div>
+      <div class="file-row"><div><a href="/data/documents/Document5.pdf" download>Document5.pdf</a></div><div class="file-desc">[placeholder description]</div></div>
+      <div class="file-row"><div><a href="/data/documents/Document6.pdf" download>Document6.pdf</a></div><div class="file-desc">[placeholder description]</div></div>
+      <div class="file-row"><div><a href="/data/documents/Document7.pdf" download>Document7.pdf</a></div><div class="file-desc">[placeholder description]</div></div>
+      <div class="file-row"><div><a href="/data/documents/Document8.pdf" download>Document8.pdf</a></div><div class="file-desc">[placeholder description]</div></div>
+      <div class="file-row"><div><a href="/data/documents/Document9.pdf" download>Document9.pdf</a></div><div class="file-desc">[placeholder description]</div></div>
+      <div class="file-row"><div><a href="/data/documents/Document10.pdf" download>Document10.pdf</a></div><div class="file-desc">[placeholder description]</div></div>
+    </div>
 
     <hr>
 
-    <div id="general-comments" style="font-weight:bold;margin-bottom:10px;">General Comments</div>
-    <div class="comment-thread" data-thread="/Tasks.html#general"></div>
-
+    <h2>Sources</h2>
+    <div class="sources">
+      <div>Newspaper articles: <a href="https://trove.nla.gov.au/" target="_blank" rel="noopener">Trove</a></div>
+      <div>Historical Imagery: <a href="https://portal.spatial.nsw.gov.au/portal/apps/webappviewer/index.html?id=f7c215b873864d44bccddda8075238cb" target="_blank" rel="noopener">NSW Spatial Portal</a></div>
+      <div>[add more sources here]</div>
+    </div>
   </div>
-
-  <script src="/comments.js?v=7"></script>
-  <script>initComments();</script>
 </body>
 </html>
