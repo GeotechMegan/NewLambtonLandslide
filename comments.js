@@ -1,4 +1,3 @@
-// comments.js (replace the whole file)
 function fmt(ts) {
   try { return new Date(ts).toLocaleString("en-AU"); } catch { return ""; }
 }
