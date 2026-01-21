@@ -762,6 +762,26 @@
 
 </details>
 
+
+ <details>
+  <summary>1987</summary>
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1987-imagery">
+        <label for="layer-1987-imagery">Aerial imagery, 1987.</label>
+        <button type="button" id="zoom-1987-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1987-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
     
     
 <details>
@@ -2447,6 +2467,47 @@ zoomLmccGeotechZoning1984.addEventListener('click', () => {
   map.setView(lmccGeotechZoning1984LatLng, 16);
 });
 
+
+// 1987 Aerial imagery (single image overlay)
+let imagery1987Overlay = null;
+
+const imagery1987Checkbox = document.getElementById('layer-1987-imagery');
+const imagery1987OpacitySlider = document.getElementById('opacity-1987-imagery');
+const imagery1987ZoomBtn = document.getElementById('zoom-1987-imagery');
+
+if (!imagery1987Checkbox || !imagery1987OpacitySlider || !imagery1987ZoomBtn) {
+  console.warn('1987 imagery UI elements missing');
+} else {
+  const imagery1987Bounds = L.latLngBounds(
+    [-32.928976, 151.700096], // SW
+    [-32.920232, 151.714299]  // NE
+  );
+
+  imagery1987Checkbox.addEventListener('change', () => {
+    if (imagery1987Checkbox.checked) {
+      if (!imagery1987Overlay) {
+        imagery1987Overlay = L.imageOverlay(
+          'data/1987/AerialImagery1987.png',
+          imagery1987Bounds,
+          { opacity: parseFloat(imagery1987OpacitySlider.value) }
+        );
+      }
+      imagery1987Overlay.addTo(map);
+    } else {
+      if (imagery1987Overlay) map.removeLayer(imagery1987Overlay);
+    }
+  });
+
+  imagery1987OpacitySlider.addEventListener('input', () => {
+    if (imagery1987Overlay) {
+      imagery1987Overlay.setOpacity(parseFloat(imagery1987OpacitySlider.value));
+    }
+  });
+
+  imagery1987ZoomBtn.addEventListener('click', () => {
+    map.fitBounds(imagery1987Bounds, { maxZoom: 20 });
+  });
+}
   
 
 // Photo: 29th April 1988 Chelston St Landslide (preview + download)
