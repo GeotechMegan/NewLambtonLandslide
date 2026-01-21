@@ -1,588 +1,146 @@
+<!-- Tasks.html (replace the whole file) -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <title>Tasks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <style>
-    body {
-      margin: 0;
-      padding: 40px 60px;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #ffffff;
-      color: #000000;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2.2rem;
-      font-weight: normal;
-    }
-
-    /* navigation row */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      max-width: 900px;
-      margin: 0 auto 40px auto;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #000000;
-      font-size: 1.2rem;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    /* page content */
-    .content {
-      max-width: 900px;
-      margin: 0 auto;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    .goal {
-      margin: 28px 0 10px 0;
-      font-weight: bold;
-      font-size: 1.05rem;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 10px 0 12px 0;
-      table-layout: fixed;
-    }
-
-    th, td {
-      border: 1px solid #000;
-      padding: 8px 10px;
-      vertical-align: top;
-      word-wrap: break-word;
-    }
-
-    th {
-      font-weight: bold;
-      text-align: left;
-    }
-
-    .comment-block {
-      border: 1px solid #000;
-      padding: 12px;
-      margin: 0 0 26px 0;
-    }
-
-    .comment-note {
-      margin: 0 0 10px 0;
-      font-size: 0.95rem;
-    }
-
-    .comment-block label {
-      display: block;
-      font-weight: bold;
-      margin: 10px 0 6px 0;
-    }
-
-    .comment-block textarea {
-      width: 100%;
-      min-height: 90px;
-      resize: vertical;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 1rem;
-      padding: 8px;
-      border: 1px solid #000;
-      box-sizing: border-box;
-    }
-
-    .comment-block button {
-      margin-top: 10px;
-      padding: 8px 12px;
-      border: 1px solid #000;
-      background: #fff;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .comment-block button:hover {
-      background: #f2f2f2;
-    }
+    body{margin:0;padding:40px 60px;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#000}
+    h1{text-align:center;margin:0 0 30px 0;font-size:2.2rem;font-weight:normal}
+    nav{display:flex;justify-content:space-between;max-width:900px;margin:0 auto 30px auto}
+    nav a{text-decoration:none;color:#000;font-size:1.2rem}
+    nav a:hover{text-decoration:underline}
+    .content{max-width:900px;margin:0 auto;font-size:1rem;line-height:1.6;position:relative}
+    details{margin:18px 0;border:1px solid #000}
+    summary{list-style:none;cursor:pointer;padding:10px 12px;font-weight:bold}
+    summary::-webkit-details-marker{display:none}
+    summary:before{content:"▶";display:inline-block;width:18px}
+    details[open] summary:before{content:"▼"}
+    .goalwrap{padding:0 12px 12px 12px}
+    table{width:100%;border-collapse:collapse;margin:10px 0 14px 0;table-layout:fixed}
+    th,td{border:1px solid #000;padding:8px 10px;vertical-align:top;word-wrap:break-word}
+    th{font-weight:bold;text-align:left}
+    .cell{display:flex;flex-direction:column;gap:10px}
+    .cell .celltext{min-height:22px}
+    .comment-thread{border:1px solid #000;padding:10px}
+    .cwrap{display:block}
+    .cform textarea{width:100%;min-height:70px;resize:vertical;font-family:Arial,Helvetica,sans-serif;font-size:1rem;padding:8px;border:1px solid #000;box-sizing:border-box}
+    .cform button{margin-top:8px;padding:6px 10px;border:1px solid #000;background:#fff;cursor:pointer;font-size:0.95rem}
+    .clist{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+    .citem{border:1px solid #000;padding:8px}
+    .chead{display:flex;justify-content:space-between;gap:10px;font-size:0.9rem}
+    .cname{font-weight:bold}
+    .ctime{opacity:0.85}
+    .cbodytext{margin-top:6px;white-space:pre-wrap}
+    .cactions{margin-top:8px;display:flex;gap:8px}
+    .cactions button{padding:4px 8px;border:1px solid #000;background:#fff;cursor:pointer;font-size:0.9rem}
+    hr{border:0;border-top:1px solid #000;margin:30px 0}
+    .sidebtns{position:fixed;right:14px;top:140px;display:flex;flex-direction:column;gap:10px}
+    .sidebtns a{border:1px solid #000;padding:8px 10px;text-decoration:none;color:#000;background:#fff;font-size:0.95rem;text-align:center}
+    .sidebtns a:hover{background:#f2f2f2}
+    @media (max-width: 980px){.sidebtns{display:none} body{padding:24px 18px}}
   </style>
 </head>
-
-<body>
-
+<body id="top">
   <h1>New Lambton Landslide</h1>
-
   <nav>
     <a href="index.html">Home</a>
     <a href="Mapped_Evidence.html">Mapped Evidence</a>
     <a href="Files_Sources.html">Files and Sources (coming soon)</a>
-    <a href="">Tasks</a>
   </nav>
+
+  <div class="sidebtns">
+    <a href="#general-comments">Down to general comments</a>
+    <a href="#top">Back to top</a>
+  </div>
 
   <div class="content">
 
-    <!--
-      NOTE:
-      - Each goal's table is set to 4 rows TOTAL (1 header row + 3 blank rows).
-      - To change the number of blank rows later, edit the repeated <tr> blocks marked:
-        "PLACEHOLDER ROW (blank)"
-    -->
+    <!-- Goal palette (repeat/adjust as you like) -->
+    <!-- Each goal uses its own background colour for summary + table cells. -->
 
-    <!-- ========================= GOAL 1 ========================= -->
-    <div class="goal">Goal 1: Council performs remediation works or buy-backs</div>
+    <!-- GOAL 1 -->
+    <details>
+      <summary style="background:#f6d6d6;">Goal 1: [placeholder for goal 1]</summary>
+      <div class="goalwrap">
+        <table>
+          <tr style="background:#f6d6d6;">
+            <th>Task I.D.</th>
+            <th>Task to achieve Goal 1</th>
+            <th>Assigned to</th>
+            <th>Status</th>
+          </tr>
+          <!-- Row 2 -->
+          <tr style="background:#f6d6d6;">
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c1"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c2"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c3"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r2c4"></div></div></td>
+          </tr>
+          <!-- Row 3 -->
+          <tr style="background:#f6d6d6;">
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c1"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c2"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c3"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r3c4"></div></div></td>
+          </tr>
+          <!-- Row 4 -->
+          <tr style="background:#f6d6d6;">
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c1"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c2"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c3"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g1-r4c4"></div></div></td>
+          </tr>
+        </table>
+        <div class="comment-thread" data-thread="/Tasks.html#g1-table"></div>
+      </div>
+    </details>
 
-    <table>
-      <tr>
-        <th>Task to achieve Goal 1</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
+    <!-- GOAL 2 -->
+    <details>
+      <summary style="background:#f8e2c7;">Goal 2: [placeholder for goal 2]</summary>
+      <div class="goalwrap">
+        <table>
+          <tr style="background:#f8e2c7;">
+            <th>Task I.D.</th>
+            <th>Task to achieve Goal 2</th>
+            <th>Assigned to</th>
+            <th>Status</th>
+          </tr>
+          <tr style="background:#f8e2c7;">
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c1"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c2"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c3"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r2c4"></div></div></td>
+          </tr>
+          <tr style="background:#f8e2c7;">
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c1"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c2"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c3"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r3c4"></div></div></td>
+          </tr>
+          <tr style="background:#f8e2c7;">
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c1"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c2"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c3"></div></div></td>
+            <td><div class="cell"><div class="celltext"></div><div class="comment-thread" data-thread="/Tasks.html#g2-r4c4"></div></div></td>
+          </tr>
+        </table>
+        <div class="comment-thread" data-thread="/Tasks.html#g2-table"></div>
+      </div>
+    </details>
 
-      <!-- PLACEHOLDER ROW (blank) - Goal 1 Row 2 -->
-      <tr>
-        <td>Understand Council's stance</td>
-        <td><!-- TODO: Goal 1 / Row 2 / Assigned to --></td>
-        <td>Council state that they will only be dealing with infrastructure (paving roads, installing/repairing stormwater etc.) https://newcastle.nsw.gov.au/about-us/emergencies/land-slip-incident</td>
-      </tr>
+    <!-- GOALS 3–20: copy Goal 2 block, change g2 -> g3..g20, and change the pastel colour in summary/table rows. -->
 
-      <!-- PLACEHOLDER ROW (blank) - Goal 1 Row 3 -->
-      <tr>
-        <td>Research legal mechanisms whereby Council perform/fund complete remediation or conduct buy-backs</td>
-        <td><!-- TODO: Goal 1 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 1 / Row 3 / Status --></td>
-      </tr>
+    <hr>
 
-      <!-- PLACEHOLDER ROW (blank) - Goal 1 Row 4 -->
-      <tr>
-        <td><!-- TODO: Goal 1 / Row 4 / Task --></td>
-        <td><!-- TODO: Goal 1 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 1 / Row 4 / Status --></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 1. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-1">Comment</label>
-        <textarea id="comment-goal-1" name="comment-goal-1" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 2 ========================= -->
-    <div class="goal">Goal 2: The NSW government performs remediation works or buy-backs</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 2</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 2 Row 2 -->
-      <tr>
-        <td>Understand the state gov's reasons for refusing to be involved</td>
-        <td><!-- TODO: Goal 2 / Row 2 / Assigned to --></td>
-        <td><!-- TODO: Goal 2 / Row 2 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 2 Row 3 -->
-      <tr>
-        <td>Get the RA to clearly define their scope</td>
-        <td><!-- TODO: Goal 2 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 2 / Row 3 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 2 Row 4 -->
-      <tr>
-        <td>Discover legal mechanisms that will secure their invovlement</td>
-        <td><!-- TODO: Goal 2 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 2 / Row 4 / Assigned to --></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 2. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-2">Comment</label>
-        <textarea id="comment-goal-2" name="comment-goal-2" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 3 ========================= -->
-    <div class="goal">Goal 3: Prove causation of the landslide</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 3</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 3 Row 2 -->
-      <tr>
-        <td>Define the sub-catchment area that contributes to creek flow at the toe of the landslide</td>
-        <td>S?</td>
-        <td>Stormwater drains on Curzon Rd by 7 Brett St & 59 Curzon Rd are confirmed as included. Drain out the front of 161 Croudace has been confirmed as being outside the sub-catchment. Next drains to test are on Lookout Rd just up from the end of Curzon, out the front of 89 Carrington & 144 Russell. Flow is being confirmed with dye tests and tests are being recorded. Another to do: collect video records in the one place.</td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 3 Row 3 -->
-      <tr>
-        <td>Determine if there is any further public stormwater discharge between Brett St & the landslide toe</td>
-        <td><!-- TODO: Goal 3 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 3 / Row 3 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 3 Row 4 -->
-      <tr>
-        <td>Calculate the runoff volume & peak discharge (with confidence intervals) for the May event</td>
-        <td><!-- TODO: Goal 3 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 3 / Row 4 / Status --></td>
-      </tr>
-
-      <tr>
-        <td>Use geotechnical parameters in the council's report to run modelling. Failing that, conduct our own geotechnical tests (see next task)</td>
-        <td></td>
-        <td></td>
-      </tr>
-
-       <tr>
-        <td>Get quotes from drillers & labs to be ready for when Council don't share the results appendix.</td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 3. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-3">Comment</label>
-        <textarea id="comment-goal-3" name="comment-goal-3" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 4 ========================= -->
-    <div class="goal">Goal 4: Group cohesion :)</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 4</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 4 Row 2 -->
-      <tr>
-        <td>Hold get-togethers with food</td>
-        <td><!-- TODO: Goal 4 / Row 2 / Assigned to --></td>
-        <td><!-- TODO: Goal 4 / Row 2 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 4 Row 3 -->
-      <tr>
-        <td>Get everyone across this website. Make this website user-friendly</td>
-        <td><!-- TODO: Goal 4 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 4 / Row 3 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 4 Row 4 -->
-      <tr>
-        <td>Get in touch with the Borghesis and other McCrae landslide peeps</td>
-        <td>MM, JR, NW</td>
-        <td>MM, JR & NW spoke with Bronwyn & Gerry Borghesi in Dec 2025. They were very generous with their time and keen to be of help.</td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 4. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-4">Comment</label>
-        <textarea id="comment-goal-4" name="comment-goal-4" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 5 ========================= -->
-    <div class="goal">Goal 5: assemble a legal team</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 5</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 5 Row 2 -->
-      <tr>
-        <td>Recruit a suitable independent geotechnical consultant</td>
-        <td>MM</td>
-        <td>The Borghesis gave me the name of their geotech</td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 5 Row 3 -->
-      <tr>
-        <td>Engage a lawyer</td>
-        <td><!-- TODO: Goal 5 / Row 3 / Assigned to --></td>
-        <td>MM has an experienced lawyer who will do an initial consultant pro-bono and then put us in touch with people he recommends. This is in progress this week (week starting Mon 19th Jan 2026)</td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 5 Row 4 -->
-      <tr>
-        <td><!-- TODO: Goal 5 / Row 4 / Task --></td>
-        <td><!-- TODO: Goal 5 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 5 / Row 4 / Status --></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 5. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-5">Comment</label>
-        <textarea id="comment-goal-5" name="comment-goal-5" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 6 ========================= -->
-    <div class="goal">Goal 6: Make a case that a watercourse that contains x amount of public stormwater is now the responsibility of the local government</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 6</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 6 Row 2 -->
-      <tr>
-        <td><!-- TODO: Goal 6 / Row 2 / Task --></td>
-        <td><!-- TODO: Goal 6 / Row 2 / Assigned to --></td>
-        <td><!-- TODO: Goal 6 / Row 2 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 6 Row 3 -->
-      <tr>
-        <td><!-- TODO: Goal 6 / Row 3 / Task --></td>
-        <td><!-- TODO: Goal 6 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 6 / Row 3 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 6 Row 4 -->
-      <tr>
-        <td><!-- TODO: Goal 6 / Row 4 / Task --></td>
-        <td><!-- TODO: Goal 6 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 6 / Row 4 / Status --></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 6. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-6">Comment</label>
-        <textarea id="comment-goal-6" name="comment-goal-6" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 7 ========================= -->
-    <div class="goal">Goal 7: Make a case that local government is responsible for the management of global landslide risk in urban settings</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 7</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 7 Row 2 -->
-      <tr>
-        <td><!-- TODO: Goal 7 / Row 2 / Task --></td>
-        <td><!-- TODO: Goal 7 / Row 2 / Assigned to --></td>
-        <td><!-- TODO: Goal 7 / Row 2 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 7 Row 3 -->
-      <tr>
-        <td><!-- TODO: Goal 7 / Row 3 / Task --></td>
-        <td><!-- TODO: Goal 7 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 7 / Row 3 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 7 Row 4 -->
-      <tr>
-        <td><!-- TODO: Goal 7 / Row 4 / Task --></td>
-        <td><!-- TODO: Goal 7 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 7 / Row 4 / Status --></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 7. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-7">Comment</label>
-        <textarea id="comment-goal-7" name="comment-goal-7" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 8 ========================= -->
-    <div class="goal">Goal 8: Make a case that it was reasonable for Council to have foreseen this risk</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 8</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 8 Row 2 -->
-      <tr>
-        <td>Gather evidence that Council knew about erosion, the excessively high water table, soil mvmt etc.</td>
-        <td><!-- TODO: Goal 8 / Row 2 / Assigned to --></td>
-        <td><!-- TODO: Goal 8 / Row 2 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 8 Row 3 -->
-      <tr>
-        <td></td>
-        <td><!-- TODO: Goal 8 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 8 / Row 3 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 8 Row 4 -->
-      <tr>
-        <td><!-- TODO: Goal 8 / Row 4 / Task --></td>
-        <td><!-- TODO: Goal 8 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 8 / Row 4 / Status --></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 8. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-8">Comment</label>
-        <textarea id="comment-goal-8" name="comment-goal-8" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 9 ========================= -->
-    <div class="goal">Goal 9: Gather evidence of council's negligence</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 9</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 9 Row 2 -->
-      <tr>
-        <td>Sending unqualified staff</td>
-        <td><!-- TODO: Goal 9 / Row 2 / Assigned to --></td>
-        <td><!-- TODO: Goal 9 / Row 2 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 9 Row 3 -->
-      <tr>
-        <td>Look to other councils</td>
-        <td><!-- TODO: Goal 9 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 9 / Row 3 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 9 Row 4 -->
-      <tr>
-        <td>Collate all RFI refusals</td>
-        <td><!-- TODO: Goal 9 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 9 / Row 4 / Status --></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 9. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-9">Comment</label>
-        <textarea id="comment-goal-9" name="comment-goal-9" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-
-    <!-- ========================= GOAL 10 ========================= -->
-    <div class="goal">Goal 10: placeholder for goal 10</div>
-
-    <table>
-      <tr>
-        <th>task to achieve Goal 10</th>
-        <th>assigned to</th>
-        <th>status</th>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 10 Row 2 -->
-      <tr>
-        <td><!-- TODO: Goal 10 / Row 2 / Task --></td>
-        <td><!-- TODO: Goal 10 / Row 2 / Assigned to --></td>
-        <td><!-- TODO: Goal 10 / Row 2 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 10 Row 3 -->
-      <tr>
-        <td><!-- TODO: Goal 10 / Row 3 / Task --></td>
-        <td><!-- TODO: Goal 10 / Row 3 / Assigned to --></td>
-        <td><!-- TODO: Goal 10 / Row 3 / Status --></td>
-      </tr>
-
-      <!-- PLACEHOLDER ROW (blank) - Goal 10 Row 4 -->
-      <tr>
-        <td><!-- TODO: Goal 10 / Row 4 / Task --></td>
-        <td><!-- TODO: Goal 10 / Row 4 / Assigned to --></td>
-        <td><!-- TODO: Goal 10 / Row 4 / Status --></td>
-      </tr>
-    </table>
-
-    <div class="comment-block">
-      <p class="comment-note">
-        Add a task suggestion for Goal 10. Once you submit, you cannot edit it. Include your name in the comment.
-      </p>
-      <form action="#" method="post">
-        <label for="comment-goal-10">Comment</label>
-        <textarea id="comment-goal-10" name="comment-goal-10" placeholder="Type your suggestion here, then sign off with your name."></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <div id="general-comments" style="font-weight:bold;margin-bottom:10px;">General Comments</div>
+    <div class="comment-thread" data-thread="/Tasks.html#general"></div>
 
   </div>
 
-<div id="comments" data-page="/Tasks.html"></div>
-<script src="/comments.js?v=5"></script>
-<script>loadComments();</script>
-
-  
+  <script src="/comments.js?v=6"></script>
+  <script>initComments();</script>
 </body>
 </html>
