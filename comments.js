@@ -8,11 +8,11 @@ function escapeHtml(s) {
 function renderThread(root, items) {
   root.innerHTML = `
     <div class="cwrap">
+    <div class="clist"></div>
       <form class="cform">
         <textarea class="cbody" required placeholder="Write a comment..."></textarea>
         <button type="submit">Post</button>
       </form>
-      <div class="clist"></div>
     </div>`;
   const list = root.querySelector(".clist");
   list.innerHTML = items.map(c => `
