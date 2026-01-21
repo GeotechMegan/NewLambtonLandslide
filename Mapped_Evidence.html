@@ -733,8 +733,25 @@
 
 
 <details>
-  <summary>1984</summary>
 
+  <summary>1984</summary>
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1984-imagery">
+        <label for="layer-1984-imagery">Aerial imagery, 1984.</label>
+        <button type="button" id="zoom-1984-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1984-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+  <summary>1984</summary>
   <div class="layer-item">
   <div class="layer-row">
     <input type="checkbox" id="layer-1984-lmcc-first-geotech-zoning">
@@ -2245,8 +2262,8 @@ if (!imagery1974Checkbox || !imagery1974OpacitySlider || !imagery1974ZoomBtn) {
   console.warn('1974 imagery UI elements missing');
 } else {
   const imagery1974Bounds = L.latLngBounds(
-    [-32.928976, 151.700095], // SW
-    [-32.920232, 151.714291]  // NE
+    [-32.928986, 151.700095], // SW
+    [-32.920242, 151.714301]  // NE
   );
 
   imagery1974Checkbox.addEventListener('change', () => {
@@ -2333,6 +2350,48 @@ zoomCoffeyCommission1983.addEventListener('click', () => {
   map.setView(coffeyCommission1983LatLng, 18);
 });
 
+
+// 1984 Aerial imagery (single image overlay)
+let imagery1984Overlay = null;
+
+const imagery1984Checkbox = document.getElementById('layer-1984-imagery');
+const imagery1984OpacitySlider = document.getElementById('opacity-1984-imagery');
+const imagery1984ZoomBtn = document.getElementById('zoom-1984-imagery');
+
+if (!imagery1984Checkbox || !imagery1984OpacitySlider || !imagery1984ZoomBtn) {
+  console.warn('1984 imagery UI elements missing');
+} else {
+  const imagery1984Bounds = L.latLngBounds(
+    [-32.928976, 151.700095], // SW
+    [-32.920232, 151.714291]  // NE
+  );
+
+  imagery1984Checkbox.addEventListener('change', () => {
+    if (imagery1984Checkbox.checked) {
+      if (!imagery1984Overlay) {
+        imagery1984Overlay = L.imageOverlay(
+          'data/1984/AerialImagery1984.png',
+          imagery1984Bounds,
+          { opacity: parseFloat(imagery1984OpacitySlider.value) }
+        );
+      }
+      imagery1984Overlay.addTo(map);
+    } else {
+      if (imagery1984Overlay) map.removeLayer(imagery1984Overlay);
+    }
+  });
+
+  imagery1984OpacitySlider.addEventListener('input', () => {
+    if (imagery1984Overlay) {
+      imagery1984Overlay.setOpacity(parseFloat(imagery1984OpacitySlider.value));
+    }
+  });
+
+  imagery1984ZoomBtn.addEventListener('click', () => {
+    map.fitBounds(imagery1984Bounds, { maxZoom: 20 });
+  });
+}  
+  
 
 // 1984 — LMCC first geotechnical zoning map (marker + hover preview + PDF download)
 let lmccGeotechZoning1984Marker = null;
