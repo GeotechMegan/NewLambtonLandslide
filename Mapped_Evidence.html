@@ -696,6 +696,25 @@
   </div>
 </details>
 
+    <details>
+  <summary>1974</summary>
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1974-imagery">
+        <label for="layer-1974-imagery">Aerial imagery, 1974.</label>
+        <button type="button" id="zoom-1974-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1974-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
 
 <details>
   <summary>1983</summary>
@@ -2214,7 +2233,48 @@ if (!cb1958 || !zoom1958) {
   });
 }
 
-  
+
+// 1974 Aerial imagery (single image overlay)
+let imagery1974Overlay = null;
+
+const imagery1974Checkbox = document.getElementById('layer-1974-imagery');
+const imagery1974OpacitySlider = document.getElementById('opacity-1974-imagery');
+const imagery1974ZoomBtn = document.getElementById('zoom-1974-imagery');
+
+if (!imagery1974Checkbox || !imagery1974OpacitySlider || !imagery1974ZoomBtn) {
+  console.warn('1974 imagery UI elements missing');
+} else {
+  const imagery1974Bounds = L.latLngBounds(
+    [-32.92897, 151.69575], // SW
+    [-32.91194, 151.71288]  // NE
+  );
+
+  imagery1974Checkbox.addEventListener('change', () => {
+    if (imagery1974Checkbox.checked) {
+      if (!imagery1974Overlay) {
+        imagery1974Overlay = L.imageOverlay(
+          'data/1974/AerialImagery1974.png',
+          imagery1974Bounds,
+          { opacity: parseFloat(imagery1974OpacitySlider.value) }
+        );
+      }
+      imagery1974Overlay.addTo(map);
+    } else {
+      if (imagery1974Overlay) map.removeLayer(imagery1974Overlay);
+    }
+  });
+
+  imagery1974OpacitySlider.addEventListener('input', () => {
+    if (imagery1974Overlay) {
+      imagery1974Overlay.setOpacity(parseFloat(imagery1974OpacitySlider.value));
+    }
+  });
+
+  imagery1974ZoomBtn.addEventListener('click', () => {
+    map.fitBounds(imagery1974Bounds, { maxZoom: 20 });
+  });
+}
+
 
 // 1983: LMCC commissions Coffey (soil investigation marker + download prompt)
 let coffeyCommission1983Marker = null;
