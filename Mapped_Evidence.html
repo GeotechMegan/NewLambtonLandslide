@@ -806,6 +806,28 @@
 </details>
 
 
+ <details>
+  <summary>1993 (Imagery year)</summary>
+
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1993-imagery">
+        <label for="layer-1993-imagery">Aerial imagery, 1993.</label>
+        <button type="button" id="zoom-1993-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1993-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+
+
 <details>
   <summary>2007</summary>
 
@@ -2575,6 +2597,61 @@ zoomChelstonSt1988.addEventListener('click', () => {
   map.setView(chelstonSt1988LatLng, 18);
 });
 
+
+// 1993 Aerial imagery (two image overlays)
+let imagery1993Overlay1 = null;
+let imagery1993Overlay2 = null;
+
+const imagery1993Checkbox = document.getElementById('layer-1993-imagery');
+const imagery1993OpacitySlider = document.getElementById('opacity-1993-imagery');
+const imagery1993ZoomBtn = document.getElementById('zoom-1993-imagery');
+
+if (!imagery1993Checkbox || !imagery1993OpacitySlider || !imagery1993ZoomBtn) {
+  console.warn('1993 imagery UI elements missing');
+} else {
+  const imagery1993Bounds1 = L.latLngBounds(
+    [-32.938976, 151.700095], // SW
+    [-32.930232, 151.714291]  // NE
+  );
+
+  const imagery1993Bounds2 = L.latLngBounds(
+    [-32.928976, 151.700095], // SW
+    [-32.920232, 151.714291]  // NE
+  );
+
+  function set1993Opacity(v){
+    if (imagery1993Overlay1) imagery1993Overlay1.setOpacity(v);
+    if (imagery1993Overlay2) imagery1993Overlay2.setOpacity(v);
+  }
+
+  imagery1993Checkbox.addEventListener('change', () => {
+    const op = parseFloat(imagery1993OpacitySlider.value);
+
+    if (imagery1993Checkbox.checked) {
+      if (!imagery1993Overlay1) {
+        imagery1993Overlay1 = L.imageOverlay('data/1993/AerialImagery1993_1.png', imagery1993Bounds1, { opacity: op });
+      }
+      if (!imagery1993Overlay2) {
+        imagery1993Overlay2 = L.imageOverlay('data/1993/AerialImagery1993_2.png', imagery1993Bounds2, { opacity: op });
+      }
+      imagery1993Overlay1.addTo(map);
+      imagery1993Overlay2.addTo(map);
+    } else {
+      if (imagery1993Overlay1) map.removeLayer(imagery1993Overlay1);
+      if (imagery1993Overlay2) map.removeLayer(imagery1993Overlay2);
+    }
+  });
+
+  imagery1993OpacitySlider.addEventListener('input', () => {
+    set1993Opacity(parseFloat(imagery1993OpacitySlider.value));
+  });
+
+  imagery1993ZoomBtn.addEventListener('click', () => {
+    map.fitBounds(imagery1993Bounds1.extend(imagery1993Bounds2), { maxZoom: 20 });
+  });
+}
+
+  
 
 // ---------- 2023 Satellite imagery (single image overlay) ----------
 wireOverlayLayer({
