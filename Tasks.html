@@ -40,8 +40,10 @@
     .sidebtns a{border:1px solid #000;padding:8px 10px;text-decoration:none;color:#000;background:#fff;font-size:0.95rem;text-align:center}
     .sidebtns a:hover{background:#f2f2f2}
 	.statusbox{position:fixed; left:10px; top:140px; width:240px; border:1px solid #fff; background:#fff; padding:8px; /* NOTE: CHANGE FONT SIZE HERE */  font-size:0.85rem; line-height:1.35;}
-.statusbox .title{font-weight:bold;margin:0 0 8px 0}
-.statusbox .term{font-weight:bold}
+ /* .statusbox .title{font-weight:bold;margin:0 0 8px 0} */
+ /* .statusbox .term{font-weight:bold} */
+	.term{font-weight:bold}
+	.title{font-weight:bold;margin:0 0 8px 0}
 @media (max-width: 1200px){ .statusbox{display:none} }
 
     @media (max-width: 980px){.sidebtns{display:none} body{padding:24px 18px}}
@@ -895,6 +897,8 @@ table col.col-status { width: 42%; }
   <script src="/comments.js?v=7"></script>
   <script>initComments();</script>
 
+	<hr>
+	
  <div class="title">Status Definitions</div>
   <div><span class="term">Not yet examined</span> – No material has been reviewed</div>
   <div><span class="term">Under review</span> – Material identified but not yet assessed</div>
