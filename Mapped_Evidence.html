@@ -723,6 +723,29 @@
   
 </details>
 
+
+ <details>
+  <summary>1976 (Imagery year)</summary>
+
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1976-imagery">
+        <label for="layer-1976-imagery">Aerial imagery, 1976.</label>
+        <button type="button" id="zoom-1976-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1976-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+    
+
 <details>
   <summary>1983</summary>
 
@@ -2341,6 +2364,87 @@ if (!imagery1974Checkbox || !imagery1974OpacitySlider || !imagery1974ZoomBtn) {
   });
 }
 
+
+// 1976 Aerial imagery (multi image overlays)
+let imagery1976Overlay1 = null;
+let imagery1976Overlay2 = null;
+let imagery1976Overlay3 = null;
+let imagery1976Overlay4 = null;
+
+const imagery1976Checkbox = document.getElementById('layer-1976-imagery');
+const imagery1976OpacitySlider = document.getElementById('opacity-1976-imagery');
+const imagery1976ZoomBtn = document.getElementById('zoom-1976-imagery');
+
+if (!imagery1976Checkbox || !imagery1976OpacitySlider || !imagery1976ZoomBtn) {
+  console.warn('1976 imagery UI elements missing');
+} else {
+  const imagery1976Bounds1 = L.latLngBounds(
+    [-32.928521, 151.700070], // SW
+    [-32.918448, 151.715309]  // NE
+  );
+
+  const imagery1976Bounds2 = L.latLngBounds(
+    [-32.971162, 151.619360], // SW
+    [-32.962478, 151.644090]  // NE
+  );
+
+ const imagery1976Bounds3 = L.latLngBounds(
+    [-32.962775, 151.619360], // SW
+    [-32.953620, 151.644090]  // NE
+  );
+
+ const imagery1976Bounds4 = L.latLngBounds(
+    [-32.953620, 151.619360], // SW
+    [-32.945975, 151.644090]  // NE
+  );
+
+  function set1976Opacity(v){
+    if (imagery1976Overlay1) imagery1976Overlay1.setOpacity(v);
+    if (imagery1976Overlay2) imagery1976Overlay2.setOpacity(v);
+    if (imagery1976Overlay3) imagery1976Overlay3.setOpacity(v);
+    if (imagery1976Overlay4) imagery1976Overlay4.setOpacity(v);
+  }
+
+  imagery1976Checkbox.addEventListener('change', () => {
+    const op = parseFloat(imagery1976OpacitySlider.value);
+
+    if (imagery1976Checkbox.checked) {
+      if (!imagery1976Overlay1) {
+        imagery1976Overlay1 = L.imageOverlay('data/1976/AerialImagery1976_NewLambton.png', imagery1976Bounds1, { opacity: op });
+      }
+      if (!imagery1976Overlay2) {
+        imagery1976Overlay2 = L.imageOverlay('data/1976/AerialImagery1976_Munibung_1.png', imagery1976Bounds2, { opacity: op });
+      }
+      if (!imagery1976Overlay3) {
+        imagery1976Overlay3 = L.imageOverlay('data/1976/AerialImagery1976_ Munibung_2.png', imagery1976Bounds3, { opacity: op });
+      }
+      if (!imagery1976Overlay4) {
+        imagery1976Overlay4 = L.imageOverlay('data/1976/AerialImagery1976_ Munibung_3.png', imagery1976Bounds4, { opacity: op });
+      }
+      imagery1976Overlay1.addTo(map);
+      imagery1976Overlay2.addTo(map);
+      imagery1976Overlay3.addTo(map);
+      imagery1976Overlay4.addTo(map);
+    } else {
+      if (imagery1976Overlay1) map.removeLayer(imagery1976Overlay1);
+      if (imagery1976Overlay2) map.removeLayer(imagery1976Overlay2);
+      if (imagery1976Overlay3) map.removeLayer(imagery1976Overlay3);
+      if (imagery1976Overlay4) map.removeLayer(imagery1976Overlay4);
+    }
+  });
+
+  imagery1976OpacitySlider.addEventListener('input', () => {
+    set1976Opacity(parseFloat(imagery1976OpacitySlider.value));
+  });
+
+  imagery1976ZoomBtn.addEventListener('click', () => {
+    map.fitBounds(imagery1976Bounds1.extend(imagery1976Bounds2), { maxZoom: 20 });
+  });
+}
+
+  
+
+  
 
 // 1983: LMCC commissions Coffey (soil investigation marker + download prompt)
 let coffeyCommission1983Marker = null;
