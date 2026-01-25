@@ -891,6 +891,31 @@
 
 
 <details>
+  <summary>2022 (Imagery year)</summary>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2022-goulburn-dudley">
+    <label for="layer-2022-goulburn-dudley">
+      Extract from LMCC's 2022-23 Annual Report mentioning a landslip at Goulburn Rd, Dudley.
+    </label>
+    <button type="button" id="zoom-2022-goulburn-dudley">Zoom to</button>
+  </div>
+
+  <input
+    type="range"
+    id="opacity-2022-goulburn-dudley"
+    min="0"
+    max="1"
+    step="0.05"
+    value="1"
+  >
+</div>
+
+</details>
+    
+
+<details>
   <summary>2023 (Imagery year)</summary>
 
   <div class="layer-item">
@@ -2844,7 +2869,89 @@ if (!imagery1998Checkbox || !imagery1998OpacitySlider || !imagery1998ZoomBtn) {
   });
 }
 
-  
+
+// ===================== 2022: Goulburn St / Dudley =====================
+
+let goulburnDudley2022Overlay = null;
+
+const goulburnDudley2022Checkbox =
+  document.getElementById("layer-2022-goulburn-dudley");
+const goulburnDudley2022Opacity =
+  document.getElementById("opacity-2022-goulburn-dudley");
+const goulburnDudley2022ZoomBtn =
+  document.getElementById("zoom-2022-goulburn-dudley");
+
+if (
+  !goulburnDudley2022Checkbox ||
+  !goulburnDudley2022Opacity ||
+  !goulburnDudley2022ZoomBtn
+) {
+  console.warn("2022 Goulburn St / Dudley UI elements missing");
+} else {
+  const goulburnDudley2022Bounds = L.latLngBounds(
+    // SW
+    [-32.9891667, 151.7277778],
+    // NE
+    [-32.9886111, 151.7291667]
+  );
+
+  const hoverHtml_GoulburnDudley2022 = `
+    <div style="max-width:520px;">
+      <div style="font-weight:bold; margin-bottom:6px;">
+        Extract from LMCC Annual Report 2022–2023
+      </div>
+      <img
+        src="data/2022/AnnualReportExtract_LMCC2022-23_GoulburnStDudleyLandslip.png"
+        style="width:520px; height:auto; display:block;"
+        alt="LMCC Annual Report extract"
+      />
+    </div>
+  `;
+
+  goulburnDudley2022Checkbox.addEventListener("change", () => {
+    if (goulburnDudley2022Checkbox.checked) {
+      if (!goulburnDudley2022Overlay) {
+        goulburnDudley2022Overlay = L.imageOverlay(
+          "data/2022/GoulburnStDudleyDec2022GoogleEarth.png",
+          goulburnDudley2022Bounds,
+          {
+            opacity: parseFloat(goulburnDudley2022Opacity.value),
+            interactive: true
+          }
+        );
+
+        goulburnDudley2022Overlay.bindTooltip(
+          hoverHtml_GoulburnDudley2022,
+          {
+            sticky: true,
+            direction: "top",
+            opacity: 0.98,
+            interactive: true
+          }
+        );
+      }
+
+      goulburnDudley2022Overlay.addTo(map);
+    } else {
+      if (goulburnDudley2022Overlay) {
+        map.removeLayer(goulburnDudley2022Overlay);
+      }
+    }
+  });
+
+  goulburnDudley2022Opacity.addEventListener("input", () => {
+    if (goulburnDudley2022Overlay) {
+      goulburnDudley2022Overlay.setOpacity(
+        parseFloat(goulburnDudley2022Opacity.value)
+      );
+    }
+  });
+
+  goulburnDudley2022ZoomBtn.addEventListener("click", () => {
+    map.fitBounds(goulburnDudley2022Bounds, { maxZoom: 20 });
+  });
+}
+
   
 
 // ---------- 2023 Satellite imagery (single image overlay) ----------
