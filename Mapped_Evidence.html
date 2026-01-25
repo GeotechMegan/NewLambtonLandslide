@@ -148,6 +148,15 @@
   border: 1px solid #ccc;
 }
 
+    /* White square marker */
+.white-square-marker {
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  box-sizing: border-box;
+}
+
     
   </style>
 </head>
@@ -963,6 +972,18 @@
     value="0.7"
   >
 </div>
+
+  <!-- 2025 layer: VIDEO MARKER (white square) -->
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2025-video-marker">
+    <label for="layer-2025-video-marker">
+      Drone footage, 25th of August.
+    </label>
+    <button type="button" id="zoom-2025-video-marker">Zoom to</button>
+  </div>
+</div>
+
 
 
 </details>
@@ -3302,6 +3323,102 @@ wireOverlayLayer({
     [-32.9222994, 151.709968]  // NE
   ]
 });
+
+  // ===================== 2025: White-square video marker =====================
+
+let layer2025VideoMarker = null;
+
+const cb2025Video = document.getElementById("layer-2025-video-marker");
+const zoom2025Video = document.getElementById("zoom-2025-video-marker");
+
+if (!cb2025Video || !zoom2025Video) {
+  console.warn("2025 video marker UI elements missing");
+} else {
+  const latlng2025Video = L.latLng(-32.922847, 151.707569);
+
+  // DivIcon: white square instead of your usual red dot
+  const whiteSquareIcon = L.divIcon({
+    className: "",                 // prevents Leaflet default icon styling
+    html: `<div class="white-square-marker"></div>`,
+    iconSize: [12, 12],
+    iconAnchor: [6, 6]
+  });
+
+  // Unique ID so we can reliably call .play() when tooltip opens
+  const videoElId = "vid-2025-drone-part2";
+
+  const hoverHtml2025Video = `
+    <div style="max-width:520px;">
+      <div style="font-weight:bold; margin-bottom:6px;">
+        [PLACEHOLDER: heading text above video]
+      </div>
+
+      <video
+        id="${videoElId}"
+        src="data/documents/Drone_25082025_Part2_Muted.mp4"
+        width="520"
+        muted
+        autoplay
+        loop
+        playsinline
+        controls
+        preload="metadata"
+        style="display:block;"
+      ></video>
+
+      <div style="margin-top:6px;">
+        [PLACEHOLDER: optional extra text below video]
+      </div>
+    </div>
+  `;
+
+  cb2025Video.addEventListener("change", () => {
+    if (cb2025Video.checked) {
+      if (!layer2025VideoMarker) {
+        layer2025VideoMarker = L.marker(latlng2025Video, {
+          icon: whiteSquareIcon,
+          interactive: true
+        });
+
+        layer2025VideoMarker.bindTooltip(hoverHtml2025Video, {
+          sticky: true,
+          direction: "top",
+          opacity: 0.98,
+          interactive: true
+        });
+
+        // Force-play on open (helps when autoplay is finicky)
+        layer2025VideoMarker.on("tooltipopen", () => {
+          // Tooltip DOM is created after open, so wait a tick
+          setTimeout(() => {
+            const v = document.getElementById(videoElId);
+            if (v) {
+              v.muted = true; // required by most browsers for autoplay
+              const p = v.play();
+              if (p && typeof p.catch === "function") p.catch(() => {});
+            }
+          }, 0);
+        });
+
+        // Optional: stop playback when tooltip closes
+        layer2025VideoMarker.on("tooltipclose", () => {
+          const v = document.getElementById(videoElId);
+          if (v) v.pause();
+        });
+      }
+
+      layer2025VideoMarker.addTo(map);
+    } else {
+      if (layer2025VideoMarker) map.removeLayer(layer2025VideoMarker);
+    }
+  });
+
+  zoom2025Video.addEventListener("click", () => {
+    // Zoom in tightly to the marker
+    map.setView(latlng2025Video, Math.max(map.getZoom(), 19));
+  });
+}
+
 
 
    // Always start with no layers selected on load
