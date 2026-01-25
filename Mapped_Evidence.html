@@ -2392,6 +2392,7 @@ let imagery1976Overlay1 = null;
 let imagery1976Overlay2 = null;
 let imagery1976Overlay3 = null;
 let imagery1976Overlay4 = null;
+let imagery1976Overlay5 = null;
 
 const imagery1976Checkbox = document.getElementById('layer-1976-imagery');
 const imagery1976OpacitySlider = document.getElementById('opacity-1976-imagery');
@@ -2419,12 +2420,19 @@ if (!imagery1976Checkbox || !imagery1976OpacitySlider || !imagery1976ZoomBtn) {
     [-32.953619, 151.619360], // SW
     [-32.945975, 151.644090]  // NE
   );
+  
+    const imagery1976Bounds5 = L.latLngBounds(
+    [-32.928521, 151.700070], // SW
+    [-32.918448, 151.715309]  // NE
+  );
+  
 
   function set1976Opacity(v){
     if (imagery1976Overlay1) imagery1976Overlay1.setOpacity(v);
     if (imagery1976Overlay2) imagery1976Overlay2.setOpacity(v);
     if (imagery1976Overlay3) imagery1976Overlay3.setOpacity(v);
     if (imagery1976Overlay4) imagery1976Overlay4.setOpacity(v);
+     if (imagery1976Overlay4) imagery1976Overlay5.setOpacity(v);
   }
 
   imagery1976Checkbox.addEventListener('change', () => {
@@ -2432,7 +2440,7 @@ if (!imagery1976Checkbox || !imagery1976OpacitySlider || !imagery1976ZoomBtn) {
 
     if (imagery1976Checkbox.checked) {
       if (!imagery1976Overlay1) {
-        imagery1976Overlay1 = L.imageOverlay('data/1976/AerialImagery1976_NewLambton.png', imagery1976Bounds1, { opacity: op });
+        imagery1976Overlay1 = L.imageOverlay('data/1976/dud.png', imagery1976Bounds1, { opacity: op });
       }
       if (!imagery1976Overlay2) {
         imagery1976Overlay2 = L.imageOverlay('data/1976/AerialImagery1976_Munibung_1.png', imagery1976Bounds2, { opacity: op });
@@ -2443,15 +2451,20 @@ if (!imagery1976Checkbox || !imagery1976OpacitySlider || !imagery1976ZoomBtn) {
       if (!imagery1976Overlay4) {
         imagery1976Overlay4 = L.imageOverlay('data/1976/AerialImagery1976_Munibung_3.png', imagery1976Bounds4, { opacity: op });
       }
+      if (!imagery1976Overlay5) {
+        imagery1976Overlay5 = L.imageOverlay('data/1976/AerialImagery1976_NewLambton.png', imagery1976Bounds5, { opacity: op });
+      }
       imagery1976Overlay1.addTo(map);
       imagery1976Overlay2.addTo(map);
       imagery1976Overlay3.addTo(map);
       imagery1976Overlay4.addTo(map);
+      imagery1976Overlay5.addTo(map);
     } else {
       if (imagery1976Overlay1) map.removeLayer(imagery1976Overlay1);
       if (imagery1976Overlay2) map.removeLayer(imagery1976Overlay2);
       if (imagery1976Overlay3) map.removeLayer(imagery1976Overlay3);
       if (imagery1976Overlay4) map.removeLayer(imagery1976Overlay4);
+      if (imagery1976Overlay5) map.removeLayer(imagery1976Overlay5);
     }
   });
 
