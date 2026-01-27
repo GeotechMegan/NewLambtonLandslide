@@ -6,57 +6,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    body {
-      margin: 0;
-      padding: 40px 60px;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #ffffff;
-      color: #000000;
+    body{
+      margin:0;
+      padding:40px 60px;
+      font-family:Arial, Helvetica, sans-serif;
+      background:#ffffff;
+      color:#000000;
+      line-height:1.65;
+      font-size:1rem;
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2.2rem;
-      font-weight: normal;
+    h1{
+      text-align:center;
+      margin:0 0 24px 0;
+      font-size:2.2rem;
+      font-weight:normal;
     }
 
-    /* navigation row */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      max-width: 900px;
-      margin: 0 auto 40px auto;
+    nav{
+      display:flex;
+      justify-content:space-between;
+      max-width:900px;
+      margin:0 auto 36px auto;
+      flex-wrap:wrap;
+      gap:10px;
     }
 
-    nav a {
-      text-decoration: none;
-      color: #000000;
-      font-size: 1.2rem;
+    /* restore traditional link behaviour */
+    a:link{ color:#0000ee; }
+    a:visited{ color:#551a8b; }
+    a:hover{ text-decoration:underline; cursor:pointer; }
+    a:active{ color:#ff0000; }
+
+    nav a{
+      font-size:1.2rem;
+      text-decoration:none;
     }
 
-    nav a:hover {
-      text-decoration: underline;
+    .hero-image{
+      display:block;
+      max-width:100%;
+      margin:0 auto 36px auto;
     }
 
-    /* main image */
-    .hero-image {
-      display: block;
-      max-width: 100%;
-      margin: 0 auto 30px auto;
+    .content{
+      max-width:900px;
+      margin:0 auto;
     }
 
-    /* body text */
-    .content {
-      max-width: 900px;
-      margin: 0 auto;
-      font-size: 1rem;
-      line-height: 1.6;
+    .guide{
+      margin-bottom:40px;
     }
 
-    .last-updated {
-      margin-top: 20px;
-      font-size: 0.9rem;
+    .guide h2{
+      font-size:1.5rem;
+      margin:32px 0 12px 0;
+      font-weight:bold;
+    }
+
+    .guide p{
+      margin:10px 0;
+    }
+
+    .guide ul{
+      margin:10px 0 16px 24px;
+    }
+
+    .guide li{
+      margin:6px 0;
+    }
+
+    .quote{
+      margin-top:40px;
+      font-size:0.95rem;
+    }
+
+    .last-updated{
+      margin-top:16px;
+      font-size:0.9rem;
+    }
+
+    .bottom-nav{
+      margin-top:48px;
+      padding-top:24px;
+      border-top:1px solid #000;
+      display:flex;
+      justify-content:space-between;
+      max-width:900px;
+      margin-left:auto;
+      margin-right:auto;
+      flex-wrap:wrap;
+      gap:10px;
     }
   </style>
 </head>
@@ -74,17 +114,116 @@
 
   <img
     src="data/NewLambtonLandslide_2.gif"
-    alt=""
+    alt="Animated overview of the New Lambton landslide"
     class="hero-image"
   >
 
   <div class="content">
-    <p>"<b>The basic theory of landslide processes is well understood. However, landslide risk assessments are complex...local governments have principal responsibility for managing landslide risk. ... Often a number of factors will contribute to a landslide occurring...frequently, the dominant factor...will be an increase in pore water pressure from rainfall or leaking infrastructure. Other triggers include...undercutting of slopes by fluvial erosion</b>" -Chapter Eight: Landslide, <i>NATURAL HAZARDS in AUSTRALIA</i>, by Geoscience Australia's Risk and Impact Analysis Group, 2007, commissioned by COAG (Council of Australian Government).
-    </p>
+
+    <div class="guide">
+      <h2>New Lambton Landslide Evidence Project</h2>
+
+      <p>
+        This site is a shared, evolving evidence base. It exists to document what has occurred,
+        preserve primary material, and support careful, informed decision-making.
+      </p>
+
+      <p>
+        Contributions are welcome from residents, researchers, and subject-matter experts.
+        To keep the material credible, usable, and fair, please follow the guidelines below.
+      </p>
+
+      <h2>1. Purpose of contributions</h2>
+      <ul>
+        <li>Document what happened, when, and who knew what</li>
+        <li>Archive primary sources (documents, maps, records, correspondence)</li>
+        <li>Clearly distinguish evidence from interpretation</li>
+        <li>Support informed decisions by residents, agencies, experts, and legal advisers</li>
+      </ul>
+      <p>This is not an advocacy or opinion forum.</p>
+
+      <h2>2. Evidence first</h2>
+      <ul>
+        <li>Prioritise primary sources (official documents, maps, approvals, reports, photos, dated correspondence)</li>
+        <li>Clearly cite where information comes from</li>
+        <li>Where possible, upload or link the original document</li>
+      </ul>
+      <p>Avoid summarising from memory alone.</p>
+
+      <h2>3. Separate fact from interpretation</h2>
+      <ul>
+        <li><b>Fact</b>: verifiable information supported by a source</li>
+        <li><b>Observation</b>: what was seen or experienced (date, location, by whom)</li>
+        <li><b>Interpretation</b>: analysis or inference drawn from facts (clearly marked)</li>
+        <li><b>Question</b>: an unresolved issue requiring further investigation</li>
+      </ul>
+
+      <h2>4. Use standard status language</h2>
+      <p>When updating task statuses, use only the approved terms listed on the Tasks page.</p>
+
+      <h2>5. Neutral, precise language</h2>
+      <ul>
+        <li>Avoid emotive or accusatory wording</li>
+        <li>Do not assume intent or motive</li>
+        <li>Use precise references (e.g. “Council correspondence dated 12 June 2019 states…”)</li>
+      </ul>
+
+      <h2>6. Respect privacy and sensitivity</h2>
+      <ul>
+        <li>Do not upload personal or private information unless essential and appropriate</li>
+        <li>Avoid speculation about individuals</li>
+        <li>Flag sensitive material before publishing</li>
+      </ul>
+
+      <h2>7. Think in timelines and systems</h2>
+      <p>
+        Strong contributions place events in time, show how systems evolved, and connect
+        decisions across departments and years.
+      </p>
+
+      <h2>8. Ask questions openly</h2>
+      <p>
+        If something is unclear, add it as a question rather than a conclusion.
+        Unanswered questions are valuable.
+      </p>
+
+      <h2>9. Aim for longevity</h2>
+      <p>
+        Assume this material may be read in future by lawyers, engineers, government
+        decision-makers, and journalists.
+      </p>
+
+      <h2>10. When in doubt</h2>
+      <p>
+        If you are unsure how to contribute, mark the material as “requires review”
+        or contact the site curator. Care and accuracy matter more than speed.
+      </p>
+
+      <p><b>Thank you.</b>  
+      This project depends on careful, thoughtful contributions.</p>
+    </div>
+
+    <div class="quote">
+      <p>
+        “<b>The basic theory of landslide processes is well understood. However, landslide risk
+        assessments are complex… local governments have principal responsibility for managing
+        landslide risk… frequently, the dominant factor will be an increase in pore water pressure
+        from rainfall or leaking infrastructure.</b>”
+        — <i>Natural Hazards in Australia</i>, Geoscience Australia, 2007.
+      </p>
+    </div>
 
     <div class="last-updated">
       Last updated: 28/01/2026
     </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <a href="">Home</a>
+    <a href="Mapped_Evidence.html">Mapped Evidence</a>
+    <a href="Files_Sources.html">Documents and more</a>
+    <a href="Tasks.html">Goals and Tasks</a>
   </div>
 
 </body>
