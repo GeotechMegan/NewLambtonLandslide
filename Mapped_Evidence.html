@@ -898,6 +898,22 @@
 </details>
 
 
+<details>
+
+  <summary>2021 (Imagery year)</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-MemorialDrive20210606">
+      <label for="layer-MemorialDrive20210606">
+        Memorial Drive landslide, The Hill. Imagery is from 6/6/21.
+      </label>
+      <button type="button" id="zoom-MemorialDrive20210606">Zoom to</button>
+    </div>
+  </div>
+
+</details>
+
 
 <details>
   <summary>2022 (Imagery year)</summary>
@@ -2890,6 +2906,78 @@ if (!imagery1998Checkbox || !imagery1998OpacitySlider || !imagery1998ZoomBtn) {
   });
 }
 
+
+// ===================== 2021: Memorial Drive landslide (6/6/21) =====================
+
+let memorialDrive20210606Overlay = null;
+
+const memorialDriveCheckbox =
+  document.getElementById("layer-MemorialDrive20210606");
+const memorialDriveZoomBtn =
+  document.getElementById("zoom-MemorialDrive20210606");
+
+if (!memorialDriveCheckbox || !memorialDriveZoomBtn) {
+  console.warn("Memorial Drive 2021 UI elements missing");
+} else {
+  const memorialDriveBounds = L.latLngBounds(
+    // SW
+    [-32.938395, 151.771737],
+    // NE
+    [-32.936173, 151.775377]
+  );
+
+  const memorialDriveHoverHtml = `
+    <div style="max-width:520px;">
+      <div style="font-weight:bold; margin-bottom:6px;">
+        Memorial Drive embankment stabilisation
+      </div>
+      <div style="margin-bottom:8px;">
+        <a href="https://newcastle.nsw.gov.au/about-us/news-and-updates/projects-and-works/roads-bridges/memorial-drive-embankment-stabilisation-and-new-footpath"
+           target="_blank"
+           rel="noopener">
+          View City of Newcastle project page
+        </a>
+      </div>
+    </div>
+  `;
+
+  memorialDriveCheckbox.addEventListener("change", () => {
+    if (memorialDriveCheckbox.checked) {
+      if (!memorialDrive20210606Overlay) {
+        memorialDrive20210606Overlay = L.imageOverlay(
+          "data/2021/MemorialDrive_20210606.jpg",
+          memorialDriveBounds,
+          {
+            opacity: 1,
+            interactive: true
+          }
+        );
+
+        memorialDrive20210606Overlay.bindTooltip(
+          memorialDriveHoverHtml,
+          {
+            sticky: true,
+            interactive: true,
+            direction: "top",
+            opacity: 0.98
+          }
+        );
+      }
+
+      memorialDrive20210606Overlay.addTo(map);
+    } else {
+      if (memorialDrive20210606Overlay) {
+        map.removeLayer(memorialDrive20210606Overlay);
+      }
+    }
+  });
+
+  memorialDriveZoomBtn.addEventListener("click", () => {
+    map.fitBounds(memorialDriveBounds, { maxZoom: 20 });
+  });
+}
+
+  
 
 // ===================== 2022: Goulburn St / Dudley =====================
 
