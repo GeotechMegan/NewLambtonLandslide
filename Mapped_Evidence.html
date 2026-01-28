@@ -999,6 +999,21 @@
     </div>
   </div>
 
+<div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-24052024-imagery">
+        <label for="layer-24052024-imagery">Satellite imagery, 24th of May, 2024.</label>
+        <button type="button" id="zoom-24052024-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-24052024-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
 </details>
     
 
@@ -3161,6 +3176,59 @@ wireOverlayLayer({
   ]
 });
 
+
+// 24/5/2024 Satellite imagery (two image overlays)-------------------
+let imagery24052024Bottom = null;
+let imagery24052024Top = null;
+
+const imagery24052024Checkbox = document.getElementById('layer-24052024-imagery');
+const imagery24052024OpacitySlider = document.getElementById('opacity-24052024-imagery');
+const imagery24052024ZoomBtn = document.getElementById('zoom-24052024-imagery');
+
+if (!imagery24052024Checkbox || !imagery24052024OpacitySlider || !imagery24052024ZoomBtn) {
+  console.warn('24052024 imagery UI elements missing');
+} else {
+  const imagery24052024Bottom = L.latLngBounds(
+    [-32.924597, 151.706340], // SW
+    [-32.923415, 151.710449]  // NE
+  );
+
+  const imagery24052024Top = L.latLngBounds(
+    [-32.923414, 151.706340], // SW
+    [-32.922230, 151.710440]  // NE
+  );
+
+  function set24052024Opacity(v){
+    if (imagery24052024Bottom) imagery24052024Bottom.setOpacity(v);
+    if (imagery24052024Top) imagery24052024Top.setOpacity(v);
+  }
+
+  imagery24052024Checkbox.addEventListener('change', () => {
+    const op = parseFloat(imagery24052024OpacitySlider.value);
+
+    if (imagery24052024Checkbox.checked) {
+      if (!imagery24052024Bottom) {
+        imagery24052024Bottom = L.imageOverlay('data/2024/24052024_bottom.png', imagery24052024Bottom, { opacity: op });
+      }
+      if (!imagery24052024Top) {
+        imagery24052024Top = L.imageOverlay('data/2024/24052024_top.png', imagery24052024Top, { opacity: op });
+      }
+      imagery24052024Bottom.addTo(map);
+      imagery24052024Top.addTo(map);
+    } else {
+      if (imagery24052024Bottom) map.removeLayer(imagery24052024Bottom);
+      if (imagery24052024Top) map.removeLayer(imagery24052024Top);
+    }
+  });
+
+  imagery24052024OpacitySlider.addEventListener('input', () => {
+    set24052024Opacity(parseFloat(imagery24052024OpacitySlider.value));
+  });
+
+  imagery24052024ZoomBtn.addEventListener('click', () => {
+    map.fitBounds(imagery24052024Bottom.extend(imagery24052024Top), { maxZoom: 20 });
+  });
+}
   
 
     // ---------- Helpers (reuse everywhere) ----------
