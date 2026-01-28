@@ -899,11 +899,34 @@
     </div>
   </div>
 
-</details>
 
+</details>
+    
 
 <details>
+  <summary>2015 (Imagery year)</summary>
 
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-04102015-imagery">
+        <label for="layer-04102015-imagery">Satellite imagery, 2015.</label>
+        <button type="button" id="zoom-04102015-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-04102015-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+
+    
+
+<details>
   <summary>2021 (Imagery year)</summary>
 
   <div class="layer-item">
@@ -2983,6 +3006,60 @@ if (!memorialDriveCheckbox || !memorialDriveZoomBtn) {
 
   memorialDriveZoomBtn.addEventListener("click", () => {
     map.fitBounds(memorialDriveBounds, { maxZoom: 20 });
+  });
+}
+
+
+// 04/10/2015 Satellite imagery (two image overlays)----------------------------------------
+let imagery04102015Bottom = null;
+let imagery04102015Top = null;
+
+const imagery04102015Checkbox = document.getElementById('layer-04102015-imagery');
+const imagery04102015OpacitySlider = document.getElementById('opacity-04102015-imagery');
+const imagery04102015ZoomBtn = document.getElementById('zoom-04102015-imagery');
+
+if (!imagery04102015Checkbox || !imagery04102015OpacitySlider || !imagery04102015ZoomBtn) {
+  console.warn('04102015 imagery UI elements missing');
+} else {
+  const imagery04102015Bottom = L.latLngBounds(
+    [-32.924597, 151.706340], // SW
+    [-32.923415, 151.710449]  // NE
+  );
+
+  const imagery04102015Top = L.latLngBounds(
+    [-32.923414, 151.706340], // SW
+    [-32.922230, 151.710440]  // NE
+  );
+
+  function set04102015Opacity(v){
+    if (imagery04102015Bottom) imagery04102015Bottom.setOpacity(v);
+    if (imagery04102015Top) imagery04102015Top.setOpacity(v);
+  }
+
+  imagery04102015Checkbox.addEventListener('change', () => {
+    const op = parseFloat(imagery04102015OpacitySlider.value);
+
+    if (imagery04102015Checkbox.checked) {
+      if (!imagery04102015Bottom) {
+        imagery04102015Bottom = L.imageOverlay('data/2015/04102015_bottom.png', imagery04102015Bottom, { opacity: op });
+      }
+      if (!imagery04102015Top) {
+        imagery04102015Top = L.imageOverlay('data/2015/04102015_top.png', imagery04102015Top, { opacity: op });
+      }
+      imagery04102015Bottom.addTo(map);
+      imagery04102015Top.addTo(map);
+    } else {
+      if (imagery04102015Bottom) map.removeLayer(imagery04102015Bottom);
+      if (imagery04102015Top) map.removeLayer(imagery04102015Top);
+    }
+  });
+
+  imagery04102015OpacitySlider.addEventListener('input', () => {
+    set04102015Opacity(parseFloat(imagery04102015OpacitySlider.value));
+  });
+
+  imagery04102015ZoomBtn.addEventListener('click', () => {
+    map.fitBounds(imagery04102015Bottom.extend(imagery04102015Top), { maxZoom: 20 });
   });
 }
 
