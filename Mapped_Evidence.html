@@ -3025,9 +3025,10 @@ if (!memorialDriveCheckbox || !memorialDriveZoomBtn) {
 }
 
 
-// 04/10/2015 Satellite imagery (two image overlays)----------------------------------------
-let imagery04102015Bottom = null;
-let imagery04102015Top = null;
+  
+// 04/10/2015 Satellite imagery (two image overlays)
+let imagery04102015BottomOverlay = null;
+let imagery04102015TopOverlay = null;
 
 const imagery04102015Checkbox = document.getElementById('layer-04102015-imagery');
 const imagery04102015OpacitySlider = document.getElementById('opacity-04102015-imagery');
@@ -3036,36 +3037,44 @@ const imagery04102015ZoomBtn = document.getElementById('zoom-04102015-imagery');
 if (!imagery04102015Checkbox || !imagery04102015OpacitySlider || !imagery04102015ZoomBtn) {
   console.warn('04102015 imagery UI elements missing');
 } else {
-  const imagery04102015Bottom = L.latLngBounds(
+  const imagery04102015BottomBounds = L.latLngBounds(
     [-32.924597, 151.706340], // SW
     [-32.923415, 151.710449]  // NE
   );
 
-  const imagery04102015Top = L.latLngBounds(
+  const imagery04102015TopBounds = L.latLngBounds(
     [-32.923414, 151.706340], // SW
     [-32.922230, 151.710440]  // NE
   );
 
-  function set04102015Opacity(v){
-    if (imagery04102015Bottom) imagery04102015Bottom.setOpacity(v);
-    if (imagery04102015Top) imagery04102015Top.setOpacity(v);
+  function set04102015Opacity(v) {
+    if (imagery04102015BottomOverlay) imagery04102015BottomOverlay.setOpacity(v);
+    if (imagery04102015TopOverlay) imagery04102015TopOverlay.setOpacity(v);
   }
 
   imagery04102015Checkbox.addEventListener('change', () => {
     const op = parseFloat(imagery04102015OpacitySlider.value);
 
     if (imagery04102015Checkbox.checked) {
-      if (!imagery04102015Bottom) {
-        imagery04102015Bottom = L.imageOverlay('data/2015/04102015_bottom.png', imagery04102015Bottom, { opacity: op });
+      if (!imagery04102015BottomOverlay) {
+        imagery04102015BottomOverlay = L.imageOverlay(
+          'data/2015/04102015_bottom.png',
+          imagery04102015BottomBounds,
+          { opacity: op }
+        );
       }
-      if (!imagery04102015Top) {
-        imagery04102015Top = L.imageOverlay('data/2015/04102015_top.png', imagery04102015Top, { opacity: op });
+      if (!imagery04102015TopOverlay) {
+        imagery04102015TopOverlay = L.imageOverlay(
+          'data/2015/04102015_top.png',
+          imagery04102015TopBounds,
+          { opacity: op }
+        );
       }
-      imagery04102015Bottom.addTo(map);
-      imagery04102015Top.addTo(map);
+      imagery04102015BottomOverlay.addTo(map);
+      imagery04102015TopOverlay.addTo(map);
     } else {
-      if (imagery04102015Bottom) map.removeLayer(imagery04102015Bottom);
-      if (imagery04102015Top) map.removeLayer(imagery04102015Top);
+      if (imagery04102015BottomOverlay) map.removeLayer(imagery04102015BottomOverlay);
+      if (imagery04102015TopOverlay) map.removeLayer(imagery04102015TopOverlay);
     }
   });
 
@@ -3074,7 +3083,8 @@ if (!imagery04102015Checkbox || !imagery04102015OpacitySlider || !imagery0410201
   });
 
   imagery04102015ZoomBtn.addEventListener('click', () => {
-    map.fitBounds(imagery04102015Bottom.extend(imagery04102015Top), { maxZoom: 20 });
+    const combined = imagery04102015BottomBounds.extend(imagery04102015TopBounds);
+    map.fitBounds(combined, { maxZoom: 20 });
   });
 }
 
