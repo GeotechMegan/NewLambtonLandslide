@@ -3177,9 +3177,9 @@ wireOverlayLayer({
 });
 
 
-// 24/5/2024 Satellite imagery (two image overlays)-------------------
-let imagery24052024Bottom = null;
-let imagery24052024Top = null;
+// 24/5/2024 Satellite imagery (two image overlays)-----------------------------------
+let imagery24052024BottomOverlay = null;
+let imagery24052024TopOverlay = null;
 
 const imagery24052024Checkbox = document.getElementById('layer-24052024-imagery');
 const imagery24052024OpacitySlider = document.getElementById('opacity-24052024-imagery');
@@ -3188,36 +3188,44 @@ const imagery24052024ZoomBtn = document.getElementById('zoom-24052024-imagery');
 if (!imagery24052024Checkbox || !imagery24052024OpacitySlider || !imagery24052024ZoomBtn) {
   console.warn('24052024 imagery UI elements missing');
 } else {
-  const imagery24052024Bottom = L.latLngBounds(
+  const imagery24052024BottomBounds = L.latLngBounds(
     [-32.924597, 151.706340], // SW
     [-32.923415, 151.710449]  // NE
   );
 
-  const imagery24052024Top = L.latLngBounds(
+  const imagery24052024TopBounds = L.latLngBounds(
     [-32.923414, 151.706340], // SW
     [-32.922230, 151.710440]  // NE
   );
 
-  function set24052024Opacity(v){
-    if (imagery24052024Bottom) imagery24052024Bottom.setOpacity(v);
-    if (imagery24052024Top) imagery24052024Top.setOpacity(v);
+  function set24052024Opacity(v) {
+    if (imagery24052024BottomOverlay) imagery24052024BottomOverlay.setOpacity(v);
+    if (imagery24052024TopOverlay) imagery24052024TopOverlay.setOpacity(v);
   }
 
   imagery24052024Checkbox.addEventListener('change', () => {
     const op = parseFloat(imagery24052024OpacitySlider.value);
 
     if (imagery24052024Checkbox.checked) {
-      if (!imagery24052024Bottom) {
-        imagery24052024Bottom = L.imageOverlay('data/2024/24052024_bottom.png', imagery24052024Bottom, { opacity: op });
+      if (!imagery24052024BottomOverlay) {
+        imagery24052024BottomOverlay = L.imageOverlay(
+          'data/2024/24052024_bottom.png',
+          imagery24052024BottomBounds,
+          { opacity: op }
+        );
       }
-      if (!imagery24052024Top) {
-        imagery24052024Top = L.imageOverlay('data/2024/24052024_top.png', imagery24052024Top, { opacity: op });
+      if (!imagery24052024TopOverlay) {
+        imagery24052024TopOverlay = L.imageOverlay(
+          'data/2024/24052024_top.png',
+          imagery24052024TopBounds,
+          { opacity: op }
+        );
       }
-      imagery24052024Bottom.addTo(map);
-      imagery24052024Top.addTo(map);
+      imagery24052024BottomOverlay.addTo(map);
+      imagery24052024TopOverlay.addTo(map);
     } else {
-      if (imagery24052024Bottom) map.removeLayer(imagery24052024Bottom);
-      if (imagery24052024Top) map.removeLayer(imagery24052024Top);
+      if (imagery24052024BottomOverlay) map.removeLayer(imagery24052024BottomOverlay);
+      if (imagery24052024TopOverlay) map.removeLayer(imagery24052024TopOverlay);
     }
   });
 
@@ -3226,10 +3234,11 @@ if (!imagery24052024Checkbox || !imagery24052024OpacitySlider || !imagery2405202
   });
 
   imagery24052024ZoomBtn.addEventListener('click', () => {
-    map.fitBounds(imagery24052024Bottom.extend(imagery24052024Top), { maxZoom: 20 });
+    const combined = imagery24052024BottomBounds.extend(imagery24052024TopBounds);
+    map.fitBounds(combined, { maxZoom: 20 });
   });
 }
-  
+
 
     // ---------- Helpers (reuse everywhere) ----------
 function makeDotIcon(colour = '#d00') {
