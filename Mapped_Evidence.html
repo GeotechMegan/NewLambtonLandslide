@@ -208,7 +208,7 @@
   <div class="layers">
 
     <details>
-  <summary>Geology etc.</summary>
+  <summary>Miscellaneous</summary>
 
   <!-- NSW 5m Hillshade -->
   <div class="layer-item">
@@ -246,6 +246,15 @@
       <button type="button" id="download-geology-legend">Download Geology Legend</button>
     </div>
   </div>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-residents-names">
+      <label for="layer-residents-names">Residents’ names</label>
+      <button type="button" id="zoom-residents-names">Zoom to</button>
+    </div>
+  </div>
+      <div class="layer-note">red=significantly affected, pink=partially affected, blue=has contributed to this project</div>
 
 </details>
 
@@ -3219,12 +3228,11 @@ if (!imagery24052024Checkbox || !imagery24052024OpacitySlider || !imagery2405202
   console.warn('24052024 imagery UI elements missing');
 } else {
   const imagery24052024BottomBounds = L.latLngBounds(
-    [-32.924628, 151.706327], // SW
-    [-32.923429, 151.7104021]  // NE
+    [-32.924625, 151.706328], // SW
+    [-32.923435, 151.7104021]  // NE
   );
-
   const imagery24052024TopBounds = L.latLngBounds(
-    [-32.923415, 151.706327], // SW
+    [-32.923434, 151.706328], // SW
     [-32.9222255, 151.7104021]  // NE
   );
 
