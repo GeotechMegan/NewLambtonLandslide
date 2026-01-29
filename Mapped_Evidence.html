@@ -954,6 +954,28 @@
   
 </details>
 
+
+ <details>
+  <summary>2017 (Imagery year)</summary>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-29042017-imagery">
+    <label for="layer-29042017-imagery">Satellite imagery, 29th of April, 2017.</label>
+    <button type="button" id="zoom-29042017-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-29042017-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-13122017-imagery">
+    <label for="layer-13122017-imagery">Satellite imagery, 13th of December, 2017.</label>
+    <button type="button" id="zoom-13122017-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-13122017-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+ </details>
     
 
 <details>
@@ -3055,8 +3077,107 @@ if (!memorialDriveCheckbox || !memorialDriveZoomBtn) {
 }
 
 
+// Imagery layers (same bounds as 24/05/2024; two overlays each) ---------------------------
+
+const IMAGERY_BOTTOM_BOUNDS = L.latLngBounds(
+  [-32.924611, 151.706340],   // SW
+  [-32.9234389, 151.7104023]  // NE
+);
+const IMAGERY_TOP_BOUNDS = L.latLngBounds(
+  [-32.9234375, 151.706340],  // SW
+  [-32.9222264, 151.7104023]  // NE
+);
+
+function ordinal(n) {
+  const s = ["th","st","nd","rd"], v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+function dateWordsFromDDMMYYYY(ddmmyyyy) {
+  const d = parseInt(ddmmyyyy.slice(0,2), 10);
+  const m = parseInt(ddmmyyyy.slice(2,4), 10);
+  const y = ddmmyyyy.slice(4,8);
+  const months = [null,"January","February","March","April","May","June","July","August","September","October","November","December"];
+  return `${ordinal(d)} of ${months[m]}, ${y}`;
+}
+
+const imageryConfigs = [
+  { date: "29042017" },
+  { date: "13122017" },
+  { date: "08052018" },
+  { date: "14072018" },
+  { date: "08122018" },
+  { date: "07052019" },
+  { date: "19072019" },
+  { date: "27102019" },
+  { date: "06042020" },
+  { date: "03092020" },
+  { date: "23042021" },
+  { date: "06062021" },
+  { date: "09102021" },
+  { date: "11062022" },
+  { date: "12022023" },
+  { date: "18032023" },
+  { date: "15102023" },
+];
+
+for (const cfg of imageryConfigs) {
+  const date = cfg.date;
+  const year = date.slice(4, 8);
+
+  const checkbox = document.getElementById(`layer-${date}-imagery`);
+  const slider   = document.getElementById(`opacity-${date}-imagery`);
+  const zoomBtn  = document.getElementById(`zoom-${date}-imagery`);
+
+  if (!checkbox || !slider || !zoomBtn) {
+    console.warn(`${date} imagery UI elements missing`);
+    continue;
+  }
+
+  let bottomOverlay = null;
+  let topOverlay = null;
+
+  function setOpacity(v) {
+    if (bottomOverlay) bottomOverlay.setOpacity(v);
+    if (topOverlay) topOverlay.setOpacity(v);
+  }
+
+  checkbox.addEventListener('change', () => {
+    const op = parseFloat(slider.value);
+
+    if (checkbox.checked) {
+      if (!bottomOverlay) {
+        bottomOverlay = L.imageOverlay(
+          `data/${year}/${date}_bottom.png`,
+          IMAGERY_BOTTOM_BOUNDS,
+          { opacity: op }
+        );
+      }
+      if (!topOverlay) {
+        topOverlay = L.imageOverlay(
+          `data/${year}/${date}_top.png`,
+          IMAGERY_TOP_BOUNDS,
+          { opacity: op }
+        );
+      }
+      bottomOverlay.addTo(map);
+      topOverlay.addTo(map);
+    } else {
+      if (bottomOverlay) map.removeLayer(bottomOverlay);
+      if (topOverlay) map.removeLayer(topOverlay);
+    }
+  });
+
+  slider.addEventListener('input', () => setOpacity(parseFloat(slider.value)));
+
+  zoomBtn.addEventListener('click', () => {
+    const combined = IMAGERY_BOTTOM_BOUNDS.extend(IMAGERY_TOP_BOUNDS);
+    map.fitBounds(combined, { maxZoom: 20 });
+  });
+}
+
+
   
-// 04/10/2015 Satellite imagery (two image overlays)
+// 04/10/2015 Satellite imagery (two image overlays)----------------------------------------
 let imagery04102015BottomOverlay = null;
 let imagery04102015TopOverlay = null;
 
