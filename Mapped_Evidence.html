@@ -898,9 +898,29 @@
       <button type="button" id="zoom-2007-wondabyne-rail-slide">Zoom to</button>
     </div>
   </div>
-
-
 </details>
+
+
+<details>
+  <summary>2014 (Imagery year)</summary>
+
+<div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-20140501-sat">
+      <label for="layer-2014-sat">Satellite imagery, 1st of May, 2014.</label>
+      <button type="button" id="zoom-20140501-sat">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-20140501-sat"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+
+</details>    
     
 
 <details>
@@ -3593,6 +3613,19 @@ wireHoverPreviewAndDownload({
 });
 
 
+// ---------- 1st of May 2014 Satellite imagery (single image overlay) ----------
+wireOverlayLayer({
+  checkboxId: 'layer-20140501-sat',
+  sliderId: 'opacity-20140501-sat',
+  zoomBtnId: 'zoom-20140501-sat',
+  imageUrl: 'data/2014/20140501.jpg',
+  bounds: [
+    [-32.926098, 151.700158], // SW
+    [-32.920503, 151.713646]  // NE
+  ]
+});
+
+  
   // 2025 – Satellite imagery, 20th July 2025 (single image overlay)
 wireOverlayLayer({
   checkboxId: 'layer-2025-satellite-2025-07-20',
