@@ -1234,7 +1234,6 @@
   >
 </div>
 
-  <!-- 2025 layer: VIDEO MARKER (white square) -->
 <div class="layer-item">
   <div class="layer-row">
     <input type="checkbox" id="layer-2025-video-marker">
@@ -1245,7 +1244,15 @@
   </div>
 </div>
 
-
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2025-creek-video">
+    <label for="layer-2025-creek-video">
+      Footage of where the creek transitions from piped to natural, taken 8th Sep 2025
+    </label>
+    <button type="button" id="zoom-2025-creek-video">Zoom to</button>
+  </div>
+</div>
 
 </details>
 
@@ -4022,7 +4029,7 @@ wireOverlayLayer({
   ]
 });
 
-  // ===================== 2025: White-square video marker =====================
+  // ===================== 2025: White-square video marker, drone footage =====================
 
 let layer2025VideoMarker = null;
 
@@ -4115,8 +4122,94 @@ if (!cb2025Video || !zoom2025Video) {
 }
 
 
+// ===================== 2025: White-square creek transition video =====================
 
-   // Always start with no layers selected on load
+let layer2025CreekVideo = null;
+
+const cb2025Creek = document.getElementById("layer-2025-creek-video");
+const zoom2025Creek = document.getElementById("zoom-2025-creek-video");
+
+if (!cb2025Creek || !zoom2025Creek) {
+  console.warn("2025 creek video UI elements missing");
+} else {
+  const latlng2025Creek = L.latLng(-32.922847, 151.707569);
+
+  const whiteSquareIcon = L.divIcon({
+    className: "",
+    html: `<div class="white-square-marker"></div>`,
+    iconSize: [12, 12],
+    iconAnchor: [6, 6]
+  });
+
+  const videoElId = "vid-2025-creek-transition";
+
+  const hoverHtml2025Creek = `
+    <div style="max-width:520px;">
+      <div style="font-weight:bold; margin-bottom:6px;">
+        Footage showing where the creek transitions from piped to natural form.
+      </div>
+
+      <video
+        id="${videoElId}"
+        src="data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4"
+        width="520"
+        muted
+        autoplay
+        loop
+        playsinline
+        controls
+        preload="metadata"
+        style="display:block;"
+      ></video>
+    </div>
+  `;
+
+  cb2025Creek.addEventListener("change", () => {
+    if (cb2025Creek.checked) {
+      if (!layer2025CreekVideo) {
+        layer2025CreekVideo = L.marker(latlng2025Creek, {
+          icon: whiteSquareIcon,
+          interactive: true
+        });
+
+        layer2025CreekVideo.bindTooltip(hoverHtml2025Creek, {
+          sticky: true,
+          direction: "top",
+          opacity: 0.98,
+          interactive: true
+        });
+
+        layer2025CreekVideo.on("tooltipopen", () => {
+          setTimeout(() => {
+            const v = document.getElementById(videoElId);
+            if (v) {
+              v.muted = true;
+              const p = v.play();
+              if (p && typeof p.catch === "function") p.catch(() => {});
+            }
+          }, 0);
+        });
+
+        layer2025CreekVideo.on("tooltipclose", () => {
+          const v = document.getElementById(videoElId);
+          if (v) v.pause();
+        });
+      }
+
+      layer2025CreekVideo.addTo(map);
+    } else {
+      if (layer2025CreekVideo) map.removeLayer(layer2025CreekVideo);
+    }
+  });
+
+  zoom2025Creek.addEventListener("click", () => {
+    map.setView(latlng2025Creek, Math.max(map.getZoom(), 19));
+  });
+}
+
+
+
+   // Always start with no layers selected on load------------------------------------------
 document.querySelectorAll('.layers input[type="checkbox"]').forEach(cb => {
   cb.checked = false;
 });
