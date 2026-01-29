@@ -3453,7 +3453,120 @@ document.getElementById('download-geology-legend').addEventListener('click', () 
   document.body.removeChild(a);
 });
 
-// ---------- 1949 markers ----------
+
+
+// Residents' names (text-only labels) ---------------------------------------------
+let residentsNamesLayer = null;
+
+const residentsNamesCheckbox = document.getElementById('layer-residents-names');
+const residentsNamesZoomBtn  = document.getElementById('zoom-residents-names');
+
+if (!residentsNamesCheckbox || !residentsNamesZoomBtn) {
+  console.warn("Residents' names UI elements missing");
+} else {
+
+  // Put your 20–30 points here.
+  // colour can be: 'white', 'red', '#00aaff', etc.
+  const residentLabels = [
+    { name: "Jing & Nic",  lat: -32.92348, lng: 151.70937, colour: "red" },
+    { name: "Theresa",  lat: -32.92344, lng: 151.70921, colour: "red"   },
+    { name: "Nathan", lat: -32.92343, lng: 151.70903, colour: "red” },
+{ name: "Caroline & Dave", lat: -32.92332, lng: 151.70853, colour: "red” },
+{ name: "Nathan", lat: -32.92343, lng: 151.70903, colour: "red” },
+{ name: "Ken", lat: -32.92318, lng: 151.70855, colour: "red” },
+{ name: "Sylvian", lat: -32.92304, lng: 151.70861, colour: "red” },
+{ name: "Eloise & James", lat: -32.92290, lng: 151.70866, colour: "red” },
+{ name: "Shelly & Adrian", lat: -32.92300, lng: 151.70912, colour: "red” },
+{ name: "Sally & Warren", lat: -32.92300, lng: 151.70932, colour: "red” },
+{ name: "Yan", lat: -32.92349, lng: 151.70955, colour: "#FF0090” },
+{ name: "Lucy", lat: -32.92352, lng: 151.70974, colour: "#FFC0CB” },
+{ name: "Suzie & Ross, Anne", lat: -32.92264, lng: 151.70878, colour: "red” },
+{ name: "Jody & Dave", lat: -32.92259, lng: 151.70857, colour: "red” },
+{ name: "Laura & Julian", lat: -32.92271, lng: 151.70918, colour: "red” },
+{ name: "Dianne", lat: -32.92370, lng: 151.70921, colour: "red” },
+{ name: "Ali & Steve", lat: -32.92383, lng: 151.70940, colour: "red” },
+{ name: "Anne & Ross", lat: -32.92395, lng: 151.71022, colour: "#00CCFF” },
+{ name: "Michaela & Paul", lat: -32.92386, lng: 151.70880, colour: "#FFC0CB” },
+{ name: "Karen & Tim", lat: -32.92376, lng: 151.70850, colour: "FFC0CB” },
+{ name: "Michael", lat: -32.92198, lng: 151.70199, colour: "#00CCFF” },
+{ name: "Ash", lat: -32.92252, lng: 151.70818, colour: "red” },
+{ name: "Jack", lat: -32.92271, lng: 151.70710, colour: "00CCFF” },
+{ name: "Steve", lat: -32.92281, lng: 151.70671, colour: "00CCFF” },
+{ name: "Geoff", lat: -32.92345, lng: 151.70734, colour: "00CCFF” },
+{ name: "Theresa", lat: -32.92244, lng: 151.70760, colour: "00CCFF” },
+{ name: "Margaret", lat: -32.92222, lng: 151.70431, colour: "00CCFF” },
+  ];
+
+  // Optional: tweak once, affects all labels
+  const labelStyle = {
+    fontSizePx: 14,          // change to suit
+    fontWeight: 600,
+    textShadow: "0 0 3px #000, 0 0 6px #000", // keeps white text readable on light imagery
+    yOffsetPx: 0,            // adjust if you want them slightly above/below the point
+  };
+
+  function makeNameLabel({ name, lat, lng, colour }) {
+    const html = `
+      <span
+        style="
+          color:${colour};
+          font-size:${labelStyle.fontSizePx}px;
+          font-weight:${labelStyle.fontWeight};
+          white-space:nowrap;
+          text-shadow:${labelStyle.textShadow};
+          transform: translate(-50%, ${labelStyle.yOffsetPx}px);
+          display:inline-block;
+          pointer-events:none;
+        "
+      >${escapeHtml(name)}</span>
+    `;
+
+    return L.marker([lat, lng], {
+      interactive: false,
+      keyboard: false,
+      icon: L.divIcon({
+        className: 'resident-name-label', // keeps Leaflet from injecting default styles into your span
+        html,
+        iconSize: [0, 0],   // no box
+        iconAnchor: [0, 0],
+      }),
+      zIndexOffset: 1000
+    });
+  }
+
+  // Minimal HTML escape (so names like O'Neil are fine; prevents accidental markup)
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function buildResidentsNamesLayer() {
+    const group = L.layerGroup();
+    for (const item of residentLabels) group.addLayer(makeNameLabel(item));
+    return group;
+  }
+
+  residentsNamesCheckbox.addEventListener('change', () => {
+    if (residentsNamesCheckbox.checked) {
+      if (!residentsNamesLayer) residentsNamesLayer = buildResidentsNamesLayer();
+      residentsNamesLayer.addTo(map);
+    } else {
+      if (residentsNamesLayer) map.removeLayer(residentsNamesLayer);
+    }
+  });
+
+  residentsNamesZoomBtn.addEventListener('click', () => {
+    const pts = residentLabels.map(d => [d.lat, d.lng]);
+    if (pts.length) map.fitBounds(L.latLngBounds(pts), { maxZoom: 20, padding: [20, 20] });
+  });
+}
+
+  
+// ---------- 1949 markers ----------------------------------------------------------
 
 wireHoverPreviewAndDownload({
   checkboxId: 'layer-1949-landslide-endangers-flats',
