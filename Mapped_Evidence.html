@@ -248,6 +248,24 @@
     <br>
   </div>
 
+      <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-thecreek">
+      <label for="layer-thecreek">The Creek, approximately how it was pre-landslide, 2025.</label>
+      <button type="button" id="zoom-thecreek">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-thecreek"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+<div class="layer-note">Creek location has been placed as accurately as possible using site visits, discussions with locals and examination of imagery & DBYDs. Pale blue=piped, dark blue=natural, green=900mm Hunter Water concrete pipe, brown=Hunter Water Easement.</div>
+
+
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-residents-names">
@@ -3721,6 +3739,19 @@ document.getElementById('download-geology-legend').addEventListener('click', () 
 });
 
 
+
+// ---------- The Creek (single image overlay) ----------
+wireOverlayLayer({
+  checkboxId: 'layer-thecreek',
+  sliderId: 'opacity-thecreek',
+  zoomBtnId: 'zoom-thecreek',
+  imageUrl: 'data/Geology_etc/TheCreek.png',
+  bounds: [
+    [-32.924631, 151.706548], // SW
+    [-32.923014, 151.709572]  // NE
+  ]
+});
+  
 
 // Residents' names (text-only labels) ---------------------------------------------
 let residentsNamesLayer = null;
