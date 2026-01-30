@@ -1,17 +1,3 @@
-Below is the code for a page of my website. The page is called Mapped Evidence. The website is called the New Lambton Landslide website.
-I am still adding to this page. I hoped to ultimately have roughly twice as many layers on the map as there are currently, but already it's getting too much for a browser to handle and it's being glitchy, mainly due to the video tooltips that play automatically on hover.
-You are to re-write this code for me. This will serve 2 main purposes: 1, to simplify the code thus improving maintainability and 2, to improve performance by getting rid of the hover-autoplays & controlling imagery loading. The finished page needs to look the same as it does at the moment (e.g. same heading in the same spot, same hyperlinks to the same places in the same spots, same margins, same type and size of markers on the map, etc.).
-
-Replace hover-autoplay videos with something that shows a static poster image upon hovering instead & has a click-to-play function. The static image will be a jpg with the same name as the video & in the same spot. E.g. for the layer with the ID "layer-2025-creek-video" which plays the video "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4" upon the user hovering the cursor over the marker, the static poster image will be "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.jpg". The user will be able to click this image and the video will load only upon said clicking.
-
-Make it so that people's browsers don't pre-load imagery (not sure if this is not already the case). Perhaps L.imageOverlay should only be created upon the checkbox being checked. Make sure that overlays are removed immediately upon unchecking.
-
-You may change "under-the-hood" features such as identification labels/names for layers, buttons,etc. if it will simplify the code, reduce the chance of code errors and be more user-friendly for me when I add more media later on.
-
-In your answer and all subsequent answers, do not use regex to update text, do not add explanations before your answer unless I ask, never ask if I want more details or suggest next things to ask of you, start your reply with a simple greeting in the format of "Hello, [date, time]", do not tell me that I've not done anything wrong or that I'm not doing anything wrong etc., do not give affirming statements like "you're on the right track", "you're right to pick that up/call that out", "you're thinking clearly" etc., do not summarise answers, do not use headings, double spacing, bold, italics, bullet points or emojis/emoticons, do not employ emotional padding, do not soften your deliveries, do not pander to anticipated feelings etc., do not provide reassuring statements. Give full, complete, actionable instruction.
-
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,7 +5,6 @@ In your answer and all subsequent answers, do not use regex to update text, do n
   <title>Mapped Evidence</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Leaflet CSS -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -27,158 +12,29 @@ In your answer and all subsequent answers, do not use regex to update text, do n
   />
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    h1 {
-      text-align: center;
-      margin: 20px 0;
-      font-weight: normal;
-    }
-
-    nav {
-      display: flex;
-      justify-content: space-between;
-      max-width: 1400px;
-      padding: 0 20px;
-      margin: 0 auto 20px auto;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #000;
-      font-size: 1.1rem;
-    }
-
-    .intro {
-      max-width: 1400px;
-      padding: 0 20px;
-      margin: 0 auto 20px auto;
-      font-size: 0.95rem;
-    }
-
-    .general {
-      max-width: 1400px;
-      padding: 0 20px;
-      margin: 0 auto 20px auto;
-      font-size: 0.95rem;
-    }
-
-    /* map + layers layout */
-    .map-layout {
-  display: flex;
-  height: 65vh;
-  min-height: 520px;
-  max-width: 1400px;   /* controls left/right margin */
-  padding: 0 20px;
-  margin: 0 auto;      /* centres the whole map block */
-}
-
-
-    #map {
-      flex: 1;
-      height: 100%;
-      background: #e0e0e0;
-    }
-
-    .layers {
-      width: 260px;
-      border-left: 1px solid #ccc;
-      padding: 10px;
-      overflow-y: auto;
-    }
-    .layers details {
-  margin-bottom: 10px;
-}
-
-.layers summary {
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 6px;
-  
-}
-
-.layer-item {
-  margin-left: 16px;
-  margin-bottom: 6px;
-  font-size: 0.9rem;
-}
-
-.layer-item label {
-  cursor: pointer;
-}
-
-.layer-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.layer-row label {
-  flex: 1; /* pushes the button to the right */
-}
-
-.layer-item input[type="range"] {
-  width: 100%;
-  margin-top: 4px;
-}
-
-.layer-note {
-  font-size: 0.8rem;   /* adjust as needed */
-  color: #555;         /* optional: de-emphasise */
-  margin-left: 16px;   /* aligns with layer items */
-  margin-top: 4px;
-}
-
- /* Tooltip scrolling */
-.leaflet-tooltip.article-preview {
-  max-height: min(60vh, 520px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 8px;
-}
-
-/* Make the image responsive inside the tooltip */
-.leaflet-tooltip.article-preview img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-    .leaflet-popup-content {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-
-/* Hover-preview popup: scrollable and clickable */
-.article-preview-popup .leaflet-popup-content {
-  width: 280px;          /* tweak */
-  max-height: 60vh;      /* prevents running off-screen */
-  overflow: auto;        /* enables scrolling */
-  margin: 10px;
-}
-
-.article-preview-popup img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border: 1px solid #ccc;
-}
-
-    /* White square marker */
-.white-square-marker {
-  width: 12px;
-  height: 12px;
-  background: #ffffff;
-  border: 2px solid #000000;
-  box-sizing: border-box;
-}
-
-    
+    html, body {height: 100%;margin: 0;font-family: Arial, Helvetica, sans-serif;}
+    h1 {text-align: center;margin: 20px 0;font-weight: normal;}
+    nav {display: flex;justify-content: space-between;max-width: 1400px;padding: 0 20px;margin: 0 auto 20px auto;}
+    nav a {text-decoration: none;color: #000;font-size: 1.1rem;}
+    .intro {max-width: 1400px;padding: 0 20px;margin: 0 auto 20px auto;font-size: 0.95rem;}
+    .general {max-width: 1400px;padding: 0 20px;margin: 0 auto 20px auto;font-size: 0.95rem;}
+    .map-layout {display: flex;height: 65vh;min-height: 520px;max-width: 1400px;padding: 0 20px;margin: 0 auto;}
+    #map {flex: 1;height: 100%;background: #e0e0e0;}
+    .layers {width: 260px;border-left: 1px solid #ccc;padding: 10px;overflow-y: auto;}
+    .layers details {margin-bottom: 10px;}
+    .layers summary {font-weight: bold;cursor: pointer;margin-bottom: 6px;}
+    .layer-item {margin-left: 16px;margin-bottom: 6px;font-size: 0.9rem;}
+    .layer-item label {cursor: pointer;}
+    .layer-row {display: flex;align-items: center;gap: 6px;}
+    .layer-row label {flex: 1; /* pushes the button to the right */}
+    .layer-item input[type="range"] {width: 100%;margin-top: 4px;}
+    .layer-note {font-size: 0.8rem; color: #555; margin-left: 16px; margin-top: 4px;}
+    .leaflet-tooltip.article-preview {max-height: min(60vh, 520px);overflow-y: auto;overflow-x: hidden;padding: 8px;}
+    .leaflet-tooltip.article-preview img {max-width: 100%;height: auto;display: block;}
+    .leaflet-popup-content {overflow-wrap: anywhere;word-break: break-word;}
+    .article-preview-popup .leaflet-popup-content {width:280px; max-height:60vh; overflow:auto; margin:10px;}
+    .article-preview-popup img {width: 100%; height:auto; display:block;border: 1px solid #ccc;}
+    .white-square-marker {width: 12px;height: 12px;background: #ffffff;border: 2px solid #000000;box-sizing: border-box;} 
   </style>
 </head>
 
