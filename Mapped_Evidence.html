@@ -3172,9 +3172,9 @@ if (!cb2025Video || !zoom2025Video) {
 }
 
 
-//-------------2025: Creek transition video (poster tooltip + click-to-play modal)-------------------------------
+// ===================== 2025: Creek transition video (hover poster tooltip + click-to-play modal) ============
 let layer2025CreekVideo = null;
-const cb2025Creek = document.getElementById("layer-2025-creek-video");
+const cb2025Creek  = document.getElementById("layer-2025-creek-video");
 const zoom2025Creek = document.getElementById("zoom-2025-creek-video");
 if (!cb2025Creek || !zoom2025Creek) {
   console.warn("2025 creek video UI elements missing");
@@ -3184,109 +3184,77 @@ if (!cb2025Creek || !zoom2025Creek) {
     className: "",
     html: `<div class="white-square-marker"></div>`,
     iconSize: [12, 12],
-    iconAnchor: [6, 6],  });
-  const videoSrc = "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4";
-  const posterSrc = "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.jpg";  // Leave as null to rely on the browser's poster behaviour (may show black until decoded).
-  const modalId = "modal-2025-creek-transition";
-  const playBtnId = "playbtn-2025-creek-transition";
-  const closeBtnId = "closebtn-2025-creek-transition";
-  const videoElId = "video-2025-creek-transition";
-  function ensureModalExists() {
-    if (document.getElementById(modalId)) return;
-    const overlay = document.createElement("div");
-    overlay.id = modalId;
-    overlay.style.cssText = ["position:fixed","inset:0","background:rgba(0,0,0,0.72)","display:none","align-items:center","justify-content:center","z-index:9999","padding:18px",].join(";");
-    overlay.innerHTML = `
-      <div style="background:#fff; max-width:560px; width:100%; padding:12px; border:1px solid #000;">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
-          <div style="font-weight:bold;">
-            Footage showing where the creek transitions from piped to natural.
-          </div>
-          <button type="button" id="${closeBtnId}" style="border:1px solid #000; background:#fff; padding:6px 10px; cursor:pointer;">Close</button>
-        </div>
-        <div id="video-host-2025-creek" style="width:520px; max-width:100%;"></div>
-      </div>    `;
-    document.body.appendChild(overlay);
-    const closeBtn = document.getElementById(closeBtnId);
-    closeBtn.addEventListener("click", hideModal);
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) hideModal(); });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") hideModal();    });  }
-  function showModalAndPlay() {
-    ensureModalExists();
-    const overlay = document.getElementById(modalId);
-    const host = document.getElementById("video-host-2025-creek");
-    if (!overlay || !host) return;
-    // Destroy any prior video element (performance + avoids parallel decoders)
-    host.innerHTML = "";
-    const v = document.createElement("video");
-    v.id = videoElId;
-    v.src = videoSrc;
-    v.width = 520;
-    v.controls = true;
-    v.playsInline = true;
-    v.preload = "metadata";
-    // Autoplay policy: allow play with sound only after user gesture (this click counts as gesture).
-    // If autoplay fails, controls remain.
-    v.autoplay = true;
-    host.appendChild(v);
-    overlay.style.display = "flex";
-    // Try to start immediately
-    const p = v.play();
-    if (p && typeof p.catch === "function") p.catch(() => {});  }
-  function hideModal() {
-    const overlay = document.getElementById(modalId);
-    const host = document.getElementById("video-host-2025-creek");
-    if (host) host.innerHTML = "";
-    if (overlay) overlay.style.display = "none";  }
-  const hoverHtml2025Creek = `
-    <div style="max-width:520px;">
-      <div style="font-weight:bold; margin-bottom:6px;">
+    iconAnchor: [6, 6]
+  });
+  // Supply a jpg/png poster for the tooltip (fast; no video decoding on hover)
+  const posterUrl = "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd_poster.jpg";
+  const videoUrl  = "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4";
+  const tooltipHtml = `
+    <div style="width:520px;">
+      <div style="font-weight:bold; margin:0 0 6px 0;">
         Footage showing where the creek transitions from piped to natural.
       </div>
-      <div style="width:520px; max-width:100%; border:1px solid #000;">
-        ${
-          posterSrc
-            ? `<img src="${posterSrc}" width="520" style="display:block; max-width:100%; height:auto;" loading="lazy" decoding="async" alt="">`
-            : `<video src="${videoSrc}" width="520" preload="metadata" playsinline style="display:block; max-width:100%;"></video>`
-        }
+      <img
+        src="${posterUrl}"
+        width="520"
+        loading="lazy"
+        decoding="async"
+        style="display:block; border:1px solid #000;"
+        alt="Video poster"
+      >
+      <div style="margin-top:6px; font-size:12px;">
+        Click the marker to play.
       </div>
-      <div style="margin-top:8px; display:flex; gap:10px; align-items:center;">
-        <button type="button" id="${playBtnId}" style="border:1px solid #000; background:#fff; padding:6px 10px; cursor:pointer;">
-          Play
-        </button>
-      </div>
-    </div>  `;
+    </div>
+  `;
+  const modal = document.getElementById("video-modal");
+  const modalBackdrop = modal ? modal.querySelector(".video-modal__backdrop") : null;
+  const modalCloseBtn = modal ? modal.querySelector(".video-modal__close") : null;
+  const modalContent  = modal ? modal.querySelector(".video-modal__content") : null;
+  function openVideoModal() {
+    if (!modal || !modalContent) return;
+    modalContent.innerHTML = `
+      <div style="max-width:520px;">
+        <video          src="${videoUrl}"          width="520"          controls          playsinline          preload="metadata"          style="display:block; border:1px solid #000;"        ></video>      </div>    `;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");  }
+  function closeVideoModal() {
+    if (!modal || !modalContent) return;
+    const v = modalContent.querySelector("video");
+    if (v) v.pause();
+    modalContent.innerHTML = "";
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");  }
+  if (modalBackdrop) modalBackdrop.addEventListener("click", closeVideoModal);
+  if (modalCloseBtn) modalCloseBtn.addEventListener("click", closeVideoModal);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal && modal.classList.contains("is-open")) closeVideoModal();
+  });
   cb2025Creek.addEventListener("change", () => {
     if (cb2025Creek.checked) {
-      if (!layer2025CreekVideo) {layer2025CreekVideo = L.marker(latlng2025Creek, { icon: whiteSquareIcon, interactive: true, keyboard: false,});
-        layer2025CreekVideo.bindTooltip(hoverHtml2025Creek, {sticky: true, direction: "top", opacity: 0.98, interactive: true, });
-        layer2025CreekVideo.on("tooltipopen", () => {
-          setTimeout(() => {
-            const btn = document.getElementById(playBtnId);
-            if (!btn) return;
-            // Prevent map interactions when clicking inside tooltip
-            btn.addEventListener("click", (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              showModalAndPlay();
-            });
-            // Prevent tooltip click from bubbling to map
-            const tipEl = btn.closest(".leaflet-tooltip");
-            if (tipEl) {
-              tipEl.addEventListener("click", (e) => {
-                e.stopPropagation();              });
-              tipEl.addEventListener("mousedown", (e) => {
-                e.stopPropagation();              });
-              tipEl.addEventListener("wheel", (e) => {
-                e.stopPropagation();   });     }    }, 0);        });      }
+      if (!layer2025CreekVideo) {
+        layer2025CreekVideo = L.marker(latlng2025Creek, {
+          icon: whiteSquareIcon,
+          interactive: true
+        });
+        // Hover poster only. No play button here, so nothing to “move onto” and lose.
+        layer2025CreekVideo.bindTooltip(tooltipHtml, {
+          sticky: true,
+          direction: "top",
+          opacity: 0.98,
+          interactive: false,
+          className: "creek-poster-tooltip"
+        });
+        // Click marker opens modal; modal is independent of hover so it won’t disappear.
+        layer2025CreekVideo.on("click", openVideoModal);      }
       layer2025CreekVideo.addTo(map);
     } else {
       if (layer2025CreekVideo) map.removeLayer(layer2025CreekVideo);
-      hideModal();    }  });
+      closeVideoModal();
+    }  });
   zoom2025Creek.addEventListener("click", () => {
-    map.setView(latlng2025Creek, Math.max(map.getZoom(), 19));  });}
+    map.setView(latlng2025Creek, Math.max(map.getZoom(), 19));
+  });}
 
                                              
 
@@ -3303,5 +3271,23 @@ document.querySelectorAll('.layers input[type="checkbox"]').forEach(cb => {
   <p></p>
   <p>------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
 </div>
+
+ <div id="video-modal" class="video-modal" aria-hidden="true">
+  <div class="video-modal__backdrop"></div>
+  <div class="video-modal__panel" role="dialog" aria-modal="true" aria-label="Video">
+    <button type="button" class="video-modal__close" aria-label="Close">Close</button>
+    <div class="video-modal__content"></div>
+  </div>
+</div>
+
+<style>
+  .video-modal{position:fixed;inset:0;display:none;z-index:9999;}
+  .video-modal.is-open{display:block;}
+  .video-modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,.65);}
+  .video-modal__panel{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;padding:12px;max-width:92vw;max-height:92vh;overflow:auto;}
+  .video-modal__close{border:1px solid #000;background:#fff;padding:6px 10px;cursor:pointer;margin:0 0 10px 0;}
+  .video-modal__content video{display:block;max-width:100%;height:auto;}
+  .leaflet-tooltip.creek-poster-tooltip{background:transparent;border:0;box-shadow:none;padding:0;}
+</style>
 </body>
 </html>
