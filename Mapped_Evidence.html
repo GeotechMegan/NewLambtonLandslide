@@ -5,11 +5,7 @@
   <title>Mapped Evidence</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    crossorigin=""
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 
   <style>
     html, body {height: 100%;margin: 0;font-family: Arial, Helvetica, sans-serif;}
@@ -39,9 +35,7 @@
 </head>
 
 <body>
-
-  <h1>New Lambton Landslide</h1>
-
+ <h1>New Lambton Landslide</h1>
   <nav>
     <a href="index.html">Home</a>
     <a href="">Mapped Evidence</a>
@@ -54,69 +48,40 @@
   </div>
 
   <div style="max-width:1500px;margin:0 auto 12px auto;text-align:left;">
-  <button
-    id="back-to-new-lambton"
-    type="button"
-    style="
-      padding:8px 14px;
-      border:1px solid #000;
-      background:#fff;
-      color:#000;
-      cursor:pointer;
-      font-size:0.95rem;
-    "
-  >
+   <button id="back-to-new-lambton" type="button" style="padding:8px 14px;border:1px solid #000;background:#fff;color:#000;cursor:pointer;font-size:0.95rem;">
     Back to New Lambton
   </button>
 </div>
 
 
   <div class="map-layout">
-    <div id="map">
-  </div>
+   <div id="map"></div>
     
-  <div class="layers">
+   <div class="layers">
 
     <details>
-  <summary>Miscellaneous</summary>
+     <summary>Miscellaneous</summary>
+     <div class="layer-item">
+      <div class="layer-row">
+       <input type="checkbox" id="layer-geology-hillshade">
+       <label for="layer-geology-hillshade">NSW 5m Hillshade</label>
+       <button type="button" id="zoom-geology-hillshade">Zoom to</button>
+      </div>
+      <input type="range" id="opacity-geology-hillshade" min="0" max="1" step="0.05" value="0.7">
+    </div>
 
-  <!-- NSW 5m Hillshade -->
-  <div class="layer-item">
-    <div class="layer-row">
-      <input type="checkbox" id="layer-geology-hillshade">
-      <label for="layer-geology-hillshade">NSW 5m Hillshade</label>
-      <button type="button" id="zoom-geology-hillshade">Zoom to</button>
-    </div>
-    <input
-      type="range"
-      id="opacity-geology-hillshade"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
-  </div>
-
-  <!-- Simplified Regional Geology -->
-  <div class="layer-item">
-    <div class="layer-row">
-      <input type="checkbox" id="layer-geology-regional">
-      <label for="layer-geology-regional">Simplified Regional Geology</label>
-      <button type="button" id="zoom-geology-regional">Zoom to</button>
-    </div>
-    <input
-      type="range"
-      id="opacity-geology-regional"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
-    <div style="margin-top:6px;">
-      <button type="button" id="download-geology-legend">Download Geology Legend</button>
-    </div>
-    <br>
-  </div>
+     <div class="layer-item">
+      <div class="layer-row">
+       <input type="checkbox" id="layer-geology-regional">
+       <label for="layer-geology-regional">Simplified Regional Geology</label>
+       <button type="button" id="zoom-geology-regional">Zoom to</button>
+      </div>
+      <input type="range" id="opacity-geology-regional" min="0" max="1" step="0.05" value="0.7">
+      <div style="margin-top:6px;">
+       <button type="button" id="download-geology-legend">Download Geology Legend</button>
+      </div>
+      <br>
+     </div>
 
       <div class="layer-item">
     <div class="layer-row">
@@ -124,17 +89,9 @@
       <label for="layer-thecreek">The Creek, approximately how it was in 2025, pre-landslide.</label>
       <button type="button" id="zoom-thecreek">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-thecreek"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
+    <input type="range" id="opacity-thecreek" min="0" max="1" step="0.05" value="0.7">
   </div>
 <div class="layer-note">Creek location has been placed as accurately as possible using site visits, discussions with locals and examination of imagery & DBYDs. Pale blue=piped, dark blue=natural, green=900mm Hunter Water concrete pipe, brown=Hunter Water Easement.</div>
-
 
   <div class="layer-item">
     <div class="layer-row">
@@ -144,7 +101,6 @@
     </div>
   </div>
       <div class="layer-note">red=maximally affected, pink=partially affected, blue=has contributed to this project</div>
-
 </details>
 
 
@@ -157,14 +113,7 @@
       <label for="layer-1913-subdivision-ad">Subdivision advertisement, 1913 (exact date unknown)</label>
       <button type="button" id="zoom-1913-subdivision-ad">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-1913-subdivision-ad"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
+    <input type="range" id="opacity-1913-subdivision-ad" min="0" max="1" step="0.05" value="0.7" >
   </div>
   
 </details>
@@ -179,18 +128,9 @@
     <label for="layer-1917-waterboard">Water Board Survey Map</label>
     <button type="button" id="zoom-1917-waterboard">Zoom to</button>
   </div>
-  <input
-    type="range"
-    id="opacity-1917-waterboard"
-    min="0"
-    max="1"
-    step="0.05"
-    value="0.7"
-  >
+  <input type="range" id="opacity-1917-waterboard" min="0" max="1" step="0.05" value="0.7">
 </div>
-  
-</details>
-
+  </details>
 
 <details>
  <summary>1935</summary>
@@ -202,34 +142,21 @@
     </label>
     <button type="button" id="zoom-1935-addison19to31">Zoom to</button>
   </div>
-</div>
-
-  
+</div> 
 </details>
 
-    
 <details>
   <summary>1936</summary>
-  
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1936-parish">
       <label for="layer-1936-parish">1936 Newcastle Parish Map</label>
       <button type="button" id="zoom-1936-parish">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-1936-parish"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
+    <input type="range" id="opacity-1936-parish" min="0" max="1" step="0.05" value="0.7">
   </div>
   <div class="layer-note">(Note that the Slip Creek is marked out the same as all the other creeks in the Parish)</div>
-
 </details>
-
 
 <details>
   <summary>1938</summary>
@@ -239,27 +166,17 @@
   </div>
   </div>
   <div class="layer-note">11 Councils- Adamstown, Carrington, Hamilton, Lambton, New Lambton, Newcastle Borough, Merewether, Stockton, Wallsend, Waratah and Wickham, merged.</div>
-
 </details>
-    
     
 <details>
   <summary>1944 (Imagery year)</summary>
-  
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1944">
       <label for="layer-1944">1944 Aerial Photography</label>
       <button type="button" id="zoom-1944">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-1944"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
+    <input type="range" id="opacity-1944" min="0" max="1" step="0.05" value="0.7" >
   </div>
   <div class="layer-note">(Note the bridge over the creek at the end of Portland Pl)</div>
 </details>
@@ -324,8 +241,6 @@
     </div>
   </div>
 <div class="layer-note">Reports that landslides were not uncommon in the hills.</div>
-
-  
 </details>
     
 <details>
@@ -394,14 +309,11 @@
     <button type="button" id="zoom-1950-letter-isaac-hoare">Zoom to</button>
   </div>
 </div>
-
-  
 </details>
 
 
 <details>
-  
-  <summary>1951</summary>
+    <summary>1951</summary>
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1951-road-collapses">
@@ -428,13 +340,11 @@
     <button type="button" id="zoom-1951-chelston-st-flowpath">Zoom to</button>
   </div>
 </div>
-
 </details>
     
 
 <details>
   <summary>1953</summary>
-  
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1953-addison-facing-w">
@@ -457,36 +367,24 @@
       <label for="layer-1953-addison-residents-surveying-movement">Photo: "The Slip", 22nd March, 1953.</label>
       <button type="button" id="zoom-1953-addison-residents-surveying-movement">Zoom to</button>
     </div>
-  </div>
-      
+  </div> 
 </details>
 
 
 <details>
   <summary>1954 (Imagery year)</summary>
-  
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1954-imagery">
       <label for="layer-1954-imagery">1954 Aerial Photography</label>
       <button type="button" id="zoom-1954-imagery">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-1954-imagery"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
-  </div>
-  
+    <input type="range" id="opacity-1954-imagery" min="0" max="1" step="0.05" value="0.7" >
+  </div>  
 </details>
-
 
 <details>
   <summary>1957</summary>
-
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1957-council-acquisition-11-addison">
@@ -503,22 +401,12 @@
     <label for="layer-1957-acq-13-addison">Document: 7th Nov 1957. The Council of the City of Newcastle purchase part of 13 Addison Rd to deal with The Slip.</label>
     <button type="button" id="zoom-1957-acq-13-addison">Zoom to</button>
   </div>
-   <input
-    type="range"
-    id="opacity-1957-acq-13-addison"
-    min="0"
-    max="1"
-    step="0.05"
-    value="1"
-  >
+   <input type="range" id="opacity-1957-acq-13-addison" min="0" max="1" step="0.05" value="1">
 </div>
-
 </details>
-
 
 <details>
   <summary>1958</summary>
-
 <div class="layer-item">
   <div class="layer-row">
     <input type="checkbox" id="layer-1958-addison15-acq">
@@ -528,7 +416,6 @@
     <button type="button" id="zoom-1958-addison15-acq">Zoom to</button>
   </div>
 </div>
-
 </details>
     
     
@@ -540,22 +427,13 @@
       <label for="layer-1959-parish">1959 Newcastle Parish Map</label>
       <button type="button" id="zoom-1959-parish">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-1959-parish"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
+    <input type="range" id="opacity-1959-parish" min="0" max="1" step="0.05" value="0.7">
   </div>
   <div class="layer-note">(Note again that The Creek is mapped)</div>
 </details>
 
-
 <details>
  <summary>1960</summary>
-  
 <div class="layer-item">
   <div class="layer-row">
     <input type="checkbox" id="layer-1960-addison19-acq">
@@ -564,12 +442,9 @@
     </label>
     <button type="button" id="zoom-1960-addison19-acq">Zoom to</button>
   </div>
-</div>
-
-  
+</div>  
 </details>
     
-
 <details>
   <summary>1966 (Imagery year)</summary>
     <div class="layer-item">
@@ -578,16 +453,8 @@
         <label for="layer-1966-imagery">Aerial imagery, 1966.</label>
         <button type="button" id="zoom-1966-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-1966-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-1966-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
-  
 </details>
     
     
@@ -599,14 +466,7 @@
       <label for="layer-1969-midwest">1969 MidWest Ward Map</label>
       <button type="button" id="zoom-1969-midwest">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-1969-midwest"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
+    <input type="range" id="opacity-1969-midwest" min="0" max="1" step="0.05" value="0.7">
   </div>
 </details>
 
@@ -618,14 +478,7 @@
         <label for="layer-1974-imagery">Aerial imagery, 1974.</label>
         <button type="button" id="zoom-1974-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-1974-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-1974-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
   
 </details>
@@ -633,29 +486,18 @@
 
  <details>
   <summary>1976 (Imagery year)</summary>
-
     <div class="layer-item">
       <div class="layer-row">
         <input type="checkbox" id="layer-1976-imagery">
         <label for="layer-1976-imagery">Aerial imagery, 1976.</label>
         <button type="button" id="zoom-1976-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-1976-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-1976-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
-  
 </details>
     
-
 <details>
   <summary>1983</summary>
-
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-1983-coffey-commissioned">
@@ -665,28 +507,18 @@
       <button type="button" id="zoom-1983-coffey-commissioned">Zoom to</button>
     </div>
   </div>
-
 </details>
 
 
 <details>
-
   <summary>1984 (Imagery year)</summary>
-  
     <div class="layer-item">
       <div class="layer-row">
         <input type="checkbox" id="layer-1984-imagery">
         <label for="layer-1984-imagery">Aerial imagery, 1984.</label>
         <button type="button" id="zoom-1984-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-1984-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-1984-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
   
   <div class="layer-item">
@@ -696,7 +528,6 @@
     <button type="button" id="zoom-1984-lmcc-first-geotech-zoning">Zoom to</button>
   </div>
 </div>
-
 </details>
 
 
@@ -708,22 +539,13 @@
         <label for="layer-1987-imagery">Aerial imagery, 1987.</label>
         <button type="button" id="zoom-1987-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-1987-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-1987-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
-  
-</details>
+  </details>
     
     
 <details>
   <summary>1988</summary>
-  
     <div class="layer-item">
   <div class="layer-row">
     <input type="checkbox" id="layer-1988-chelston-st-29apr">
@@ -738,51 +560,32 @@
 
  <details>
   <summary>1993 (Imagery year)</summary>
-
     <div class="layer-item">
       <div class="layer-row">
         <input type="checkbox" id="layer-1993-imagery">
         <label for="layer-1993-imagery">Aerial imagery, 1993.</label>
         <button type="button" id="zoom-1993-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-1993-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-1993-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
-  
-</details>
+  </details>
 
 
  <details>
   <summary>1998 (Imagery year)</summary>
-
     <div class="layer-item">
       <div class="layer-row">
         <input type="checkbox" id="layer-1998-imagery">
         <label for="layer-1998-imagery">Aerial imagery, 1998.</label>
         <button type="button" id="zoom-1998-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-1998-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-1998-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
-  
-</details>
+  </details>
 
 
 <details>
   <summary>2007</summary>
-
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-2007-wondabyne-rail-slide">
@@ -797,51 +600,32 @@
 
 <details>
   <summary>2014 (Imagery year)</summary>
-
 <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-20140501-sat">
       <label for="layer-2014-sat">Satellite imagery, 1st of May, 2014.</label>
       <button type="button" id="zoom-20140501-sat">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-20140501-sat"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
+    <input type="range" id="opacity-20140501-sat" min="0" max="1" step="0.05" value="0.7">
   </div>
-
 </details>    
     
 
 <details>
   <summary>2015 (Imagery year)</summary>
-
     <div class="layer-item">
       <div class="layer-row">
         <input type="checkbox" id="layer-04102015-imagery">
         <label for="layer-04102015-imagery">Satellite imagery, 2015.</label>
         <button type="button" id="zoom-04102015-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-04102015-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-04102015-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
-  
 </details>
 
 
  <details>
   <summary>2017 (Imagery year)</summary>
-
 <div class="layer-item">
   <div class="layer-row">
     <input type="checkbox" id="layer-29042017-imagery">
@@ -1009,23 +793,13 @@
     </label>
     <button type="button" id="zoom-2022-goulburn-dudley">Zoom to</button>
   </div>
-
-  <input
-    type="range"
-    id="opacity-2022-goulburn-dudley"
-    min="0"
-    max="1"
-    step="0.05"
-    value="1"
-  >
+ <input type="range" id="opacity-2022-goulburn-dudley" min="0" max="1" step="0.05" value="1">
 </div>
-
 </details>
     
 
 <details>
   <summary>2023 (Imagery year)</summary>
-
   <div class="layer-item">
   <div class="layer-row">
     <input type="checkbox" id="layer-12022023-imagery">
@@ -1050,21 +824,13 @@
       <label for="layer-2023-sat">Satellite imagery, 15th of October, 2023.</label>
       <button type="button" id="zoom-2023-sat">Zoom to</button>
     </div>
-    <input
-      type="range"
-      id="opacity-2023-sat"
-      min="0"
-      max="1"
-      step="0.05"
-      value="0.7"
-    >
+    <input type="range" id="opacity-2023-sat" min="0" max="1" step="0.05" value="0.7">
   </div>
 </details>
 
 
 <details>
   <summary>2024 (Imagery year)</summary>
-  
  <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-12BakerSt_lookingE">
@@ -1079,21 +845,13 @@
         <label for="layer-24052024-imagery">Satellite imagery, 24th of May, 2024.</label>
         <button type="button" id="zoom-24052024-imagery">Zoom to</button>
       </div>
-      <input
-        type="range"
-        id="opacity-24052024-imagery"
-        min="0"
-        max="1"
-        step="0.05"
-        value="0.7"
-      >
+      <input type="range" id="opacity-24052024-imagery" min="0" max="1" step="0.05" value="0.7">
     </div>
 </details>
     
 
 <details>
   <summary>2025 (Imagery year)</summary>
-
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-LakeMacLocalsFBpost23rdMay2025">
@@ -1108,14 +866,7 @@
     <label for="layer-2025-satellite-2025-07-20">Satellite imagery, 20th July 2025</label>
     <button type="button" id="zoom-2025-satellite-2025-07-20">Zoom to</button>
   </div>
-  <input
-    type="range"
-    id="opacity-2025-satellite-2025-07-20"
-    min="0"
-    max="1"
-    step="0.05"
-    value="0.7"
-  >
+  <input type="range" id="opacity-2025-satellite-2025-07-20" min="0" max="1" step="0.05" value="0.7">
 </div>
 
 <div class="layer-item">
@@ -1137,15 +888,10 @@
     <button type="button" id="zoom-2025-creek-video">Zoom to</button>
   </div>
 </div>
-
 </details>
-
-
 </div>
-
   </div>
 
-  <!-- Leaflet JS -->
   <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     crossorigin=""
@@ -1156,19 +902,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const streetMap = L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; OpenStreetMap contributors',
-    maxZoom: 22
-  }
-);
+  { attribution: '&copy; OpenStreetMap contributors', maxZoom: 22});
 
 const satelliteMap = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-  {
-    attribution: 'Tiles © Esri',
-    maxZoom: 22
-  }
-);
+  { attribution: 'Tiles © Esri', maxZoom: 22});
 
 const map = L.map('map', {
   maxZoom: 22,
@@ -1204,59 +942,37 @@ checkbox1913Ad.addEventListener('change', () => {
 
     if (!ad1913Overlay) {
       const imageUrl = 'data/1913/M1651 - New Lambton Subdivision Plan_1913_rotated.png';
-
       ad1913Overlay = L.imageOverlay(imageUrl, ad1913Bounds, {
-        opacity: parseFloat(opacitySlider1913Ad.value)
-      });
-    }
-
+        opacity: parseFloat(opacitySlider1913Ad.value)});}
     ad1913Overlay.addTo(map);
-
   } else {
-    if (ad1913Overlay) map.removeLayer(ad1913Overlay);
-  }
-});
-
+    if (ad1913Overlay) map.removeLayer(ad1913Overlay);}});
 // Opacity slider controls the image
 opacitySlider1913Ad.addEventListener('input', () => {
-  if (ad1913Overlay) ad1913Overlay.setOpacity(parseFloat(opacitySlider1913Ad.value));
-});
-
+  if (ad1913Overlay) ad1913Overlay.setOpacity(parseFloat(opacitySlider1913Ad.value));});
 // Zoom-to button
 document.getElementById('zoom-1913-subdivision-ad').addEventListener('click', () => {
   if (ad1913Overlay) map.fitBounds(ad1913Overlay.getBounds());
-  else map.fitBounds(ad1913Bounds);
-});
-
-  
+  else map.fitBounds(ad1913Bounds);});
 
   let waterboard1917 = null;
    const opacitySlider = document.getElementById('opacity-1917-waterboard');
    const checkbox = document.getElementById('layer-1917-waterboard');
-
   checkbox.addEventListener('change', () => {
     if (checkbox.checked) {
       if (!waterboard1917) {
        const imageUrl = 'data/1917/water_board_map_1917.png';
-
         const bounds = [
           [-32.927362, 151.702385],  // south-west
           [-32.921030, 151.712207]   // north-east
         ];
 
         waterboard1917 = L.imageOverlay(imageUrl, bounds, {
-  opacity: parseFloat(opacitySlider.value)
-});
-
-      }
-
+  opacity: parseFloat(opacitySlider.value)});}
       waterboard1917.addTo(map);
     } else {
       if (waterboard1917) {
-        map.removeLayer(waterboard1917);
-      }
-    }
-  }); //This line ends the checkbox handler
+        map.removeLayer(waterboard1917);}}});
     
   //This is the slider listener  
     opacitySlider.addEventListener('input', () => {
@@ -1265,20 +981,14 @@ document.getElementById('zoom-1913-subdivision-ad').addEventListener('click', ()
   }
 }); //This line ends the slider listener
 
-
     document.getElementById('zoom-1917-waterboard').addEventListener('click', () => {
-  if (waterboard1917) {
-    map.fitBounds(waterboard1917.getBounds());
-  }
-});
+  if (waterboard1917) {map.fitBounds(waterboard1917.getBounds());}});
 
 
 // 1935: Council purchase 19–31 Addison Rd (image overlay only)
 let addison1935 = null;
-
 const cb1935 = document.getElementById('layer-1935-addison19to31');
 const zoom1935 = document.getElementById('zoom-1935-addison19to31');
-
 // Guard
 if (!cb1935 || !zoom1935) {
   console.warn('1935 layer UI elements missing');
@@ -1287,40 +997,27 @@ if (!cb1935 || !zoom1935) {
     [-32.926728, 151.706758], // SW
     [-32.925928, 151.708422]  // NE
   );
-
   cb1935.addEventListener('change', () => {
     if (cb1935.checked) {
       if (!addison1935) {
         addison1935 = L.imageOverlay(
           'data/1935/LambtonCouncilPurchase19to31Addison.png',
-          bounds1935,
-          { opacity: 1 }
-        );
-      }
+          bounds1935,{ opacity: 1 });}
       addison1935.addTo(map);
     } else {
-      if (addison1935) map.removeLayer(addison1935);
-    }
-  });
-
+      if (addison1935) map.removeLayer(addison1935);}});
   zoom1935.addEventListener('click', () => {
-    map.fitBounds(bounds1935, { maxZoom: 19 });
-  });
-}
-
-  
+    map.fitBounds(bounds1935, { maxZoom: 19 });});}
   
 
 let parish1936 = null;
-
 const checkbox1936 = document.getElementById('layer-1936-parish');
 const opacitySlider1936 = document.getElementById('opacity-1936-parish');
-
 checkbox1936.addEventListener('change', () => {
   if (checkbox1936.checked) {
     if (!parish1936) {
       const imageUrl = 'data/1936/newcastle_parish_map_1936.png';
-      
+     
       const bounds = [
         [-32.947076, 151.663018],  // south-west
         [-32.875890, 151.755627]   // north-east
@@ -1349,13 +1046,10 @@ document.getElementById('zoom-1936-parish').addEventListener('click', () => {
     // 1944 ( layer group)
 let layer1944 = null;
 let layer1944Bounds = null;
-
 const checkbox1944 = document.getElementById('layer-1944');
 const opacitySlider1944 = document.getElementById('opacity-1944');
-
 checkbox1944.addEventListener('change', () => {
   if (checkbox1944.checked) {
-
     if (!layer1944) {
       const op = () => parseFloat(opacitySlider1944.value);
       // Format: [[southWestLat, southWestLng], [northEastLat, northEastLng]]
@@ -1368,53 +1062,40 @@ checkbox1944.addEventListener('change', () => {
         L.imageOverlay('data/1944/1944_6.png', [[-32.960778, 151.622817], [-32.957005, 151.631085]], { opacity: op() }),
         L.imageOverlay('data/1944/1944_7.png', [[-32.965233, 151.625086], [-32.961603, 151.633358]], { opacity: op() }),
         L.imageOverlay('data/1944/1944_8.png', [[-32.929501, 151.704122], [-32.925730, 151.713770]], { opacity: op() }),
-        L.imageOverlay('data/1944/1944_9.png', [[-32.963041, 151.633870], [-32.959149, 151.642005]], { opacity: op() })
-      ];
+        L.imageOverlay('data/1944/1944_9.png', [[-32.963041, 151.633870], [-32.959149, 151.642005]], { opacity: op() })];
 
       layer1944 = L.layerGroup(overlays);
       // Combined bounds for Zoom to
       layer1944Bounds = overlays.reduce((b, o) => {
         const ob = o.getBounds();
         return b ? b.extend(ob) : ob;
-      }, null);
-    }
+      }, null);}
 
     layer1944.addTo(map);
-
   } else {
-    if (layer1944) map.removeLayer(layer1944);
-  }
-});
+    if (layer1944) map.removeLayer(layer1944);}});
 // Opacity slider controls all images
 opacitySlider1944.addEventListener('input', () => {
   if (layer1944) {
     const v = parseFloat(opacitySlider1944.value);
-    layer1944.eachLayer(l => l.setOpacity(v));
-  }
-});
+    layer1944.eachLayer(l => l.setOpacity(v));}});
 // Zoom-to button zooms to the full extent of all images
 document.getElementById('zoom-1944').addEventListener('click', () => {
-  if (layer1944Bounds) map.fitBounds(layer1944Bounds);
-});
+  if (layer1944Bounds) map.fitBounds(layer1944Bounds);});
 
     
      // Families move out of creep-damaged flats, 21st of June 
   let FamiliesMoveOutOfFlats1949 = null;
-
 const FamiliesMoveOutOfFlatsCheckbox = document.getElementById('layer-1949-families-move-out-of-creep-damaged-flats');
 const zoomFamiliesMoveOutOfFlats = document.getElementById('zoom-1949-families-move-out-of-creep-damaged-flats');
 const FamiliesMoveOutOfFlatsLatLng = [-32.929396, 151.779889];
 
-
 FamiliesMoveOutOfFlatsCheckbox.addEventListener('change', () => {
   if (FamiliesMoveOutOfFlatsCheckbox.checked) {
-
     if (!FamiliesMoveOutOfFlats1949) {
       const latlng = FamiliesMoveOutOfFlatsLatLng; 
-
       const previewImg = 'data/1949/19490621_FamiliesMoveOutOfCreepDamagedFlats.jpg';
       const pngUrl = 'data/1949/19490621_FamiliesMoveOutOfCreepDamagedFlats.jpg';
-
       const markerIcon = L.divIcon({
         className: 'photo-marker',
         html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
@@ -1875,21 +1556,8 @@ TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
       const markerIcon = L.divIcon({
         className: 'photo-marker',
         html: `
-          <div style="
-            width:12px;
-            height:12px;
-            border-radius:50%;
-            background:#fff;
-            border:2px solid #000;
-            box-shadow:0 0 2px rgba(0,0,0,0.6);
-          "></div>
-        `,
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-      });
-
+          <div style=" width:12px; height:12px; border-radius:50%; background:#fff; border:2px solid #000; box-shadow:0 0 2px rgba(0,0,0,0.6); "></div> `, iconSize: [12, 12], iconAnchor: [6, 6]});
       TheSlipMovedAgain1953 = L.marker(TheSlipMovedAgain1953LatLng, { icon: markerIcon });
-
       TheSlipMovedAgain1953.bindTooltip(
         `<div style="width:560px">
            <div style="font-size:12px;margin-bottom:6px">
@@ -1897,9 +1565,7 @@ TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
            </div>
            <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
          </div>`,
-        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
-      );
-
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true });
       TheSlipMovedAgain1953.bindPopup(
         `<div style="width:560px">
            <div style="margin-bottom:8px">Download full-resolution image (PNG, ~18 MB)?</div>
@@ -1941,22 +1607,9 @@ menAndChildren1953Checkbox.addEventListener('change', () => {
       const markerIcon = L.divIcon({
         className: 'photo-marker',
         html: `
-          <div style="
-            width:12px;
-            height:12px;
-            border-radius:50%;
-            background:#d00;
-            border:2px solid #fff;
-            box-shadow:0 0 2px rgba(0,0,0,0.6);
-          "></div>
-        `,
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-      });
+          <div style=" width:12px; height:12px; border-radius:50%; background:#d00; border:2px solid #fff; box-shadow:0 0 2px rgba(0,0,0,0.6); "></div> `, iconSize: [12, 12], iconAnchor: [6, 6]});
 
-      menAndChildren1953 = L.marker(menAndChildren1953LatLng, {
-        icon: markerIcon
-      });
+      menAndChildren1953 = L.marker(menAndChildren1953LatLng, { icon: markerIcon});
 
       // Hover preview
       menAndChildren1953.bindTooltip(
