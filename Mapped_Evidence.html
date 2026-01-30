@@ -14,7 +14,7 @@
     nav a {text-decoration: none;color: #000;font-size: 1.1rem;}
     .intro {max-width: 1400px;padding: 0 20px;margin: 0 auto 20px auto;font-size: 0.95rem;}
     .general {max-width: 1400px;padding: 0 20px;margin: 0 auto 20px auto;font-size: 0.95rem;}
-    .map-layout {display: flex;height: 65vh;min-height: 520px;max-width: 1400px;padding: 0 20px;margin: 0 auto;}
+    .map-layout {display:flex; height:65vh; min-height:520px; max-width:1400px; padding:0 20px; margin:0 auto;}
     #map {flex: 1;height: 100%;background: #e0e0e0;}
     .layers {width: 260px;border-left: 1px solid #ccc;padding: 10px;overflow-y: auto;}
     .layers details {margin-bottom: 10px;}
@@ -616,7 +616,7 @@
     <div class="layer-item">
       <div class="layer-row">
         <input type="checkbox" id="layer-04102015-imagery">
-        <label for="layer-04102015-imagery">Satellite imagery, 2015.</label>
+        <label for="layer-04102015-imagery">Satellite imagery, 4th of Oct, 2015.</label>
         <button type="button" id="zoom-04102015-imagery">Zoom to</button>
       </div>
       <input type="range" id="opacity-04102015-imagery" min="0" max="1" step="0.05" value="0.7">
@@ -2269,7 +2269,7 @@ if (!memorialDriveCheckbox || !memorialDriveZoomBtn) {
 
 const IMAGERY_BOTTOM_BOUNDS = L.latLngBounds(
   [-32.924611, 151.706340],   // SW
-  [-32.9234389, 151.7104023]  // NE
+  [-32.9234390, 151.7104023]  // NE
 );
 const IMAGERY_TOP_BOUNDS = L.latLngBounds(
   [-32.9234375, 151.706340],  // SW
@@ -2368,32 +2368,26 @@ for (const cfg of imageryConfigs) {
 // 04/10/2015 Satellite imagery (two image overlays)----------------------------------------
 let imagery04102015BottomOverlay = null;
 let imagery04102015TopOverlay = null;
-
 const imagery04102015Checkbox = document.getElementById('layer-04102015-imagery');
 const imagery04102015OpacitySlider = document.getElementById('opacity-04102015-imagery');
 const imagery04102015ZoomBtn = document.getElementById('zoom-04102015-imagery');
-
 if (!imagery04102015Checkbox || !imagery04102015OpacitySlider || !imagery04102015ZoomBtn) {
   console.warn('04102015 imagery UI elements missing');
 } else {
   const imagery04102015BottomBounds = L.latLngBounds(
     [-32.924611, 151.706340], // SW
-    [-32.923439, 151.7104023]  // NE
+    [-32.923440, 151.7104023]  // NE
   );
-
   const imagery04102015TopBounds = L.latLngBounds(
     [-32.9234375, 151.706340], // SW
     [-32.9222264, 151.7104023]  // NE
   );
-
   function set04102015Opacity(v) {
     if (imagery04102015BottomOverlay) imagery04102015BottomOverlay.setOpacity(v);
     if (imagery04102015TopOverlay) imagery04102015TopOverlay.setOpacity(v);
   }
-
   imagery04102015Checkbox.addEventListener('change', () => {
     const op = parseFloat(imagery04102015OpacitySlider.value);
-
     if (imagery04102015Checkbox.checked) {
       if (!imagery04102015BottomOverlay) {
         imagery04102015BottomOverlay = L.imageOverlay(
