@@ -892,10 +892,7 @@
 </div>
   </div>
 
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    crossorigin=""
-  ></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" ></script>
 
   <!-- Initialise map -->
   <script>
@@ -903,43 +900,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const streetMap = L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   { attribution: '&copy; OpenStreetMap contributors', maxZoom: 22});
-
 const satelliteMap = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
   { attribution: 'Tiles © Esri', maxZoom: 22});
-
 const map = L.map('map', {
   maxZoom: 22,
   layers: [streetMap]
 }).setView([-32.923512, 151.708520], 15);
-
 const baseMaps = {
   "Street map": streetMap,
-  "Satellite imagery": satelliteMap
-};
-
+  "Satellite imagery": satelliteMap};
 L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
-
   //back-to-New-Lambton button
 document.getElementById('back-to-new-lambton').addEventListener('click', () => {
-  map.setView([-32.923512, 151.708520], 16);
-});
-  
+  map.setView([-32.923512, 151.708520], 16);});
 
-// 1913 Subdivision advertisement (single-image overlay)
+// 1913 Subdivision advertisement (single-image overlay)----------------------------------------------------------------------------------------------------------------------------------------
 let ad1913Overlay = null;
-
 const checkbox1913Ad = document.getElementById('layer-1913-subdivision-ad');
 const opacitySlider1913Ad = document.getElementById('opacity-1913-subdivision-ad');
-
 const ad1913Bounds = [
   [-32.93065, 151.70470],   // south-west
   [-32.91959, 151.717122]  // north-east
 ];
-
 checkbox1913Ad.addEventListener('change', () => {
   if (checkbox1913Ad.checked) {
-
     if (!ad1913Overlay) {
       const imageUrl = 'data/1913/M1651 - New Lambton Subdivision Plan_1913_rotated.png';
       ad1913Overlay = L.imageOverlay(imageUrl, ad1913Bounds, {
@@ -980,7 +965,6 @@ document.getElementById('zoom-1913-subdivision-ad').addEventListener('click', ()
     waterboard1917.setOpacity(parseFloat(opacitySlider.value));
   }
 }); //This line ends the slider listener
-
     document.getElementById('zoom-1917-waterboard').addEventListener('click', () => {
   if (waterboard1917) {map.fitBounds(waterboard1917.getBounds());}});
 
@@ -1008,8 +992,6 @@ if (!cb1935 || !zoom1935) {
       if (addison1935) map.removeLayer(addison1935);}});
   zoom1935.addEventListener('click', () => {
     map.fitBounds(bounds1935, { maxZoom: 19 });});}
-  
-
 let parish1936 = null;
 const checkbox1936 = document.getElementById('layer-1936-parish');
 const opacitySlider1936 = document.getElementById('opacity-1936-parish');
@@ -1017,7 +999,6 @@ checkbox1936.addEventListener('change', () => {
   if (checkbox1936.checked) {
     if (!parish1936) {
       const imageUrl = 'data/1936/newcastle_parish_map_1936.png';
-     
       const bounds = [
         [-32.947076, 151.663018],  // south-west
         [-32.875890, 151.755627]   // north-east
@@ -1130,19 +1111,15 @@ FamiliesMoveOutOfFlats1949.on('mouseout', () => {
            <a href="${pngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
              Download JPG
            </a>
-         </div>`
-      );
-    }
-
+         </div>`      );    }
     FamiliesMoveOutOfFlats1949.addTo(map);
   } else {
-    if (FamiliesMoveOutOfFlats1949) map.removeLayer(FamiliesMoveOutOfFlats1949);
-  }
-});
+    if (FamiliesMoveOutOfFlats1949) map.removeLayer(FamiliesMoveOutOfFlats1949);  }});
 // Zoom-to button
 zoomFamiliesMoveOutOfFlats.addEventListener('click', () => {
   map.setView(FamiliesMoveOutOfFlatsLatLng, 18);});
 
+  
 // Photo: Boolaroo landslide scarps, 1st Sep 1949
 let boolarooScarps1949Marker = null;
 const boolarooScarps1949Checkbox = document.getElementById('layer-1949-boolaroo-scarps');
@@ -1279,8 +1256,7 @@ addison28to32Checkbox.addEventListener('change', () => {
            <a href="${pngUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">Download PNG</a>
          </div>`    );   }
     addison28to32_1950.addTo(map);
-  } else {
-    if (addison28to32_1950) map.removeLayer(addison28to32_1950);  }});
+  } else {    if (addison28to32_1950) map.removeLayer(addison28to32_1950);  }});
 zoomaddison28to32.addEventListener('click', () => {
   map.setView(addison28to32LatLng, 18);});
 
@@ -1310,8 +1286,7 @@ chelstonStCheckbox.addEventListener('change', () => {
            <a href="https://unsworks.unsw.edu.au/entities/publication/8ef29976-5802-4702-9719-52f913e3f133" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">Thesis: Three-dimensional, transient piezometric response in landslides to rainfall. Williams-Sweeney, Kelly S.</a>
          </div>`     );   }
     chelstonSt1951.addTo(map);
-  } else {
-    if (chelstonSt1951) map.removeLayer(chelstonSt1951);  }});
+  } else {    if (chelstonSt1951) map.removeLayer(chelstonSt1951);  }});
 zoomChelstonSt.addEventListener('click', () => {
   map.setView(chelstonStLatLng, 18);});
 
@@ -1331,50 +1306,37 @@ chelstonStFlowCheckbox.addEventListener('change', () => {
       chelstonSt1951FlowPath = L.marker(chelstonStFlowLatLng, { icon: markerIcon });
       chelstonSt1951FlowPath.bindTooltip(
         `<div style="width:560px">
-           <div style="font-size:12px;margin-bottom:6px">
-             The 1951 Chelston St landslide in Warners Bay covered 3–4 ha and created scarps up to 2.5 m high.
-           </div>
-           <img src="${previewImg}"
-                style="width:100%;height:auto;display:block;border:1px solid #ccc">
+           <div style="font-size:12px;margin-bottom:6px">      The 1951 Chelston St landslide in Warners Bay covered 3–4 ha and created scarps up to 2.5 m high.    </div>
+           <img src="${previewImg}"                style="width:100%;height:auto;display:block;border:1px solid #ccc">
          </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }  );
       chelstonSt1951FlowPath.bindPopup(
         `<div style="width:320px">
            <div style="margin-bottom:8px">Source document:</div>
            <a href="https://unsworks.unsw.edu.au/entities/publication/8ef29976-5802-4702-9719-52f913e3f133" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">Thesis: Three-dimensional, transient piezometric response in landslides to rainfall. Williams-Sweeney, Kelly S.</a>
-         </div>`
-      ); }
+         </div>`      ); }
     chelstonSt1951FlowPath.addTo(map);
-  } else {
-    if (chelstonSt1951FlowPath) map.removeLayer(chelstonSt1951FlowPath);  }});
+  } else {    if (chelstonSt1951FlowPath) map.removeLayer(chelstonSt1951FlowPath);  }});
 zoomChelstonStFlow.addEventListener('click', () => {  map.setView(chelstonStFlowLatLng, 18);});
 
 
 // Photo: 22 Mar 1953 – The Slip moved again
 let TheSlipMovedAgain1953 = null;
-
 const TheSlipMovedAgain1953Checkbox = document.getElementById('layer-1953-addison-facing-w');
 const zoomTheSlipMovedAgain1953 = document.getElementById('zoom-1953-addison-facing-w');
-
 const TheSlipMovedAgain1953LatLng = [-32.926608, 151.708110];
-
 TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
   if (TheSlipMovedAgain1953Checkbox.checked) {
-
     if (!TheSlipMovedAgain1953) {
       const previewImg = 'data/1953/19530322_AddisonRdFacingW.png';
-      const pngUrl = 'data/1953/19530322_AddisonRdFacingW.png'; // or your full-res file
-
+      const pngUrl = 'data/1953/19530322_AddisonRdFacingW.png';
       const markerIcon = L.divIcon({
         className: 'photo-marker',
-        html: `
-          <div style=" width:12px; height:12px; border-radius:50%; background:#fff; border:2px solid #000; box-shadow:0 0 2px rgba(0,0,0,0.6); "></div> `, iconSize: [12, 12], iconAnchor: [6, 6]});
+        html: `          <div style=" width:12px; height:12px; border-radius:50%; background:#fff; border:2px solid #000; box-shadow:0 0 2px rgba(0,0,0,0.6); "></div> `, iconSize: [12, 12], iconAnchor: [6, 6]});
       TheSlipMovedAgain1953 = L.marker(TheSlipMovedAgain1953LatLng, { icon: markerIcon });
       TheSlipMovedAgain1953.bindTooltip(
         `<div style="width:560px">
-           <div style="font-size:12px;margin-bottom:6px">
-             Earthworks being undertaken after further movement.
-           </div>
+           <div style="font-size:12px;margin-bottom:6px">      Earthworks being undertaken after further movement.   </div>
            <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
          </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true });
@@ -1386,55 +1348,36 @@ TheSlipMovedAgain1953Checkbox.addEventListener('change', () => {
              Download PNG
            </a>
          </div>`
-      );
-    }
-
+      );    }
     TheSlipMovedAgain1953.addTo(map);
-
   } else {
     if (TheSlipMovedAgain1953) map.removeLayer(TheSlipMovedAgain1953);
-  }
-});
-
+  }});
 zoomTheSlipMovedAgain1953.addEventListener('click', () => {
-  map.setView(TheSlipMovedAgain1953LatLng, 18);
-});
+  map.setView(TheSlipMovedAgain1953LatLng, 18);});
 
+  
 // Photo: Men & children surveying renewed movement in "The Slip", 22 Mar 1953
 let menAndChildren1953 = null;
-
-const menAndChildren1953Checkbox =
-  document.getElementById('layer-1953-addison-men-and-children');
-const zoomMenAndChildren1953 =
-  document.getElementById('zoom-1953-addison-men-and-children');
-
+const menAndChildren1953Checkbox =  document.getElementById('layer-1953-addison-men-and-children');
+const zoomMenAndChildren1953 =  document.getElementById('zoom-1953-addison-men-and-children');
 const menAndChildren1953LatLng = [-32.926549, 151.708099];
-
 menAndChildren1953Checkbox.addEventListener('change', () => {
   if (menAndChildren1953Checkbox.checked) {
-
     if (!menAndChildren1953) {
       const imgUrl = 'data/1953/19530322_AddisonRdMenAndChildren.png';
-
       const markerIcon = L.divIcon({
         className: 'photo-marker',
-        html: `
-          <div style=" width:12px; height:12px; border-radius:50%; background:#d00; border:2px solid #fff; box-shadow:0 0 2px rgba(0,0,0,0.6); "></div> `, iconSize: [12, 12], iconAnchor: [6, 6]});
-
+        html: `     <div style=" width:12px; height:12px; border-radius:50%; background:#d00; border:2px solid #fff; box-shadow:0 0 2px rgba(0,0,0,0.6); "></div> `, iconSize: [12, 12], iconAnchor: [6, 6]});
       menAndChildren1953 = L.marker(menAndChildren1953LatLng, { icon: markerIcon});
-
       // Hover preview
       menAndChildren1953.bindTooltip(
         `<div style="width:560px">
-           <div style="font-size:12px;margin-bottom:6px">
-             Men & children surveying The Slip. Addison Rd facing west, 22nd March 1953
-           </div>
+           <div style="font-size:12px;margin-bottom:6px">   Men & children surveying The Slip. Addison Rd facing west, 22nd March 1953    </div>
            <img src="${imgUrl}"
                 style="width:100%;height:auto;display:block;border:1px solid #ccc">
          </div>`,
-        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
-      );
-
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }     );
       // Click popup (download)
       menAndChildren1953.bindPopup(
         `<div style="width:260px">
@@ -1446,63 +1389,33 @@ menAndChildren1953Checkbox.addEventListener('change', () => {
                      text-decoration:none;color:#000">
              Download PNG
            </a>
-         </div>`
-      );
-    }
-
+         </div>`    );   }
     menAndChildren1953.addTo(map);
-
-  } else {
-    if (menAndChildren1953) map.removeLayer(menAndChildren1953);
-  }
-});
-
+  } else {    if (menAndChildren1953) map.removeLayer(menAndChildren1953);  }});
 // Zoom-to
 zoomMenAndChildren1953.addEventListener('click', () => {
-  map.setView(menAndChildren1953LatLng, 18);
-});
+  map.setView(menAndChildren1953LatLng, 18);});
 
 
 // Photo: Residents surveying "The Slip", 22 Mar 1953
 let residentsSurveying1953 = null;
-
-const residentsSurveying1953Checkbox =
-  document.getElementById('layer-1953-addison-residents-surveying-movement');
-const zoomResidentsSurveying1953 =
-  document.getElementById('zoom-1953-addison-residents-surveying-movement');
-
+const residentsSurveying1953Checkbox =  document.getElementById('layer-1953-addison-residents-surveying-movement');
+const zoomResidentsSurveying1953 =  document.getElementById('zoom-1953-addison-residents-surveying-movement');
 const residentsSurveying1953LatLng = [-32.926549, 151.707994];
-
 residentsSurveying1953Checkbox.addEventListener('change', () => {
   if (residentsSurveying1953Checkbox.checked) {
-
     if (!residentsSurveying1953) {
       const imgUrl = 'data/1953/19530322_MenStandingAddisonRdLandslide.png';
-
       const markerIcon = L.divIcon({
         className: 'photo-marker',
-        html: `
-          <div style="
-            width:12px;
-            height:12px;
-            border-radius:50%;
-            background:#fff;
-            border:2px solid #000;
-            box-shadow:0 0 2px rgba(0,0,0,0.6);
-          "></div>
-        `,
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-      });
+        html: `     <div style="          width:12px;            height:12px;            border-radius:50%;            background:#fff;            border:2px solid #000;            box-shadow:0 0 2px rgba(0,0,0,0.6);          "></div>        `,        iconSize: [12, 12],        iconAnchor: [6, 6]      });
       residentsSurveying1953 = L.marker(residentsSurveying1953LatLng, {  icon: markerIcon});
       residentsSurveying1953.bindTooltip(
         `<div style="width:560px">
            <div style="font-size:12px;margin-bottom:6px">
              Residents surveying The Slip. Addison Rd facing west, 22nd March 1953
            </div>
-           <img src="${imgUrl}"
-                style="width:100%;height:auto;display:block;border:1px solid #ccc">
-         </div>`,
+           <img src="${imgUrl}"                style="width:100%;height:auto;display:block;border:1px solid #ccc">         </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }      );
       residentsSurveying1953.bindPopup(
         `<div style="width:260px">
@@ -1513,33 +1426,20 @@ residentsSurveying1953Checkbox.addEventListener('change', () => {
               style="display:inline-block;padding:6px 10px;border:1px solid #000;
                      text-decoration:none;color:#000">
              Download PNG
-           </a>
-         </div>`
-      );
-    }
-
+           </a>         </div>`      );    }
     residentsSurveying1953.addTo(map);
-
-  } else {
-    if (residentsSurveying1953) map.removeLayer(residentsSurveying1953);
-  }
-});
-
+  } else {    if (residentsSurveying1953) map.removeLayer(residentsSurveying1953);  }});
 // Zoom-to
 zoomResidentsSurveying1953.addEventListener('click', () => {
-  map.setView(residentsSurveying1953LatLng, 18);
-});
-
+  map.setView(residentsSurveying1953LatLng, 18);});
   
 
 // 1954 Imagery (multi-image layer group)
 let layer1954imagery = null;
 let layer1954imageryBounds = null;
-
 const checkbox1954imagery = document.getElementById('layer-1954-imagery');
 const opacitySlider1954imagery = document.getElementById('opacity-1954-imagery');
 const zoomBtn1954imagery = document.getElementById('zoom-1954-imagery');
-
 // Guard (prevents script death if IDs are wrong)
 if (!checkbox1954imagery || !opacitySlider1954imagery || !zoomBtn1954imagery) {
   console.warn('1954 imagery UI elements missing');
@@ -1553,77 +1453,46 @@ if (!checkbox1954imagery || !opacitySlider1954imagery || !zoomBtn1954imagery) {
           L.imageOverlay('data/1954/1954_1.png', [[-32.968806, 151.623713], [-32.958380, 151.642633]], { opacity: op() }),
           L.imageOverlay('data/1954/1954_2.png', [[-32.960010, 151.624210], [-32.950120, 151.645000]], { opacity: op() }),
           L.imageOverlay('data/1954/1954_3.png', [[-32.930206, 151.699598], [-32.920282, 151.715371]], { opacity: op() }),
-          L.imageOverlay('data/1954/1954_4.png', [[-32.968806, 151.624210], [-32.960010, 151.645000]], { opacity: op() })
-        ];
-
+          L.imageOverlay('data/1954/1954_4.png', [[-32.968806, 151.624210], [-32.960010, 151.645000]], { opacity: op() })        ];
         layer1954imagery = L.layerGroup(overlays);
-
         layer1954imageryBounds = overlays.reduce((b, o) => {
           const ob = o.getBounds();
           return b ? b.extend(ob) : ob;
-        }, null);
-      }
-
+        }, null);      }
       layer1954imagery.addTo(map);
-    } else {
-      if (layer1954imagery) map.removeLayer(layer1954imagery);
-    }
-  });
-
+    } else {      if (layer1954imagery) map.removeLayer(layer1954imagery);    }  });
   opacitySlider1954imagery.addEventListener('input', () => {
     if (!layer1954imagery) return;
     const v = parseFloat(opacitySlider1954imagery.value);
-    layer1954imagery.eachLayer(l => l.setOpacity(v));
-  });
-
+    layer1954imagery.eachLayer(l => l.setOpacity(v));  });
   zoomBtn1954imagery.addEventListener('click', () => {
-    if (layer1954imageryBounds) map.fitBounds(layer1954imageryBounds);
-  });
-}
-
+    if (layer1954imageryBounds) map.fitBounds(layer1954imageryBounds);  });}
+  
 
     // 1959 Newcastle Parish Map
 let parish1959 = null;
-
 const checkbox1959 = document.getElementById('layer-1959-parish');
 const opacitySlider1959 = document.getElementById('opacity-1959-parish');
-
 checkbox1959.addEventListener('change', () => {
   if (checkbox1959.checked) {
     if (!parish1959) {
       const imageUrl = 'data/1959/newcastle_parish_map_1959.png';
-      
       const bounds = [
         [-32.941910, 151.692189],  // south-west
         [-32.912286, 151.739504]   // north-east
       ];
-
       parish1959 = L.imageOverlay(imageUrl, bounds, {
-        opacity: parseFloat(opacitySlider1959.value)
-      });
-    }
-
+        opacity: parseFloat(opacitySlider1959.value)      });    }
     parish1959.addTo(map);
-  } else {
-    if (parish1959) map.removeLayer(parish1959);
-  }
-});
-
-opacitySlider1959.addEventListener('input', () => {
-  if (parish1959) parish1959.setOpacity(parseFloat(opacitySlider1959.value));
-});
-
-document.getElementById('zoom-1959-parish').addEventListener('click', () => {
-  if (parish1959) map.fitBounds(parish1959.getBounds());
-});
+  } else {    if (parish1959) map.removeLayer(parish1959);  }});
+opacitySlider1959.addEventListener('input', () => {  if (parish1959) parish1959.setOpacity(parseFloat(opacitySlider1959.value));});
+document.getElementById('zoom-1959-parish').addEventListener('click', () => {  if (parish1959) map.fitBounds(parish1959.getBounds());});
 
 
 // 1960: Council acquisition part of 19 Addison Rd + easement (image overlay marker + hover preview + click download)
 let acquisition19Addison1960 = null;
-
 const cb1960 = document.getElementById('layer-1960-addison19-acq');
 const zoom1960 = document.getElementById('zoom-1960-addison19-acq');
-
 // Guard
 if (!cb1960 || !zoom1960) {
   console.warn('1960 layer UI elements missing');
@@ -1632,7 +1501,6 @@ if (!cb1960 || !zoom1960) {
     [-32.926508, 151.708135], // SW
     [-32.925930, 151.708429]  // NE
   );
-
   cb1960.addEventListener('change', () => {
     if (cb1960.checked) {
       if (!acquisition19Addison1960) {
@@ -1659,9 +1527,8 @@ if (!cb1960 || !zoom1960) {
              </a>
            </div>`        );      }
       acquisition19Addison1960.addTo(map);
-    } else {
-      if (acquisition19Addison1960) map.removeLayer(acquisition19Addison1960);    }  });
-  zoom1960.addEventListener('click', () => { map.fitBounds(bounds1960, { maxZoom: 19 }); // change 19 → 18 if you still feel it’s too tight });}
+    } else {      if (acquisition19Addison1960) map.removeLayer(acquisition19Addison1960);    }  });
+  zoom1960.addEventListener('click', () => { map.fitBounds(bounds1960, { maxZoom: 19 }); });}
 
 
 // 1966 Aerial imagery (single image overlay)
@@ -1697,39 +1564,24 @@ if (!imagery1966Checkbox || !imagery1966OpacitySlider || !imagery1966ZoomBtn) {
 
 // 1969 MidWest Ward Map
 let midwest1969 = null;
-
 const checkbox1969 = document.getElementById('layer-1969-midwest');
 const opacitySlider1969 = document.getElementById('opacity-1969-midwest');
-
 checkbox1969.addEventListener('change', () => {
   if (checkbox1969.checked) {
     if (!midwest1969) {
       const imageUrl = 'data/1969/1969_MidWestWard_Map.png';
-
-      // Placeholder bounds - tune after you see it
       const bounds = [
         [-32.926804, 151.697313],  // south-west
         [-32.919876, 151.706994]   // north-east
       ];
-
       midwest1969 = L.imageOverlay(imageUrl, bounds, {
-        opacity: parseFloat(opacitySlider1969.value)
-      });
-    }
-
+        opacity: parseFloat(opacitySlider1969.value)      });    }
     midwest1969.addTo(map);
-  } else {
-    if (midwest1969) map.removeLayer(midwest1969);
-  }
-});
-
+  } else {    if (midwest1969) map.removeLayer(midwest1969);  }});
 opacitySlider1969.addEventListener('input', () => {
-  if (midwest1969) midwest1969.setOpacity(parseFloat(opacitySlider1969.value));
-});
-
+  if (midwest1969) midwest1969.setOpacity(parseFloat(opacitySlider1969.value));});
 document.getElementById('zoom-1969-midwest').addEventListener('click', () => {
-  if (midwest1969) map.fitBounds(midwest1969.getBounds());
-});
+  if (midwest1969) map.fitBounds(midwest1969.getBounds());});
 
 
 // ---------- 1957 overlay "marker" (Council acquisition of part of 11 Addison Rd) ----------
@@ -1757,8 +1609,7 @@ if (!councilAcq11Addison1957Checkbox || !zoomCouncilAcq11Addison1957Btn) {
           <div style="width:560px">
             <div style="font-size:12px;margin-bottom:6px">${previewTitle}</div>
             <img src="${previewImgUrl}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
-          </div>
-        `;
+          </div>        `;
         const previewPopup = L.popup({      closeButton: false, autoClose: false, closeOnClick: false,  className: 'article-preview-popup',     offset: [0, -10]
         }).setContent(previewHtml);
         let pinned = false;
@@ -1786,18 +1637,10 @@ if (!councilAcq11Addison1957Checkbox || !zoomCouncilAcq11Addison1957Btn) {
                 <div style="margin-bottom:8px">Sale is documented in Certificate of Title (CoT), vol-fol 3860-53   </div>
                 <a href="${downloadDocUrl}" download
                    style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
-                  Download “How to find CoT by vol-fol” (~0.1 MB)
-                </a>
-              </div>
-            `)
-            .openOn(map);
-        });
-      }
+                  Download “How to find CoT by vol-fol” (~0.1 MB)                </a>              </div>            `)
+            .openOn(map);        });      }
       councilAcq11Addison1957.addTo(map);
-    } else {
-      if (councilAcq11Addison1957) map.removeLayer(councilAcq11Addison1957);
-    }
-  });
+    } else {      if (councilAcq11Addison1957) map.removeLayer(councilAcq11Addison1957);    }  });
  zoomCouncilAcq11Addison1957Btn.addEventListener('click', () => {
   map.fitBounds(councilAcq11Addison1957Bounds, {
     padding: [40, 40],
@@ -1810,16 +1653,13 @@ let acq13Addison1957Bounds = null;
 const cbAcq13 = document.getElementById('layer-1957-acq-13-addison');
 const zoomAcq13 = document.getElementById('zoom-1957-acq-13-addison');
 const opAcq13 = document.getElementById('opacity-1957-acq-13-addison');
-
 if (!cbAcq13 || !zoomAcq13 || !opAcq13) {
   console.warn('1957 acq 13 Addison UI elements missing');
 } else {
-  // Bounds (SW, NE)
   acq13Addison1957Bounds = L.latLngBounds(
     [-32.92629, 151.70879], // SW
     [-32.92619, 151.70903]  // NE
   );
-
   cbAcq13.addEventListener('change', () => {
     if (cbAcq13.checked) {
       if (!acq13Addison1957) {
@@ -1828,52 +1668,30 @@ if (!cbAcq13 || !zoomAcq13 || !opAcq13) {
           acq13Addison1957Bounds,
           { opacity: parseFloat(opAcq13.value), interactive: true } // interactive is required for hover/click
         );
-
-        // Hover preview (tooltip)
         acq13Addison1957.bindTooltip(
           `<div style="width:560px">
              <div style="font-size:12px;margin-bottom:6px">Vol-fol 5684-69</div>
              <img src="data/1957/SaleOfPart13AddisonToNCC7thNov1957Vol-Fol5684-69.png"
                   style="width:100%;height:auto;display:block;border:1px solid #ccc">
            </div>`,
-          { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
-        );
-
-        // Click popup with download button
+          { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }        );
         acq13Addison1957.bindPopup(
           `<div style="width:320px">
              <div style="margin-bottom:8px">Sale is documented in Certificate of Title (CoT), vol-fol 5684-69</div>
              <a href="data/HowToFindVol-Fol.odt" download
                 style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
-               Download “How to find CoT by vol-fol” (~0.1 MB)
-             </a>
-           </div>`
-        );
-      }
-
+               Download “How to find CoT by vol-fol” (~0.1 MB)             </a>           </div>`        );      }
       acq13Addison1957.addTo(map);
-    } else {
-      if (acq13Addison1957) map.removeLayer(acq13Addison1957);
-    }
-  });
-
+    } else {      if (acq13Addison1957) map.removeLayer(acq13Addison1957);    }  });
   opAcq13.addEventListener('input', () => {
-    if (acq13Addison1957) acq13Addison1957.setOpacity(parseFloat(opAcq13.value));
-  });
-
-  zoomAcq13.addEventListener('click', () => {
-    map.fitBounds(acq13Addison1957Bounds, { maxZoom: 20 }); // stops it zooming in beyond reason
-  });
-}
+    if (acq13Addison1957) acq13Addison1957.setOpacity(parseFloat(opAcq13.value));  });
+  zoomAcq13.addEventListener('click', () => {    map.fitBounds(acq13Addison1957Bounds, { maxZoom: 20 }); // stops it zooming in beyond reason  });}
 
   
 // 1958: Council acquisition part of 15 Addison Rd (image "marker" overlay + hover preview + click download)
 let acquisition15Addison1958 = null;
-
 const cb1958 = document.getElementById('layer-1958-addison15-acq');
 const zoom1958 = document.getElementById('zoom-1958-addison15-acq');
-
-// Guard
 if (!cb1958 || !zoom1958) {
   console.warn('1958 layer UI elements missing');
 } else {
@@ -1881,7 +1699,6 @@ if (!cb1958 || !zoom1958) {
     [-32.926379, 151.708531], // SW
     [-32.926264, 151.708799]  // NE
   );
-
   cb1958.addEventListener('change', () => {
     if (cb1958.checked) {
       if (!acquisition15Addison1958) {
@@ -1889,20 +1706,14 @@ if (!cb1958 || !zoom1958) {
         acquisition15Addison1958 = L.imageOverlay(
           'data/1958/CouncilAcquisition15Addison.png',
           bounds1958,
-          { interactive: true, opacity: 1 }
-        );
-
-        // Hover preview (tooltip)
+          { interactive: true, opacity: 1 }        );
         const previewImg = 'data/1958/SaleOfPart15AddisonToNCC21stMay1958Vol-Fol3859-233.png';
         acquisition15Addison1958.bindTooltip(
           `<div style="width:560px">
              <div style="font-size:12px;margin-bottom:6px">Vol-fol 3859-233</div>
              <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
            </div>`,
-          { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }
-        );
-
-        // Click popup with download button (ODT)
+          { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }        );
         const odtUrl = 'data/HowToFindVol-Fol.odt';
         acquisition15Addison1958.bindPopup(
           `<div style="width:300px">
@@ -1911,21 +1722,11 @@ if (!cb1958 || !zoom1958) {
                 style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
                Download “How to find CoT by vol-fol” (~0.1 MB)
              </a>
-           </div>`
-        );
-      }
-
+           </div>`        );      }
       acquisition15Addison1958.addTo(map);
-    } else {
-      if (acquisition15Addison1958) map.removeLayer(acquisition15Addison1958);
-    }
-  });
-
-  // Zoom-to button (don’t zoom past your basemap)
+    } else {      if (acquisition15Addison1958) map.removeLayer(acquisition15Addison1958);    }  });
   zoom1958.addEventListener('click', () => {
-    map.fitBounds(bounds1958, { maxZoom: 20 });
-  });
-}
+    map.fitBounds(bounds1958, { maxZoom: 20 });  });}
 
 
 // 1974 Aerial imagery (single image overlay)
