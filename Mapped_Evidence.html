@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mapped Evidence</title>
+  <title>Mapped Evidence1</title>
 
   <link
     rel="stylesheet"
@@ -13,7 +13,8 @@
   />
 
   <style>
-    html, body { height: 100%; margin: 0; }
+    html, body { height: auto; margin: 0; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.4; }
     #map { height: 600px; width: 100%; }
 
     /* Marker visuals */
@@ -26,6 +27,24 @@
       box-sizing: border-box;
     }
 
+    .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+     header { margin-bottom: 16px; }
+  header h1 { margin: 0 0 8px; font-size: 28px; }
+  nav { display: flex; flex-wrap: wrap; gap: 12px; }
+  nav a { color: #0645ad; text-decoration: underline; }
+  nav a:visited { color: #0b0080; }
+
+  .map-wrap { margin: 18px 0 12px; }
+  #map { height: 600px; width: 100%; border: 1px solid #ccc; }
+
+  .general { margin-top: 16px; }
+  .general p { margin: 0 0 10px; }
+
     /* Leaflet popup/tooltip readability */
     .leaflet-tooltip, .leaflet-popup-content { white-space: normal; }
     .leaflet-popup-content { margin: 10px 12px; }
@@ -36,7 +55,20 @@
 </head>
 
 <body>
+  <div class="page">
+    <header>
+      <h1>Mapped Evidence</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="documents-and-more.html">Documents and more</a>
+        <a href="timeline.html">Timeline</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </header>
+
+    <div class="map-wrap">
   <div id="map"></div>
+    </div>
 
   <div class="general">
     <p>Phone viewing: Hold your device in landscape orientation.</p>
