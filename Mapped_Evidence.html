@@ -15,23 +15,11 @@
   <style>
     html, body { height: auto; margin: 0; }
     body { margin:0; padding:30px 20px; font-family: Arial, Helvetica, sans-serif; line-height: 1.65; }
-    #map { flex:1; height: 600px; width: 100%; }
 
     /* Marker visuals */
-    .white-square-marker {
-      width: 12px;
-      height: 12px;
-      background: #fff;
-      border: 2px solid #000;
-      box-shadow: 0 0 2px rgba(0,0,0,0.5);
-      box-sizing: border-box;
-    }
+    .white-square-marker {width: 12px;height: 12px;background: #fff;border: 2px solid #000;box-shadow: 0 0 2px rgba(0,0,0,0.5);box-sizing: border-box; }
 
-    .page {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 24px 16px 48px;
-  }
+    .page {max-width: 1100px;margin: 0 auto;padding: 24px 16px 48px;}
 
   header h1 { margin: 0 0 24px 0; color:#000000; font-size: 2.2rem; font-weight:normal; text-align:center; }
   nav { font-size:1.2rem; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; max-width:900px; margin:0 auto 36px auto;}
@@ -39,10 +27,25 @@
   nav a:visited { color: #551a8b; font-size:1.2rem;}
 
   .map-wrap { margin: 18px 0 12px; }
-  #map { height: 600px; width: 100%; border: 1px solid #ccc; }
+  #map { flex:1; height:100%;}
+  .map-layout{ display:flex; gap:16px; align-items:flex-start;}
+.layers{flex:0 0 340px;max-width: 340px;border: 1px solid #ccc;padding: 12px;background: #fff; height: 600px; overflow:auto;}
 
+/* Dropdown groups */
+.layers details{border: 1px solid #ddd; margin: 0 0 10px;padding: 8px;}
+.layers summary{cursor:pointer;font-weight: 600;user-select:none;}
+
+/* Each layer control */
+.layer-item{padding: 8px 0;border-top: 1px dashed #ddd;}
+.layer-row{display:grid;grid-template-columns: 18px 1fr auto;gap:8px;align-items:center;}
+.layer-row label{margin:0;font-size: 0.95rem;}
+.layer-item input[type="range"]{width:100%;margin-top: 8px;}
   .general { margin-top: 16px; }
   .general p { margin: 0 0 10px; }
+
+@media (max-width: 900px){
+  .map-layout{ flex-direction: column; }
+  .layers{width: 100%;max-width: none;flex: 0 0 auto;height: auto;max-height: 50vh;}}
 
     /* Leaflet popup/tooltip readability */
     .leaflet-tooltip, .leaflet-popup-content { white-space: normal; }
@@ -64,11 +67,1085 @@
     <a href="Tasks.html">Goals and Tasks</a>
       </nav>
     </header>
+    
+-----------------------------------------------------------------------------------------------
+<div class="map-wrap">
+  <div class="map-layout">
+    <div id="map"></div>
 
-    <div class="map-wrap">
-  <div id="map"></div>
+    <aside class="layers" aria-label="Map layers">
+
+<details>
+  <summary>Miscellaneous</summary>
+
+  <!-- NSW 5m Hillshade -->
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-geology-hillshade">
+      <label for="layer-geology-hillshade">NSW 5m Hillshade</label>
+      <button type="button" id="zoom-geology-hillshade">Zoom to</button>
     </div>
+    <input
+      type="range"
+      id="opacity-geology-hillshade"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
 
+  <!-- Simplified Regional Geology -->
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-geology-regional">
+      <label for="layer-geology-regional">Simplified Regional Geology</label>
+      <button type="button" id="zoom-geology-regional">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-geology-regional"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+    <div style="margin-top:6px;">
+      <button type="button" id="download-geology-legend">Download Geology Legend</button>
+    </div>
+    <br>
+  </div>
+
+      <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-thecreek">
+      <label for="layer-thecreek">The Creek, approximately how it was in 2025, pre-landslide.</label>
+      <button type="button" id="zoom-thecreek">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-thecreek"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+<div class="layer-note">Creek location has been placed as accurately as possible using site visits, discussions with locals and examination of imagery & DBYDs. Pale blue=piped, dark blue=natural, green=900mm Hunter Water concrete pipe, brown=Hunter Water Easement.</div>
+
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-residents-names">
+      <label for="layer-residents-names">Residents’ names</label>
+      <button type="button" id="zoom-residents-names">Zoom to</button>
+    </div>
+  </div>
+      <div class="layer-note">red=maximally affected, pink=partially affected, blue=has contributed to this project</div>
+
+</details>
+
+
+<details>
+  <summary>1913</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1913-subdivision-ad">
+      <label for="layer-1913-subdivision-ad">Subdivision advertisement, 1913 (exact date unknown)</label>
+      <button type="button" id="zoom-1913-subdivision-ad">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1913-subdivision-ad"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+  
+</details>
+
+    
+<details>
+    <summary>1917</summary>
+  
+   <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1917-waterboard">
+    <label for="layer-1917-waterboard">Water Board Survey Map</label>
+    <button type="button" id="zoom-1917-waterboard">Zoom to</button>
+  </div>
+  <input
+    type="range"
+    id="opacity-1917-waterboard"
+    min="0"
+    max="1"
+    step="0.05"
+    value="0.7"
+  >
+</div>
+  
+</details>
+
+
+<details>
+ <summary>1935</summary>
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1935-addison19to31">
+    <label for="layer-1935-addison19to31">
+      Document: 17 May 1935. The Council of the Municipality of New Lambton purchase 19 to 31 Addison Rd. Vol-fol 4688-179.
+    </label>
+    <button type="button" id="zoom-1935-addison19to31">Zoom to</button>
+  </div>
+</div>
+
+  
+</details>
+
+    
+<details>
+  <summary>1936</summary>
+  
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1936-parish">
+      <label for="layer-1936-parish">1936 Newcastle Parish Map</label>
+      <button type="button" id="zoom-1936-parish">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1936-parish"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+  <div class="layer-note">(Note that the Slip Creek is marked out the same as all the other creeks in the Parish)</div>
+
+</details>
+
+
+<details>
+  <summary>1938</summary>
+   <div class="layer-item">
+    <div class="layer-row">
+    <label for="layer-1938-councils-merge">Event, March 1938: New Lambton Council merges into Greater Newcastle Council</label>
+  </div>
+  </div>
+  <div class="layer-note">11 Councils- Adamstown, Carrington, Hamilton, Lambton, New Lambton, Newcastle Borough, Merewether, Stockton, Wallsend, Waratah and Wickham, merged.</div>
+
+</details>
+    
+    
+<details>
+  <summary>1944 (Imagery year)</summary>
+  
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1944">
+      <label for="layer-1944">1944 Aerial Photography</label>
+      <button type="button" id="zoom-1944">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1944"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+  <div class="layer-note">(Note the bridge over the creek at the end of Portland Pl)</div>
+</details>
+
+<details>
+  <summary>1949</summary>
+  
+  <div class="layer-item">
+    <div class="layer-row">
+    <input type="checkbox" id="layer-1949-families-move-out-of-creep-damaged-flats">
+    <label for="layer-1949-families-move-out-of-creep-damaged-flats">Newspaper article titled "Families Move Out of Creep-Damaged Flats", 21st of June, 1949</label>
+      <button type="button" id="zoom-1949-families-move-out-of-creep-damaged-flats">Zoom to</button>
+  </div>
+  </div>
+  <div class="layer-note">The article mentions 3 falls of ground: one at Apsley Court (see marker with photo), one at Church St (marked within this layer) and one at King Edward Park.</div>
+
+    <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1949-landslide-endangers-flats">
+      <label for="layer-1949-landslide-endangers-flats">Newspaper image: "Landslide Endangers Flats" (21st Jun 1949)</label>
+      <button type="button" id="zoom-1949-landslide-endangers-flats">Zoom to</button>
+    </div>
+  </div>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1949-boolaroo-scarps">
+    <label for="layer-1949-boolaroo-scarps">Photo: Boolaroo landslide scarps, 1st Sep 1949</label>
+    <button type="button" id="zoom-1949-boolaroo-scarps">Zoom to</button>
+  </div>
+</div>
+<div class="layer-note">
+  Image shows tension cracks in the foreground, a new scarp in mid-ground, old scarp below that and the main scarp in the background.
+</div>
+
+  
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2thirdst-damage">
+    <label for="layer-2thirdst-damage">
+      Photo: Damage to house & fence at 2 Third St, Boolaroo, 1st of Sep . Landslide flow visible from background to in front of house.
+    </label>
+    <button type="button" id="zoom-2thirdst-damage">Zoom to</button>
+  </div>
+</div>
+
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1949-threat-to-boolaroo">
+      <label for="layer-1949-threat-to-boolaroo">Newspaper article: "Threat to Boolaroo", The Inverell Times, pg1, 2 Sep </label>
+      <button type="button" id="zoom-1949-threat-to-boolaroo">Zoom to</button>
+    </div>
+  </div>
+  <div class="layer-note">Article mentions that movement had been worsening since June.</div>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1949-creep-threat-at-boolaroo">
+<label for="layer-1949-creep-threat-at-boolaroo">Newspaper article: "”Creep” Threat At Boolaroo", the Newcastle Morning Herald and Miners’ Advocate, pg 1, 2 Sep 1949</label>
+<button type="button" id="zoom-1949-creep-threat-at-boolaroo">Zoom to</button>
+    </div>
+  </div>
+<div class="layer-note">Reports that landslides were not uncommon in the hills.</div>
+
+  
+</details>
+    
+<details>
+  <summary>1950</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+    <input type="checkbox" id="layer-1950-addison-boy-walking">
+    <label for="layer-1950-addison-boy-walking">Boy walking west near Addison Rd landslide, 21 April 1950</label>
+    <button type="button" id="zoom-1950-addison-boy-walking">Zoom to</button>
+  </div>
+  </div>
+
+    <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1950-addison-28-30-32">
+      <label for="layer-1950-addison-28-30-32">Woman in car looking at The Slip, with 28, 30 & 32 Addison Rd in mid-ground. (21 Apr 1950)</label>
+      <button type="button" id="zoom-1950-addison-28-30-32">Zoom to</button>
+    </div>
+  </div>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1950-this-road-is-bad">
+      <label for="layer-1950-this-road-is-bad">Newspaper article titled "This Road Is Bad", the Newcastle Morning Herald and Miners’ Advocate, pg 3, 21st April 1950</label>
+      <button type="button" id="zoom-1950-this-road-is-bad">Zoom to</button>
+    </div>
+  </div>
+<div class="layer-note">Article discusses the ongoing issues with Addison Road</div>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1950-creep-in-new-lambton-yard">
+      <label for="layer-1950-creep-in-new-lambton-yard">Newspaper article, "CREEP" IN NEW LAMBTON YARD, the Newcastle Morning Herald and Miners’ Advocate, pg 2, 23rd of June 1950</label>
+      <button type="button" id="zoom-1950-creep-in-new-lambton-yard">Zoom to</button>
+    </div>
+  </div>
+<div class="layer-note">Article describes extensive "subsidence". Note that causes of subsidence are not always anthropogenic.</div>
+  <div class="layer-note">Mr Chalker lived at 17 Addison Rd & Mr Collins at number 15 (vol-fols 5771-114/115)</div>
+
+
+<div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1950-landslide-at-lake">
+      <label for="layer-1950-landslide-at-lake">Newspaper article: "Landslide At Lake / HOMES DAMAGED BY LANDSLIDE", the Newcastle Morning Herald and Miners’ Advocate, pg 1, 18th of July 1950</label>
+      <button type="button" id="zoom-1950-landslide-at-lake">Zoom to</button>
+    </div>
+  </div>
+<div class="layer-note">Precise location undetermined</div>
+
+ <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1950-letter-c-g-millington-12thOct">
+    <label for="layer-1950-letter-c-g-millington-12thOct">
+      C. G. Millington making sense in Letters to the Editor, 12th Oct 1950. 
+    </label>
+    <button type="button" id="zoom-1950-letter-c-g-millington-12thOct">Zoom to</button>
+  </div>
+</div>
+  
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1950-letter-isaac-hoare">
+    <label for="layer-1950-letter-isaac-hoare">
+      Letter to the editor, from Isaac Hoare, 14th Oct 1950. Mentions another area nearby “which has also suffered”. Exact location unknown.
+    </label>
+    <button type="button" id="zoom-1950-letter-isaac-hoare">Zoom to</button>
+  </div>
+</div>
+
+  
+</details>
+
+
+<details>
+  
+  <summary>1951</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1951-road-collapses">
+      <label for="layer-1951-road-collapses">"Road collapses" from Newcastle Morning Herald and Miners' Advocate, 17 Jan 1951</label>
+      <button type="button" id="zoom-1951-road-collapses">Zoom to</button>
+    </div>
+  </div>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1951-chelston-st">
+    <label for="layer-1951-chelston-st">
+      Photo: Mr & Mrs Howells' house. 19th Jan 1951 Chelston St Landslide.
+    </label>
+    <button type="button" id="zoom-1951-chelston-st">Zoom to</button>
+  </div>
+</div>
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1951-chelston-st-flowpath">
+    <label for="layer-1951-chelston-st-flowpath">
+      Photo: 19th Jan 1951 Chelston St Landslide.
+    </label>
+    <button type="button" id="zoom-1951-chelston-st-flowpath">Zoom to</button>
+  </div>
+</div>
+
+</details>
+    
+
+<details>
+  <summary>1953</summary>
+  
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1953-addison-facing-w">
+      <label for="layer-1953-addison-facing-w">"The Slip" moved again. Photo, 22 Mar 1953</label>
+      <button type="button" id="zoom-1953-addison-facing-w">Zoom to</button>
+    </div>
+  </div>
+
+   <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1953-addison-men-and-children">
+      <label for="layer-1953-addison-men-and-children">Photo: Men & children surveying renewed movement in "The Slip". 22 Mar 1953</label>
+      <button type="button" id="zoom-1953-addison-men-and-children">Zoom to</button>
+    </div>
+  </div>
+  
+<div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1953-addison-residents-surveying-movement">
+      <label for="layer-1953-addison-residents-surveying-movement">Photo: "The Slip", 22nd March, 1953.</label>
+      <button type="button" id="zoom-1953-addison-residents-surveying-movement">Zoom to</button>
+    </div>
+  </div>
+      
+</details>
+
+
+<details>
+  <summary>1954 (Imagery year)</summary>
+  
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1954-imagery">
+      <label for="layer-1954-imagery">1954 Aerial Photography</label>
+      <button type="button" id="zoom-1954-imagery">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1954-imagery"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+  
+</details>
+
+
+<details>
+  <summary>1957</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1957-council-acquisition-11-addison">
+      <label for="layer-1957-council-acquisition-11-addison">
+        Document: 14th Aug 1957. The Council of the City of Newcastle purchase part of 11 Addison Rd to deal with The Slip.
+      </label>
+      <button type="button" id="zoom-1957-council-acquisition-11-addison">Zoom to</button>
+    </div>
+  </div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1957-acq-13-addison">
+    <label for="layer-1957-acq-13-addison">Document: 7th Nov 1957. The Council of the City of Newcastle purchase part of 13 Addison Rd to deal with The Slip.</label>
+    <button type="button" id="zoom-1957-acq-13-addison">Zoom to</button>
+  </div>
+   <input
+    type="range"
+    id="opacity-1957-acq-13-addison"
+    min="0"
+    max="1"
+    step="0.05"
+    value="1"
+  >
+</div>
+
+</details>
+
+
+<details>
+  <summary>1958</summary>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1958-addison15-acq">
+    <label for="layer-1958-addison15-acq">
+      Document: 21st May 1958. The Council of the City of Newcastle purchase part of 15 Addison Rd to deal with The Slip.
+    </label>
+    <button type="button" id="zoom-1958-addison15-acq">Zoom to</button>
+  </div>
+</div>
+
+</details>
+    
+    
+<details>
+  <summary>1959</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1959-parish">
+      <label for="layer-1959-parish">1959 Newcastle Parish Map</label>
+      <button type="button" id="zoom-1959-parish">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1959-parish"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+  <div class="layer-note">(Note again that The Creek is mapped)</div>
+</details>
+
+
+<details>
+ <summary>1960</summary>
+  
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1960-addison19-acq">
+    <label for="layer-1960-addison19-acq">
+      Document: 17 Feb 1960. NCC purchase part of 19 Addison Rd to deal with The Slip. They also establish an easement along the rear of the property.
+    </label>
+    <button type="button" id="zoom-1960-addison19-acq">Zoom to</button>
+  </div>
+</div>
+
+  
+</details>
+    
+
+<details>
+  <summary>1966 (Imagery year)</summary>
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1966-imagery">
+        <label for="layer-1966-imagery">Aerial imagery, 1966.</label>
+        <button type="button" id="zoom-1966-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1966-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+    
+    
+<details>
+  <summary>1969</summary>
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1969-midwest">
+      <label for="layer-1969-midwest">1969 MidWest Ward Map</label>
+      <button type="button" id="zoom-1969-midwest">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-1969-midwest"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+</details>
+
+    <details>
+  <summary>1974 (Imagery year)</summary>
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1974-imagery">
+        <label for="layer-1974-imagery">Aerial imagery, 1974.</label>
+        <button type="button" id="zoom-1974-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1974-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+
+
+ <details>
+  <summary>1976 (Imagery year)</summary>
+
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1976-imagery">
+        <label for="layer-1976-imagery">Aerial imagery, 1976.</label>
+        <button type="button" id="zoom-1976-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1976-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+    
+
+<details>
+  <summary>1983</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-1983-coffey-commissioned">
+      <label for="layer-1983-coffey-commissioned">
+        1982 to 1983: Lake Macquarie Munincipal Council commission Coffey to do a geotechnical investigation &amp; report
+      </label>
+      <button type="button" id="zoom-1983-coffey-commissioned">Zoom to</button>
+    </div>
+  </div>
+
+</details>
+
+
+<details>
+
+  <summary>1984 (Imagery year)</summary>
+  
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1984-imagery">
+        <label for="layer-1984-imagery">Aerial imagery, 1984.</label>
+        <button type="button" id="zoom-1984-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1984-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1984-lmcc-first-geotech-zoning">
+    <label for="layer-1984-lmcc-first-geotech-zoning">LMCC commission and produce their first geotechnical zoning map. Additionally, they install the first of dozens of piezometers in & around Munibung Hill.</label>
+    <button type="button" id="zoom-1984-lmcc-first-geotech-zoning">Zoom to</button>
+  </div>
+</div>
+
+</details>
+
+
+ <details>
+  <summary>1987 (Imagery year)</summary>
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1987-imagery">
+        <label for="layer-1987-imagery">Aerial imagery, 1987.</label>
+        <button type="button" id="zoom-1987-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1987-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+    
+    
+<details>
+  <summary>1988</summary>
+  
+    <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-1988-chelston-st-29apr">
+    <label for="layer-1988-chelston-st-29apr">
+      Photo: 29th April 1988 Chelston St Landslide.
+    </label>
+    <button type="button" id="zoom-1988-chelston-st-29apr">Zoom to</button>
+  </div>
+</div>
+</details>
+
+
+ <details>
+  <summary>1993 (Imagery year)</summary>
+
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1993-imagery">
+        <label for="layer-1993-imagery">Aerial imagery, 1993.</label>
+        <button type="button" id="zoom-1993-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1993-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+
+
+ <details>
+  <summary>1998 (Imagery year)</summary>
+
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-1998-imagery">
+        <label for="layer-1998-imagery">Aerial imagery, 1998.</label>
+        <button type="button" id="zoom-1998-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-1998-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+
+
+<details>
+  <summary>2007</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-2007-wondabyne-rail-slide">
+      <label for="layer-2007-wondabyne-rail-slide">
+        8th June 2007 (Pasha Bulker Storm), the proximity of a quarry and the high rate of flux of stormwater caused a landslide over the rail line at Wondabyne.
+      </label>
+      <button type="button" id="zoom-2007-wondabyne-rail-slide">Zoom to</button>
+    </div>
+  </div>
+</details>
+
+
+<details>
+  <summary>2014 (Imagery year)</summary>
+
+<div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-20140501-sat">
+      <label for="layer-2014-sat">Satellite imagery, 1st of May, 2014.</label>
+      <button type="button" id="zoom-20140501-sat">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-20140501-sat"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+
+</details>    
+    
+
+<details>
+  <summary>2015 (Imagery year)</summary>
+
+    <div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-04102015-imagery">
+        <label for="layer-04102015-imagery">Satellite imagery, 2015.</label>
+        <button type="button" id="zoom-04102015-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-04102015-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+  
+</details>
+
+
+ <details>
+  <summary>2017 (Imagery year)</summary>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-29042017-imagery">
+    <label for="layer-29042017-imagery">Satellite imagery, 29th of April, 2017.</label>
+    <button type="button" id="zoom-29042017-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-29042017-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-13122017-imagery">
+    <label for="layer-13122017-imagery">Satellite imagery, 13th of December, 2017.</label>
+    <button type="button" id="zoom-13122017-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-13122017-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+ </details>
+
+    
+<details>
+  <summary>2018 (Imagery year)</summary>
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-08052018-imagery">
+    <label for="layer-08052018-imagery">Satellite imagery, 8th of May, 2018.</label>
+    <button type="button" id="zoom-08052018-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-08052018-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-14072018-imagery">
+    <label for="layer-14072018-imagery">Satellite imagery, 14th of July, 2018.</label>
+    <button type="button" id="zoom-14072018-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-14072018-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-08122018-imagery">
+    <label for="layer-08122018-imagery">Satellite imagery, 8th of December, 2018.</label>
+    <button type="button" id="zoom-08122018-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-08122018-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+</details>
+
+    
+<details>
+  <summary>2019 (Imagery year)</summary>
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-07052019-imagery">
+    <label for="layer-07052019-imagery">Satellite imagery, 7th of May, 2019.</label>
+    <button type="button" id="zoom-07052019-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-07052019-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-19072019-imagery">
+    <label for="layer-19072019-imagery">Satellite imagery, 19th of July, 2019.</label>
+    <button type="button" id="zoom-19072019-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-19072019-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-27102019-imagery">
+    <label for="layer-27102019-imagery">Satellite imagery, 27th of October, 2019.</label>
+    <button type="button" id="zoom-27102019-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-27102019-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+</details>
+  
+  
+<details>
+  <summary>2020 (Imagery year)</summary>
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-06042020-imagery">
+    <label for="layer-06042020-imagery">Satellite imagery, 6th of April, 2020.</label>
+    <button type="button" id="zoom-06042020-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-06042020-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-03092020-imagery">
+    <label for="layer-03092020-imagery">Satellite imagery, 3rd of September, 2020.</label>
+    <button type="button" id="zoom-03092020-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-03092020-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+</details>
+  
+
+<details>
+  <summary>2021 (Imagery year)</summary>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-23042021-imagery">
+    <label for="layer-23042021-imagery">Satellite imagery, 23rd of April, 2021.</label>
+    <button type="button" id="zoom-23042021-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-23042021-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-06062021-imagery">
+    <label for="layer-06062021-imagery">Satellite imagery, 6th of June, 2021.</label>
+    <button type="button" id="zoom-06062021-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-06062021-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-MemorialDrive20210606">
+      <label for="layer-MemorialDrive20210606">
+        Memorial Drive landslide, The Hill. Imagery is from 6/6/21.
+      </label>
+      <button type="button" id="zoom-MemorialDrive20210606">Zoom to</button>
+    </div>
+  </div>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-09102021-imagery">
+    <label for="layer-09102021-imagery">Satellite imagery, 9th of October, 2021.</label>
+    <button type="button" id="zoom-09102021-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-09102021-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+</details>
+
+
+<details>
+  <summary>2022 (Imagery year)</summary>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-11062022-imagery">
+    <label for="layer-11062022-imagery">Satellite imagery, 11th of June, 2022.</label>
+    <button type="button" id="zoom-11062022-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-11062022-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2022-goulburn-dudley">
+    <label for="layer-2022-goulburn-dudley">
+      December 2022: Stabilisation works on a "landslip" at Goulburn Rd, Dudley.
+    </label>
+    <button type="button" id="zoom-2022-goulburn-dudley">Zoom to</button>
+  </div>
+
+  <input
+    type="range"
+    id="opacity-2022-goulburn-dudley"
+    min="0"
+    max="1"
+    step="0.05"
+    value="1"
+  >
+</div>
+
+</details>
+    
+
+<details>
+  <summary>2023 (Imagery year)</summary>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-12022023-imagery">
+    <label for="layer-12022023-imagery">Satellite imagery, 12th of February, 2023.</label>
+    <button type="button" id="zoom-12022023-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-12022023-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-18032023-imagery">
+    <label for="layer-18032023-imagery">Satellite imagery, 18th of March, 2023.</label>
+    <button type="button" id="zoom-18032023-imagery">Zoom to</button>
+  </div>
+  <input type="range" id="opacity-18032023-imagery" min="0" max="1" step="0.05" value="0.7">
+</div>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-2023-sat">
+      <label for="layer-2023-sat">Satellite imagery, 15th of October, 2023.</label>
+      <button type="button" id="zoom-2023-sat">Zoom to</button>
+    </div>
+    <input
+      type="range"
+      id="opacity-2023-sat"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.7"
+    >
+  </div>
+</details>
+
+
+<details>
+  <summary>2024 (Imagery year)</summary>
+  
+ <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-12BakerSt_lookingE">
+      <label for="layer-12BakerSt_lookingE">Multiple dying &/or leaning trees visible. Photo taken around April, 2024.</label>
+      <button type="button" id="zoom-12BakerSt_lookingE">Zoom to</button>
+    </div>
+  </div>
+
+<div class="layer-item">
+      <div class="layer-row">
+        <input type="checkbox" id="layer-24052024-imagery">
+        <label for="layer-24052024-imagery">Satellite imagery, 24th of May, 2024.</label>
+        <button type="button" id="zoom-24052024-imagery">Zoom to</button>
+      </div>
+      <input
+        type="range"
+        id="opacity-24052024-imagery"
+        min="0"
+        max="1"
+        step="0.05"
+        value="0.7"
+      >
+    </div>
+</details>
+    
+
+<details>
+  <summary>2025 (Imagery year)</summary>
+
+  <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-LakeMacLocalsFBpost23rdMay2025">
+      <label for="layer-LakeMacLocalsFBpost23rdMay2025">Landslip on Munibung Hill caused power outage- FaceBook post, 23rd May 2025</label>
+      <button type="button" id="zoom-LakeMacLocalsFBpost23rdMay2025">Zoom to</button>
+    </div>
+  </div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2025-satellite-2025-07-20">
+    <label for="layer-2025-satellite-2025-07-20">Satellite imagery, 20th July 2025</label>
+    <button type="button" id="zoom-2025-satellite-2025-07-20">Zoom to</button>
+  </div>
+  <input
+    type="range"
+    id="opacity-2025-satellite-2025-07-20"
+    min="0"
+    max="1"
+    step="0.05"
+    value="0.7"
+  >
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2025-video-marker">
+    <label for="layer-2025-video-marker">
+      Drone footage, 25th of August.
+    </label>
+    <button type="button" id="zoom-2025-video-marker">Zoom to</button>
+  </div>
+</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-2025-creek-video">
+    <label for="layer-2025-creek-video">
+      Footage of where the creek transitions from piped to natural, taken 8th Sep 2025
+    </label>
+    <button type="button" id="zoom-2025-creek-video">Zoom to</button>
+  </div>
+</div>
+
+</details>
+</aside>
+</div>
+</div>
+
+
+
+
+    
+--------------------------------------------------------------------------------------------
   <div class="general">
     <p>Phone viewing: Hold your device in landscape orientation.</p>
     <p>Red dots are unique events. White dots are supplementary information to a given event.</p>
@@ -136,6 +1213,61 @@
         .replaceAll("'", '&#39;');
     }
 
+function wireTwoTileImageryLayer({
+  date,                 // e.g. "29042017"
+  boundsBottom,         // LatLngBounds
+  boundsTop,            // LatLngBounds
+  fitMaxZoom = 20,
+  basePath = null       // optional override
+}) {
+  const checkboxId = `layer-${date}-imagery`;
+  const sliderId   = `opacity-${date}-imagery`;
+  const zoomBtnId  = `zoom-${date}-imagery`;
+
+  if (!guardEls([checkboxId, sliderId, zoomBtnId])) return;
+
+  const cb = $(checkboxId);
+  const slider = $(sliderId);
+  const zoomBtn = $(zoomBtnId);
+
+  const year = String(date).slice(4); // ddmmyyyy -> yyyy
+  const folder = basePath || `data/${year}/`;
+
+  const bottomUrl = `${folder}${date}_bottom.png`;
+  const topUrl    = `${folder}${date}_top.png`;
+
+  let bottomOverlay = null;
+  let topOverlay = null;
+
+  function setOpacity(v){
+    if (bottomOverlay) bottomOverlay.setOpacity(v);
+    if (topOverlay) topOverlay.setOpacity(v);
+  }
+
+  cb.addEventListener('change', () => {
+    const op = parseFloat(slider.value);
+
+    if (cb.checked) {
+      if (!bottomOverlay) bottomOverlay = L.imageOverlay(bottomUrl, boundsBottom, { opacity: op });
+      if (!topOverlay)    topOverlay    = L.imageOverlay(topUrl,    boundsTop,    { opacity: op });
+
+      bottomOverlay.addTo(map);
+      topOverlay.addTo(map);
+    } else {
+      if (bottomOverlay) map.removeLayer(bottomOverlay);
+      if (topOverlay) map.removeLayer(topOverlay);
+    }
+  });
+
+  slider.addEventListener('input', () => setOpacity(parseFloat(slider.value)));
+
+  zoomBtn.addEventListener('click', () => {
+    const combined = L.latLngBounds(boundsBottom).extend(boundsTop);
+    map.fitBounds(combined, { maxZoom: fitMaxZoom });
+  });
+}
+
+    
     function wireOverlayLayer({
       checkboxId,
       sliderId,
