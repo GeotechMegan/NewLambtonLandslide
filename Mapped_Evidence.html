@@ -1685,7 +1685,7 @@ if (!cbAcq13 || !zoomAcq13 || !opAcq13) {
     } else {      if (acq13Addison1957) map.removeLayer(acq13Addison1957);    }  });
   opAcq13.addEventListener('input', () => {
     if (acq13Addison1957) acq13Addison1957.setOpacity(parseFloat(opAcq13.value));  });
-  zoomAcq13.addEventListener('click', () => {    map.fitBounds(acq13Addison1957Bounds, { maxZoom: 20 }); // stops it zooming in beyond reason  });}
+  zoomAcq13.addEventListener('click', () => {    map.fitBounds(acq13Addison1957Bounds, { maxZoom: 20 });  });}
 
   
 // 1958: Council acquisition part of 15 Addison Rd (image "marker" overlay + hover preview + click download)
@@ -3181,45 +3181,18 @@ if (!cb2025Video || !zoom2025Video) {
 // ===================== 2025: White-square creek transition video =====================
 
 let layer2025CreekVideo = null;
-
 const cb2025Creek = document.getElementById("layer-2025-creek-video");
 const zoom2025Creek = document.getElementById("zoom-2025-creek-video");
-
 if (!cb2025Creek || !zoom2025Creek) {
   console.warn("2025 creek video UI elements missing");
-} else {
-  const latlng2025Creek = L.latLng(-32.923008, 151.706561);
-
-  const whiteSquareIcon = L.divIcon({
-    className: "",
-    html: `<div class="white-square-marker"></div>`,
-    iconSize: [12, 12],
-    iconAnchor: [6, 6]
-  });
-
+} else {  const latlng2025Creek = L.latLng(-32.923008, 151.706561);
+  const whiteSquareIcon = L.divIcon({    className: "",    html: `<div class="white-square-marker"></div>`,    iconSize: [12, 12],    iconAnchor: [6, 6]  });
   const videoElId = "vid-2025-creek-transition";
-
   const hoverHtml2025Creek = `
     <div style="max-width:520px;">
-      <div style="font-weight:bold; margin-bottom:6px;">
-        Footage showing where the creek transitions from piped to natural.
-      </div>
-
-      <video
-        id="${videoElId}"
-        src="data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4"
-        width="520"
-        muted
-        autoplay
-        loop
-        playsinline
-        controls
-        preload="metadata"
-        style="display:block;"
-      ></video>
-    </div>
+      <div style="font-weight:bold; margin-bottom:6px;">  Footage showing where the creek transitions from piped to natural.  </div>
+      <video        id="${videoElId}"        src="data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4"        width="520"        muted        autoplay        loop        playsinline        controls        preload="metadata"        style="display:block;"      ></video>    </div>
   `;
-
   cb2025Creek.addEventListener("change", () => {
     if (cb2025Creek.checked) {
       if (!layer2025CreekVideo) {
@@ -3241,6 +3214,7 @@ if (!cb2025Creek || !zoom2025Creek) {
       if (layer2025CreekVideo) map.removeLayer(layer2025CreekVideo);    }  });
   zoom2025Creek.addEventListener("click", () => {
     map.setView(latlng2025Creek, Math.max(map.getZoom(), 19));  });}
+                                             
 
    // Always start with no layers selected on load------------------------------------------
 document.querySelectorAll('.layers input[type="checkbox"]').forEach(cb => {
