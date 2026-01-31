@@ -96,6 +96,17 @@
   </div>
 <div class="layer-note">Creek location has been placed as accurately as possible using site visits, discussions with locals and examination of imagery & DBYDs. Pale blue=piped, dark blue=natural, green=900mm Hunter Water concrete pipe, brown=Hunter Water Easement.</div>
 
+ <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-erosion-protection">
+      <label for="layer-erosion-protection">Extent of subangular boulders placed by NCC for embankment protection. Michaela said it was "a few years ago", need to confirm date.</label>
+      <button type="button" id="zoom-erosion-protection">Zoom to</button>
+    </div>
+    <input type="range" id="opacity-erosion-protection" min="0" max="1" step="0.05" value="0.7">
+  </div>
+<div class="layer-note">Extent identified via site visits. Need to obtain drawings from Council to determine details and to confirm if the as-built extent is less than design.</div>
+
+      
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-residents-names">
@@ -2790,6 +2801,17 @@ wireOverlayLayer({
     [-32.922486, 151.709572]  // NE
   ]
 });
+
+  // ---------- The Creek (single image overlay) ----------
+wireOverlayLayer({
+  checkboxId: 'layer-erosion-protection',
+  sliderId: 'opacity-erosion-protection',
+  zoomBtnId: 'zoom-erosion-protection',
+  imageUrl: 'data/documents/ErosionProtection.png',
+  bounds: [
+    [-32.924631, 151.703966], // SW
+    [-32.922486, 151.709572]  // NE
+  ]});
   
 
 // Residents' names (text-only labels) ---------------------------------------------
