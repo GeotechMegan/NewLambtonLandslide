@@ -24,7 +24,7 @@
     .layer-row {display: flex;align-items: center;gap: 6px;}
     .layer-row label {flex: 1; /* pushes the button to the right */}
     .layer-item input[type="range"] {width: 100%;margin-top: 4px;}
-    .layer-note {font-size: 0.8rem; color: #555; margin-left: 16px; margin-top: 1px; margin-bottom:4px;}
+    .layer-note {font-size: 0.8rem; color: #555; margin-left: 16px; margin-top: 0.5px; margin-bottom:8px;}
     .leaflet-tooltip.article-preview {max-height: min(60vh, 520px);overflow-y: auto;overflow-x: hidden;padding: 8px;}
     .leaflet-tooltip.article-preview img {max-width: 100%;height: auto;display: block;}
     .leaflet-popup-content {overflow-wrap: anywhere;word-break: break-word;}
@@ -913,6 +913,17 @@
   </div>
 </div>
   <div class="layer-note">Click the square marker to reveal video</div>
+
+  <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="HeavyMaterialDepositsAtHeadwallCheckbox">
+    <label for="HeavyMaterialDepositsAtHeadwallCheckbox">
+     Deposits of material weighing up to 30kg; Council’s headwall
+    </label>
+    <button type="button" id="HeavyMaterialDepositsAtHeadwallZoomBtn">Zoom to</button>
+  </div>
+</div>
+  <div class="layer-note">Footage taken 9th Sep 2025. Click the square marker to reveal video.</div>
 </details>
 
      <details>
@@ -3184,6 +3195,17 @@ const VIDEO_LAYERS = [
     title: "The Creek becomes open at the intersections of 142A, 144 Russell & 31, 33 Curzon.",
     posterUrl: "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.jpg",
     videoUrl:  "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4",
+    markerType: "whiteSquare"
+  },
+    {
+    checkboxId: "HeavyMaterialDepositsAtHeadwallCheckbox",
+    zoomBtnId: "HeavyMaterialDepositsAtHeadwallZoomBtn",
+    lat: -32.923985,
+    lng: 151.709062,
+    zoom: 19,
+    title: "Video begins facing north (upstream)",
+    posterUrl: "data/documents/PhotosAndVideos/HeadwallNoSound.jpg",
+    videoUrl:  "data/documents/PhotosAndVideos/HeadwallNoSound.mp4",
     markerType: "whiteSquare"
   },
   {
