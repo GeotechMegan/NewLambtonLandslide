@@ -944,6 +944,17 @@
   </div>
 </div>
   <div class="layer-note">Footage taken 9th Sep 2025. Click the square marker to reveal video.</div>
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="SignalHillConglomerateUnderFlatsAt138_layer">
+    <label for="SignalHillConglomerateUnderFlatsAt138_layer">Photo: Signal Hill Conglomerate, likely exposed during the time of quarry operations (see 1944 imagery), visible under the flats at 138 Russell Rd. Planar joints conducting water can be seen.</label>
+    <button type="button" id="SignalHillConglomerateUnderFlatsAt138_zoom">Zoom to</button>
+  </div>
+</div>
+<div class="layer-note">
+  Image taken 14th Sep, 2025.
+</div>  
 </details>
 
      <details>
@@ -3304,6 +3315,45 @@ wireOverlayLayer({
   ]
 });
 
+
+//========================Photo: Signal Hill Conglomerate under the flats at 138 Russell Rd=============================================================
+let SignalHillConglomerateUnderFlatsAt138Marker = null;
+const SignalHillConglomerateUnderFlatsAt138Checkbox = document.getElementById('SignalHillConglomerateUnderFlatsAt138_layer');
+const SignalHillConglomerateUnderFlatsAt138Zoom = document.getElementById('SignalHillConglomerateUnderFlatsAt138_zoom');
+const SignalHillConglomerateUnderFlatsAt138LatLng = [-32.922822, 151.707416];
+SignalHillConglomerateUnderFlatsAt138Checkbox.addEventListener('change', () => {
+  if (SignalHillConglomerateUnderFlatsAt138Checkbox.checked) {
+    if (!SignalHillConglomerateUnderFlatsAt138Marker) {
+      const previewImg = 'data/2025/IMG_9134.HEIC';
+      const fullresHEICUrl = 'data/2025/IMG_9134.HEIC';
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#ffffff;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]});
+      SignalHillConglomerateUnderFlatsAt138Marker = L.marker(SignalHillConglomerateUnderFlatsAt138LatLng, { icon: markerIcon });
+      SignalHillConglomerateUnderFlatsAt138Marker.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px"> Photo taken at the location of the white marker, facing west. The peach-coloured flats of 138 Russell are visible at the top behind the black chainlink fence. </div>
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true });
+      SignalHillConglomerateUnderFlatsAt138Marker.bindPopup(
+        `<div style="width:280px">
+           <div style="margin-bottom:8px">Download full-resolution image (HEIC)?</div>
+           <a href="${fullresHEICUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download HEIC
+           </a>
+         </div>`
+      );}
+    SignalHillConglomerateUnderFlatsAt138Marker.addTo(map);
+  } else {
+    if (SignalHillConglomerateUnderFlatsAt138Marker) map.removeLayer(SignalHillConglomerateUnderFlatsAt138Marker);}});
+// Zoom-to button
+SignalHillConglomerateUnderFlatsAt138Zoom.addEventListener('click', () => {map.setView(SignalHillConglomerateUnderFlatsAt138LatLng, 18);});
+
+  
+  
 // =====================WHITE SQUARE VIDEO MARKER LAYERS (single scalable block) ==========================================================
 const VIDEO_LAYERS = [
   {
