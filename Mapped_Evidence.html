@@ -28,6 +28,7 @@
     .leaflet-tooltip.article-preview {max-height: min(60vh, 520px);overflow-y: auto;overflow-x: hidden;padding: 8px;}
     .leaflet-tooltip.article-preview img {max-width: 100%;height: auto;display: block;}
     .leaflet-popup-content {overflow-wrap: anywhere;word-break: break-word;}
+    .lot-label {background:transparent; border:0; box-shadow:none; padding:0; margin:0; color:#000; font-size:12px; font-weight:600; /*text-shadow:0 0 3px #fff, 0 0 6px #fff;*/ pointer-events: none;}
     .article-preview-popup .leaflet-popup-content {width:280px; max-height:60vh; overflow:auto; margin:10px;}
     .article-preview-popup img {width: 100%; height:auto; display:block;border: 1px solid #ccc;}
     .white-square-marker {width: 12px;height: 12px;background: #ffffff;border: 2px solid #000000;box-sizing: border-box;} 
@@ -85,6 +86,15 @@
       </div>
       <br>
      </div>
+
+      <div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-lots-streetno">
+    <label for="layer-lots-streetno">Property lot boundaries & street numbers</label>
+    <button type="button" id="zoom-lots-streetno">Zoom to</button>
+  </div>
+</div>
+
 
       <div class="layer-item">
     <div class="layer-row">
@@ -2826,6 +2836,7 @@ wireOverlayLayer({
     [-32.660723, 151.811738]  // NE
   ]
 });
+  
 
 // Legend download button
 document.getElementById('download-geology-legend').addEventListener('click', () => {
@@ -2837,6 +2848,56 @@ document.getElementById('download-geology-legend').addEventListener('click', () 
   document.body.removeChild(a);
 });
 
+
+//======================Lots (GeoJSON polygons + permanent street-number labels)=================================================
+let lotsLayer = null;
+let lotsGeojsonLoaded = false;
+let lotsBounds = null;
+const lotsCb = document.getElementById('layer-lots-streetno');
+const lotsZoomBtn = document.getElementById('zoom-lots-streetno');
+if (!lotsCb || !lotsZoomBtn) {
+  console.warn('Lots UI elements missing');
+} else {
+  async function loadLotsGeoJSON() {
+    const resp = await fetch('data/documents/lots_with_streetno.geojson', { cache: 'force-cache' });
+    if (!resp.ok) throw new Error('Failed to load lots GeoJSON: ' + resp.status);
+    return await resp.json();    }
+  function makeLotLabelHtml(text) {
+    const s = String(text ?? '').trim();
+    if (!s) return '';
+    return s
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');  }
+  function buildLotsLayer(geojson) {
+    const layer = L.geoJSON(geojson, {style: () => ({ color:'#000', weight:1, fill:false }),
+      onEachFeature: (feature, lyr) => {
+        const streetNo = feature && feature.properties ? feature.properties.Number : '';
+        const label = makeLotLabelHtml(streetNo);
+        if (label) {
+          lyr.bindTooltip(label, {
+            permanent: true,
+            direction: 'center',
+            className: 'lot-label',
+            opacity: 1,
+            interactive: false          });        }      }    });
+    return layer;  }
+  lotsCb.addEventListener('change', async () => {
+    if (lotsCb.checked) {
+      try {
+        if (!lotsGeojsonLoaded) {
+          const gj = await loadLotsGeoJSON();
+          lotsLayer = buildLotsLayer(gj);
+          lotsBounds = lotsLayer.getBounds();
+          lotsGeojsonLoaded = true;        }
+        lotsLayer.addTo(map);
+      } catch (e) {        console.warn(e);        lotsCb.checked = false;      }
+    } else {
+      if (lotsLayer) map.removeLayer(lotsLayer);    }  });
+  lotsZoomBtn.addEventListener('click', () => {
+    if (lotsBounds && lotsBounds.isValid()) map.fitBounds(lotsBounds, { maxZoom: 20 });  });}
 
 
 // ---------- The Creek (single image overlay) ----------
