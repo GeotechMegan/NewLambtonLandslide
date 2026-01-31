@@ -2830,17 +2830,13 @@ let contoursGeojsonLoaded = false;
 let contoursBounds = null;
 const contoursCb = document.getElementById('layer-2m-contours');
 const contoursZoomBtn = document.getElementById('zoom-2m-contours');
-
 if (!contoursCb || !contoursZoomBtn) {
   console.warn('2 m contours UI elements missing');
 } else {
-
   async function loadContoursGeoJSON() {
     const resp = await fetch('data/Geology_etc/NSW2mContours.geojson', { cache: 'force-cache' });
     if (!resp.ok) throw new Error('Failed to load contours GeoJSON: ' + resp.status);
-    return await resp.json();
-  }
-
+    return await resp.json();  }
   function makeContourLabelHtml(text) {
     const s = String(text ?? '').trim();
     if (!s) return '';
@@ -2849,16 +2845,13 @@ if (!contoursCb || !contoursZoomBtn) {
       .replaceAll('<', '&lt;')
       .replaceAll('>', '&gt;')
       .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
-  }
-
+      .replaceAll("'", '&#39;');  }
   function buildContoursLayer(geojson) {
     const layer = L.geoJSON(geojson, {
       style: () => ({
         color: '#ffffff',
         weight: 1,
-        opacity: 0.9
-      }),
+        opacity: 0.9      }),
       onEachFeature: (feature, lyr) => {
         const elev = feature && feature.properties ? feature.properties.elevation : '';
         const label = makeContourLabelHtml(elev);
@@ -2868,14 +2861,8 @@ if (!contoursCb || !contoursZoomBtn) {
             direction: 'center',
             className: 'contour-label',
             opacity: 1,
-            interactive: false
-          });
-        }
-      }
-    });
-    return layer;
-  }
-
+            interactive: false          });        }      }    });
+    return layer;  }
   contoursCb.addEventListener('change', async () => {
     if (contoursCb.checked) {
       try {
@@ -2883,27 +2870,20 @@ if (!contoursCb || !contoursZoomBtn) {
           const gj = await loadContoursGeoJSON();
           contoursLayer = buildContoursLayer(gj);
           contoursBounds = contoursLayer.getBounds();
-          contoursGeojsonLoaded = true;
-        }
+          contoursGeojsonLoaded = true;        }
         contoursLayer.addTo(map);
       } catch (e) {
         console.warn(e);
-        contoursCb.checked = false;
-      }
+        contoursCb.checked = false;      }
     } else {
       if (contoursLayer) map.removeLayer(contoursLayer);
-    }
-  });
-
+    }  });
   contoursZoomBtn.addEventListener('click', () => {
     if (contoursBounds && contoursBounds.isValid()) {
-      map.fitBounds(contoursBounds, { maxZoom: 20 });
-    }
-  });
-}
+      map.fitBounds(contoursBounds, { maxZoom: 20 });    }  });}
 
   
-  
+  // ---------- Geology etc. overlays ---------------------------------------------------------------
   wireOverlayLayer({
   checkboxId: 'layer-geology-hillshade',
   sliderId: 'opacity-geology-hillshade',
