@@ -874,24 +874,25 @@
 
 <div class="layer-item">
   <div class="layer-row">
-    <input type="checkbox" id="layer-2025-video-marker">
-    <label for="layer-2025-video-marker">
-      Drone footage, 25th of August.
+    <input type="checkbox" id="DroneFootage25thOfAugustGreaterSiteFacingEastCheckbox">
+    <label for="DroneFootage25thOfAugustGreaterSiteFacingEastCheckbox">
+      Drone footage facing east showing the site at large, taken 25th of August
     </label>
-    <button type="button" id="zoom-2025-video-marker">Zoom to</button>
+    <button type="button" id="DroneFootage25thOfAugustGreaterSiteFacingEastZoomBtn">Zoom to</button>
   </div>
 </div>
+  <div class="layer-note">Click the square marker to reveal video</div>
 
 <div class="layer-item">
   <div class="layer-row">
-    <input type="checkbox" id="layer-2025-creek-video">
-    <label for="layer-2025-creek-video">
+    <input type="checkbox" id="FootageOfCreekTransitionPipedToNatCheckbox">
+    <label for="FootageOfCreekTransitionPipedToNatCheckbox">
       Footage of where the creek transitions from piped to natural, taken 8th Sep 2025
     </label>
-    <button type="button" id="zoom-2025-creek-video">Zoom to</button>
+    <button type="button" id="FootageOfCreekTransitionPipedToNatZoomBtn">Zoom to</button>
   </div>
 </div>
-  <div class="layer-note">Click the square marker to reveal video.</div>
+  <div class="layer-note">Click the square marker to reveal video</div>
 </details>
 </div>
   </div>
@@ -3083,104 +3084,109 @@ wireOverlayLayer({
   ]
 });
 
-  // ===================== 2025: White-square video marker, drone footage =====================
-
-let layer2025VideoMarker = null;
-const cb2025Video = document.getElementById("layer-2025-video-marker");
-const zoom2025Video = document.getElementById("zoom-2025-video-marker");
-if (!cb2025Video || !zoom2025Video) {
-  console.warn("2025 video marker UI elements missing");
-} else {
-  const latlng2025Video = L.latLng(-32.922847, 151.707569);
-  const whiteSquareIcon = L.divIcon({ className: "",  html: `<div class="white-square-marker"></div>`, iconSize: [12, 12], iconAnchor: [6, 6]  });
-  const videoElId = "vid-2025-drone-part2";
-  const hoverHtml2025Video = `
-    <div style="max-width:520px;">
-      <div style="font-weight:bold; margin-bottom:6px;">Drone footage videos are available to download on the "Documents and more" page.</div>
-      <video id="${videoElId}" src="data/documents/Drone_25082025_Part2_Muted.mp4" width="520" muted autoplay loop playsinline controls preload="metadata" style="display:block;"></video></div> `;
-  cb2025Video.addEventListener("change", () => {
-    if (cb2025Video.checked) {
-      if (!layer2025VideoMarker) {layer2025VideoMarker = L.marker(latlng2025Video, {icon: whiteSquareIcon, interactive: true});
-        layer2025VideoMarker.bindTooltip(hoverHtml2025Video, {sticky:true, direction:"top", opacity:0.98, interactive:true});
-        // Force-play on open (helps when autoplay is finicky)
-        layer2025VideoMarker.on("tooltipopen", () => {
-          // Tooltip DOM is created after open, so wait a tick
-          setTimeout(() => {
-            const v = document.getElementById(videoElId);
-            if (v) {
-              v.muted = true; // required by most browsers for autoplay
-              const p = v.play(); if (p && typeof p.catch === "function") p.catch(() => {});    } }, 0); });
-        // Optional: stop playback when tooltip closes
-        layer2025VideoMarker.on("tooltipclose", () => {
-          const v = document.getElementById(videoElId);
-          if (v) v.pause();      });      }
-      layer2025VideoMarker.addTo(map);
-    } else {
-      if (layer2025VideoMarker) map.removeLayer(layer2025VideoMarker);
-    }
-  });
-  zoom2025Video.addEventListener("click", () => {
-    // Zoom in tightly to the marker
-    map.setView(latlng2025Video, Math.max(map.getZoom(), 19));
-  });}
-
-
-// ===================== 2025: Creek transition video (CLICK marker -> popup with poster + play) ================
-let layer2025CreekVideo = null;
-const cb2025Creek  = document.getElementById("layer-2025-creek-video");
-const zoom2025Creek = document.getElementById("zoom-2025-creek-video");
-if (!cb2025Creek || !zoom2025Creek) {
-  console.warn("2025 creek video UI elements missing");
-} else {
-  const latlng2025Creek = L.latLng(-32.923008, 151.706561);
-  const whiteSquareIcon = L.divIcon({
+// =====================WHITE SQUARE VIDEO MARKER LAYERS (single scalable block) ==========================================================
+const VIDEO_LAYERS = [
+  {
+    checkboxId: "DroneFootage25thOfAugustGreaterSiteFacingEastCheckbox",
+    zoomBtnId: "DroneFootage25thOfAugustGreaterSiteFacingEastZoomBtn",
+    lat: -32.922847,
+    lng: 151.707569,
+    zoom: 19,
+    title: "Drone footage videos are available to download on the "Documents and more" page.",
+    posterUrl: "data/documents/Drone_25082025_Part2_Muted.jpg",
+    videoUrl:  "data/documents/Drone_25082025_Part2_Muted.mp4",
+    markerType: "whiteSquare"
+  },
+    {
+    checkboxId: "FootageOfCreekTransitionPipedToNatCheckbox",
+    zoomBtnId: "FootageOfCreekTransitionPipedToNatZoomBtn",
+    lat: -32.923008,
+    lng: 151.706561,
+    zoom: 19,
+    title: "The Creek becomes open at the intersections of 142A, 144 Russell & 31, 33 Curzon.",
+    posterUrl: "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.jpg",
+    videoUrl:  "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4",
+    markerType: "whiteSquare"
+  }
+];
+// Marker icon factory (extend if you add more marker types later)
+function makeMarkerIcon(markerType) {
+  if (markerType === "whiteSquare") {
+    return L.divIcon({
+      className: "",
+      html: `<div class="white-square-marker"></div>`,
+      iconSize: [12, 12],
+      iconAnchor: [6, 6]
+    });  }
+  // Default fallback (whiteSquare)
+  return L.divIcon({
     className: "",
     html: `<div class="white-square-marker"></div>`,
     iconSize: [12, 12],
-    iconAnchor: [6, 6]  });
-  const posterUrl = "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.jpg";
-  const videoUrl  = "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4";
-  cb2025Creek.addEventListener("change", () => {
-    if (cb2025Creek.checked) {
-      if (!layer2025CreekVideo) {
-        layer2025CreekVideo = L.marker(latlng2025Creek, {
-          icon: whiteSquareIcon,
-          interactive: true        });
-        const popupHtml = `
-          <div style="width:520px;">
-            <div style="font-weight:bold; margin:0 0 8px 0;">
-              Footage showing where the creek transitions from piped to natural.
-            </div>
-            <video
-              width="520"
-              controls
-              playsinline
-              preload="metadata"
-              poster="${posterUrl}"
-              style="border:1px solid #000;"            >
-              <source src="${videoUrl}" type="video/mp4">
-            </video>
-            <div style="margin-top:8px;">
-              <a href="${videoUrl}" download style="color:#0000ee; text-decoration:underline;">
-                Download MP4
-              </a>
-            </div>
-          </div>
-        `;
-        layer2025CreekVideo.bindPopup(popupHtml, {
-          className: "video-popup",
-          maxWidth: 560,
-          closeButton: true,
-          autoPan: true,
-          closeOnClick: false
-        });      }
-      layer2025CreekVideo.addTo(map);
-    } else {
-      if (layer2025CreekVideo) map.removeLayer(layer2025CreekVideo);
-    }  });
-  zoom2025Creek.addEventListener("click", () => {
-    map.setView(latlng2025Creek, Math.max(map.getZoom(), 19));
-  });}
+    iconAnchor: [6, 6]  });}
+// Popup HTML factory
+function buildVideoPopupHtml(cfg) {
+  const safeTitle = cfg.title ?? "";
+  const poster = cfg.posterUrl ?? "";
+  const video = cfg.videoUrl ?? "";
+  const width = 520;
+  return `
+    <div style="width:${width}px;">
+      <div style="margin:0 0 8px 0;">
+        ${safeTitle}
+      </div>
+      <video
+        width="${width}"
+        controls
+        playsinline
+        preload="metadata"
+        poster="${poster}"
+        style="border:1px solid #000;"
+      >
+        <source src="${video}" type="video/mp4">
+      </video>
+      <div style="margin-top:8px;">
+        <a href="${video}" download style="color:#0000ee; text-decoration:underline;">
+          Download MP4
+        </a>
+      </div>
+    </div>
+  `;
+}
+// Initialise all configured layers
+(function initVideoLayers() {
+  const created = new Map();
+  for (const cfg of VIDEO_LAYERS) {
+    const cb = document.getElementById(cfg.checkboxId);
+    const zoomBtn = document.getElementById(cfg.zoomBtnId);
+    if (!cb || !zoomBtn) {
+      console.warn("Video layer UI elements missing:", cfg.checkboxId, cfg.zoomBtnId);
+      continue;
+    }
+    const latlng = L.latLng(cfg.lat, cfg.lng);
+    const icon = makeMarkerIcon(cfg.markerType);
+    cb.addEventListener("change", () => {
+      if (cb.checked) {
+        let entry = created.get(cfg.checkboxId);
+        if (!entry) {
+          const marker = L.marker(latlng, { icon, interactive: true });
+
+          marker.bindPopup(buildVideoPopupHtml(cfg), {
+            className: "video-popup",
+            maxWidth: 560,
+            closeButton: true,
+            autoPan: true,
+            closeOnClick: false          });
+          entry = { marker, cfg };
+          created.set(cfg.checkboxId, entry);
+        }
+        entry.marker.addTo(map);
+      } else {
+        const entry = created.get(cfg.checkboxId);
+        if (entry) map.removeLayer(entry.marker);      }    });
+    zoomBtn.addEventListener("click", () => {
+      const z = Number.isFinite(cfg.zoom) ? cfg.zoom : 19;
+      map.setView(latlng, Math.max(map.getZoom(), z));    });  }})();
 
                                              
 
