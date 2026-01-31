@@ -746,6 +746,15 @@
 <details>
   <summary>2021 (Imagery year)</summary>
 
+    <div class="layer-item">
+  <div class="layer-row">
+    <label for="DiannasEmbankmentFailureLayer">
+      Localised embankment failure. Dianna subsequently had this crib retaining wall built.
+    </label>
+    <button type="button" id="DiannasEmbankmentFailureZoomBtn">Zoom to</button>
+  </div>
+</div>
+  
   <div class="layer-item">
   <div class="layer-row">
     <input type="checkbox" id="layer-23042021-imagery">
@@ -2094,15 +2103,11 @@ if (!imagery1987Checkbox || !imagery1987OpacitySlider || !imagery1987ZoomBtn) {
 
 // Photo: 29th April 1988 Chelston St Landslide (preview + download)
 let chelstonSt1988_29Apr = null;
-
 const chelstonSt1988Checkbox = document.getElementById('layer-1988-chelston-st-29apr');
 const zoomChelstonSt1988 = document.getElementById('zoom-1988-chelston-st-29apr');
-
 const chelstonSt1988LatLng = [-32.959730, 151.637663];
-
 chelstonSt1988Checkbox.addEventListener('change', () => {
   if (chelstonSt1988Checkbox.checked) {
-
     if (!chelstonSt1988_29Apr) {
       const previewImg = 'data/1988/ChelstonStreetLandslide_29Apr1988.jpg';
       const fullresUrl = 'data/1988/ChelstonStreetLandslide_29Apr1988.jpg';
@@ -2127,20 +2132,15 @@ chelstonSt1988Checkbox.addEventListener('change', () => {
              Download JPG
            </a>
          </div>`
-      );
-    }
-
+      );    }
     chelstonSt1988_29Apr.addTo(map);
-
   } else {
     if (chelstonSt1988_29Apr) map.removeLayer(chelstonSt1988_29Apr);
   }
 });
-
 // Zoom-to button
 zoomChelstonSt1988.addEventListener('click', () => {
-  map.setView(chelstonSt1988LatLng, 18);
-});
+  map.setView(chelstonSt1988LatLng, 18);});
 
 
 // 1993 Aerial imagery (two image overlays)
@@ -2251,6 +2251,44 @@ if (!imagery1998Checkbox || !imagery1998OpacitySlider || !imagery1998ZoomBtn) {
 }
 
 
+// Photo: Dianna's Embankment Failure (preview + download)
+let DiannasEmbankmentFailure2021 = null;
+const CheckboxDiannasEmbankmentFailure = document.getElementById('DiannasEmbankmentFailureLayer');
+const ZoomBtnDiannasEmbankmentFailure = document.getElementById('DiannasEmbankmentFailureZoomBtn');
+const DiannasEmbankmentFailureLatLng = [-32.92375, 151.70910];
+CheckboxDiannasEmbankmentFailure.addEventListener('change', () => {
+  if (CheckboxDiannasEmbankmentFailure.checked) {
+    if (!DiannasEmbankmentFailure2021) {
+      const previewImg = 'data/2021/EmbankmentFailureDiannasPlace.png';
+      const fullresUrl = 'data/2021/EmbankmentFailureDiannasPlace.png';
+
+      const markerIcon = L.divIcon({
+        className: 'photo-marker',
+        html: '<div style="width:12px;height:12px;border-radius:50%;background:#d00;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]      });
+      DiannasEmbankmentFailure2021 = L.marker(DiannasEmbankmentFailureLatLng, { icon: markerIcon });
+      DiannasEmbankmentFailure2021.bindTooltip(
+        `<div style="width:560px">
+           <div style="font-size:12px;margin-bottom:6px">Retaining wall is located at the red marker. Photographer was standing to the south of it, facing north.</div>
+           <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+         </div>`,
+        { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }      );
+      DiannasEmbankmentFailure2021.bindPopup(
+        `<div style="width:260px">
+           <div style="margin-bottom:8px">Download image (PNG)?</div>
+           <a href="${fullresUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download PNG </a>
+         </div>`
+      );    }
+    DiannasEmbankmentFailure2021.addTo(map);
+  } else {
+    if (DiannasEmbankmentFailure2021) map.removeLayer(DiannasEmbankmentFailure2021);  }});
+// Zoom-to button
+ZoomBtnDiannasEmbankmentFailure.addEventListener('click', () => {
+  map.setView(DiannasEmbankmentFailureLatLng, 18);});
+
+  
 // ===================== 2021: Memorial Drive landslide (6/6/21) =====================
 
 let memorialDrive20210606Overlay = null;
