@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Mapped Evidence.</title>
+  <title>Mapped Evidence</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
@@ -894,6 +894,21 @@
 </div>
   <div class="layer-note">Click the square marker to reveal video</div>
 </details>
+
+     <details>
+       <summary>2026</summary>
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="CreekAtBrettStShowingMargaretsBridgeCheckbox">
+    <label for="CreekAtBrettStShowingMargaretsBridgeCheckbox">
+      Footage of the top of the creek (at Brett St)
+    </label>
+    <button type="button" id="CreekAtBrettStShowingMargaretsBridgeZoomBtn">Zoom to</button>
+  </div>
+</div>
+  <div class="layer-note">Click the square marker to reveal video</div>
+     </details>
+     
 </div>
   </div>
 
@@ -3106,6 +3121,17 @@ const VIDEO_LAYERS = [
     title: "The Creek becomes open at the intersections of 142A, 144 Russell & 31, 33 Curzon.",
     posterUrl: "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.jpg",
     videoUrl:  "data/documents/PhotosAndVideos/TheCreekAt142ARussellRd.mp4",
+    markerType: "whiteSquare"
+  },
+  {
+    checkboxId: "CreekAtBrettStShowingMargaretsBridgeCheckbox",
+    zoomBtnId: "CreekAtBrettStShowingMargaretsBridgeZoomBtn  ",
+    lat: -32.922513,
+    lng: 151.704102,
+    zoom: 19,
+    title: "The Creek at the rear of 164 Russell. It’s enclosed from 51 Curzon (not shown)",
+    posterUrl: "data/documents/PhotosAndVideos/TheCreekAtBrettSt18Jan2026.jpg",
+    videoUrl:  "data/documents/PhotosAndVideos/TheCreekAtBrettSt18Jan2026.mp4",
     markerType: "whiteSquare"
   }
 ];
