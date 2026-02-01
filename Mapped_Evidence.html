@@ -3335,8 +3335,8 @@ const SignalHillConglomerateUnderFlatsAt138LatLng = [-32.922822, 151.707416];
 SignalHillConglomerateUnderFlatsAt138Checkbox.addEventListener('change', () => {
   if (SignalHillConglomerateUnderFlatsAt138Checkbox.checked) {
     if (!SignalHillConglomerateUnderFlatsAt138Marker) {
-      const previewImg = 'data/2025/IMG_9134.HEIC';
-      const fullresHEICUrl = 'data/2025/IMG_9134.HEIC';
+      const previewImg = 'data/2025/IMG_9134.JPG';
+      const fullresJPGUrl = 'data/2025/IMG_9134.JPG';
       const markerIcon = L.divIcon({
         className: 'photo-marker',
         html: '<div style="width:12px;height:12px;border-radius:50%;background:#ffffff;border:2px solid #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>',
@@ -3345,15 +3345,15 @@ SignalHillConglomerateUnderFlatsAt138Checkbox.addEventListener('change', () => {
       SignalHillConglomerateUnderFlatsAt138Marker = L.marker(SignalHillConglomerateUnderFlatsAt138LatLng, { icon: markerIcon });
       SignalHillConglomerateUnderFlatsAt138Marker.bindTooltip(
         `<div style="width:560px">
-           <div style="font-size:12px;margin-bottom:6px"> Photo taken at the location of the white marker, facing west. The peach-coloured flats of 138 Russell are visible at the top behind the black chainlink fence. </div>
+           <div style="font-size:12px;margin-bottom:6px; overflow-wrap:normal"> Photo taken at the location of the white marker, facing west. The peach-coloured flats of 138 Russell are visible at the top behind the black chainlink fence. </div>
            <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
          </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true });
       SignalHillConglomerateUnderFlatsAt138Marker.bindPopup(
         `<div style="width:280px">
-           <div style="margin-bottom:8px">Download full-resolution image (HEIC)?</div>
-           <a href="${fullresHEICUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
-             Download HEIC
+           <div style="margin-bottom:8px">Download image (JPG)?</div>
+           <a href="${fullresJPGUrl}" download style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#000">
+             Download JPG
            </a>
          </div>`
       );}
