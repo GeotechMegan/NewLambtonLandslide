@@ -775,6 +775,7 @@
     <button type="button" id="DiannasEmbankmentFailureZoomBtn">Zoom to</button>
   </div>
 </div>
+   <div class="layer-note">Filmed on 9/9/25.</div>
   
   <div class="layer-item">
   <div class="layer-row">
@@ -2324,7 +2325,7 @@ CheckboxDiannasEmbankmentFailure.addEventListener('change', () => {
       DiannasEmbankmentFailure2021 = L.marker(DiannasEmbankmentFailureLatLng, { icon: markerIcon });
       DiannasEmbankmentFailure2021.bindTooltip(
         `<div style="width:560px">
-           <div style="font-size:12px;margin-bottom:6px">Retaining wall is located at the red marker. Photographer was standing to the south of it, facing north. Photo taken 9/9/25.</div>
+           <div style="font-size:12px;margin-bottom:6px">Retaining wall is located at the red marker. Photographer was standing to the south of it, facing north</div>
            <img src="${previewImg}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
          </div>`,
         { direction: 'top', offset: [0, -10], opacity: 0.98, sticky: true }      );
