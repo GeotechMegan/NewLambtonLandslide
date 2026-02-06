@@ -618,7 +618,16 @@
 
 
 <details>
-  <summary>2007</summary>
+  <summary>2007 (Imagery year)</summary>
+<div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-20070110-sat">
+      <label for="layer-2007-sat">Satellite imagery, 10th Jan, 2007.</label>
+      <button type="button" id="zoom-20070110-sat">Zoom to</button>
+    </div>
+    <input type="range" id="opacity-20070110-sat" min="0" max="1" step="0.05" value="0.7">
+  </div>
+  
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-2007-wondabyne-rail-slide">
@@ -3286,6 +3295,18 @@ wireHoverPreviewAndDownload({
   downloadLabel: 'Download PNG',
   downloadName: '20250523_LakeMacLocalsFBpost_LandslideBoolaroo.png',
   zoomLevel: 18
+});
+
+  // ---------- 2007 Satellite imagery (single image overlay) ----------
+wireOverlayLayer({
+  checkboxId: 'layer-20070110-sat',
+  sliderId: 'opacity-20070110-sat',
+  zoomBtnId: 'zoom-20070110-sat',
+  imageUrl: 'data/2007/0c71dba12523-NewLambton_2007_GM_JPEG-20070110.jpg',
+  bounds: [
+    [-32.926097, 151.700158], // SW
+    [-32.920500, 151.7136475]  // NE
+  ]
 });
 
 wireHoverPreviewAndDownload({
