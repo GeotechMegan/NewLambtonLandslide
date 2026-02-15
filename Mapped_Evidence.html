@@ -35,6 +35,10 @@
     .white-square-marker {width: 12px;height: 12px;background: #ffffff;border: 2px solid #000000;box-sizing: border-box;} 
     .video-popup .leaflet-popup-content { width:520px; margin:10px; }
     .video-popup img, .video-popup video { display:block; width:520px; height:auto; }
+    /* Makes hover tooltips usable; ensures overlay itself receives pointer events */
+.interactive-image-overlay { pointer-events: auto; }
+.leaflet-tooltip.img-hover-tooltip{max-width: 520px; background: #fff; border: 1px solid #000; box-shadow: none; padding: 8px;}
+.leaflet-tooltip.img-hover-tooltip img{ max-width:100%; height:auto; display:block; }
 
   </style>
 </head>
@@ -125,8 +129,18 @@
     <input type="range" id="opacity-erosion-protection" min="0" max="1" step="0.05" value="0.7">
   </div>
 <div class="layer-note">Extent identified via site visits. Need to obtain drawings from Council to determine details and to confirm if the as-built extent is less than design.</div>
-      
+
   <div class="layer-item">
+    <div class="layer-row">
+      <input type="checkbox" id="layer-drainageeasements-imagery-pack">
+      <label for="layer-drainageeasements-imagery-pack">Interactive images of drainage easement boundaries. </label>
+      <button type="button" id="zoom-drainageeasements-imagery-pack">Zoom to</button>
+    </div>
+    <input type="range" id="opacity-drainageeasements-imagery-pack" min="0" max="1" step="0.05" value="0.7">
+  </div>
+      <div class="layer-note">Note: These drainage easements were obtained from a limited search. It is likely that more easements exist along the piped length of the creek.</div>
+  
+      <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-residents-names">
       <label for="layer-residents-names">Residents’ names</label>
@@ -3143,6 +3157,148 @@ if (!residentsNamesCheckbox || !residentsNamesZoomBtn) {
     if (pts.length) map.fitBounds(L.latLngBounds(pts), { maxZoom: 20, padding: [20, 20] });
   });
 }
+
+
+  
+// One layer (group) containing many image overlays.
+// Each overlay: hover tooltip + click-to-download its own document.
+
+function wireInteractiveImageOverlayLayer({
+  checkboxId,
+  zoomBtnId,
+  opacitySliderId,   // optional; pass null/undefined if you don’t want one slider
+  items,             // array of { imageUrl, bounds:[[swLat,swLng],[neLat,neLng]], hoverHtml, downloadUrl, downloadName }
+  initialOpacity = 0.7
+}) {
+  let group = null;
+  let overlays = [];
+  let boundsAll = null;
+
+  const cb = document.getElementById(checkboxId);
+  const zoomBtn = document.getElementById(zoomBtnId);
+  const slider = opacitySliderId ? document.getElementById(opacitySliderId) : null;
+
+  if (!cb || !zoomBtn || (opacitySliderId && !slider)) {
+    console.warn("Interactive overlay layer skipped (missing UI elements):", checkboxId, zoomBtnId, opacitySliderId);
+    return;
+  }
+
+  function forceDownload(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    if (filename) a.download = filename;
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function build() {
+    group = L.layerGroup();
+    overlays = [];
+    boundsAll = null;
+
+    const op = slider ? parseFloat(slider.value) : initialOpacity;
+
+    for (const it of items) {
+      const overlay = L.imageOverlay(it.imageUrl, it.bounds, {
+        opacity: op,
+        interactive: true,
+        className: "interactive-image-overlay"
+      });
+
+      if (it.hoverHtml) {
+        overlay.bindTooltip(it.hoverHtml, {
+          sticky: true,
+          direction: "top",
+          opacity: 0.98,
+          interactive: true,
+          className: "img-hover-tooltip"
+        });
+      }
+
+      if (it.downloadUrl) {
+        overlay.on("click", () => forceDownload(it.downloadUrl, it.downloadName || ""));
+      }
+
+      overlay.on("add", () => {
+        const b = overlay.getBounds();
+        boundsAll = boundsAll ? boundsAll.extend(b) : L.latLngBounds(b);
+      });
+
+      overlays.push(overlay);
+      group.addLayer(overlay);
+    }
+  }
+
+  cb.addEventListener("change", () => {
+    if (cb.checked) {
+      if (!group) build();
+      group.addTo(map);
+    } else {
+      if (group) map.removeLayer(group);
+    }
+  });
+
+  if (slider) {
+    slider.addEventListener("input", () => {
+      const op = parseFloat(slider.value);
+      for (const ov of overlays) ov.setOpacity(op);
+    });
+  }
+
+  zoomBtn.addEventListener("click", () => {
+    if (!group) {
+      const all = items.map(it => L.latLngBounds(it.bounds));
+      let b = null;
+      for (const bb of all) b = b ? b.extend(bb) : L.latLngBounds(bb);
+      if (b && b.isValid()) map.fitBounds(b, { maxZoom: 20 });
+      return;
+    }
+    if (boundsAll && boundsAll.isValid()) map.fitBounds(boundsAll, { maxZoom: 20 });
+  });
+}
+
+
+wireInteractiveImageOverlayLayer({
+  checkboxId: "layer-drainageeasements-imagery-pack",
+  zoomBtnId: "zoom-drainageeasements-imagery-pack",
+  opacitySliderId: "opacity-drainageeasements-imagery-pack",
+  initialOpacity: 0.7,
+  items: [
+    {
+      imageUrl: "data/Geology_etc/51and49CurzonRdDrainageEasement.png",
+      bounds: [[-32.922667, 151.704238],   //SW
+	       [-32.922533, 151.704670]],  //NE
+      hoverHtml: `
+        <div style="width:520px">
+          <div style="font-size:12px;margin-bottom:6px">Easement for water drainage, 15 feet wide.</div>
+          <img src="data/2024/24052024_bottom.png" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+          <div style="font-size:12px;margin-top:6px">Click the image to download it. Alternatively, visit the <a href="https://hlrv.nswlrs.com.au/" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#0000EE">NSW Historical Land-Records Viewer</a>, and perform a Keyword Search for "Newcastle 42".</div>
+        </div>
+      `,
+      downloadUrl: "data/1969/1969_MidWestWard_Map.png",
+      downloadName: "1969_MidWestWard_Map.png"
+    },
+
+
+    {
+      imageUrl: "data/Geology_etc/47BCurzonRdDrainageEasement.png",
+      bounds: [[-32.922782, 151.704822], [-32.922757, 151.705241]],
+      hoverHtml: `
+        <div style="width:520px">
+          <div style="font-size:12px;margin-bottom:6px">(Council-owned) easement for water drainage the for piped part of the creek across 47B Curzon Rd. Source: DA2019/00592</div>
+          <img src="data/documents/Easements/ScreenshotFromDA2019_00592.jpg" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+          <div style="font-size:12px;margin-top:6px">Click the image to download DA2019/00592.</div>
+        </div>
+      `,
+      downloadUrl: "data/documents/Public Stamped Plans - DA2019-00592 - 47A Curzon Road New Lambton_ShowingEasementAt47B.pdf",
+      downloadName: "Public Stamped Plans - DA2019-00592 - 47A Curzon Road New Lambton_ShowingEasementAt47B.pdf"
+    }
+  ]
+});
+
+  
 
   
 // ---------- 1949 markers ----------------------------------------------------------
