@@ -1688,8 +1688,8 @@ checkbox1969.addEventListener('change', () => {
     if (!midwest1969) {
       const imageUrl = 'data/1969/1969_MidWestWard_Map.png';
       const bounds = [
-        [-32.926804, 151.697313],  // south-west
-        [-32.919876, 151.706894]   // north-east
+        [-32.926804, 151.697413],  // south-west
+        [-32.919876, 151.706994]   // north-east
       ];
       midwest1969 = L.imageOverlay(imageUrl, bounds, {
         opacity: parseFloat(opacitySlider1969.value)      });    }
@@ -3308,7 +3308,7 @@ wireInteractiveImageOverlayLayer({
 	    {
       imageUrl: "data/Geology_etc/45CurzonRdDrainageEasement.png",
       bounds: [[-32.923151, 151.705405],   //SW
-	           [-32.922674, 151.705661]],  //NE
+	           [-32.922674, 151.705561]],  //NE
       hoverHtml: `
         <div style="width:520px">
           <div style="font-size:12px;margin-bottom:6px">CoN easements for water drainage. Council budgeted $300,000 to re-do this infrastructure and part of that at number 47 in 2014..</div>
@@ -3322,7 +3322,7 @@ wireInteractiveImageOverlayLayer({
 	  
 	   {
       imageUrl: "data/Geology_etc/19CurzonRdDrainageEasement.png",
-      bounds: [[-32.923637, 151.707775],   //SW
+      bounds: [[-32.923737, 151.707775],   //SW
 	           [-32.923253, 151.707904]],  //NE
       hoverHtml: `
         <div style="width:520px">
@@ -3500,7 +3500,7 @@ wireOverlayLayer({
   zoomBtnId: 'zoom-20070110-sat',
   imageUrl: 'data/2007/0c71dba12523-NewLambton_2007_GM_JPEG-20070110.jpg',
   bounds: [
-    [-32.926007, 151.702088], // SW
+    [-32.926007, 151.702188], // SW
     [-32.920950, 151.7125375]  // NE
   ]
 });
