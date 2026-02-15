@@ -3267,8 +3267,23 @@ wireInteractiveImageOverlayLayer({
   initialOpacity: 0.7,
   items: [
     {
-      imageUrl: "data/Geology_etc/51and49CurzonRdDrainageEasement.png",
+      imageUrl: "data/Geology_etc/51and49CurzonRdDrainageEasementDud.png",
       bounds: [[-32.922542, 151.704420],   //SW
+	           [-32.922675, 151.704878]],  //NE
+      hoverHtml: `
+        <div style="width:520px">
+          <div style="font-size:12px;margin-bottom:6px">Easement for water drainage, 15 feet wide. Source: 1969 MidWest Ward Map (shown).</div>
+          <img src="data/1969/1969_MidWestWard_MapDud.png" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+          <div style="font-size:12px;margin-top:6px">Click to download '69 Ward Map snippet. Alternatively, visit the <a href="https://hlrv.nswlrs.com.au/" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:6px 10px;border:1px solid #000;text-decoration:none;color:#0000EE">NSW Historical Land-Records Viewer</a>, and perform a Keyword Search for "Newcastle 42".</div>
+        </div>
+      `,
+      downloadUrl: "data/1969/1969_MidWestWard_MapDud.png",
+      downloadName: "1969_MidWestWard_MapDud.png"
+    },
+
+	   {
+      imageUrl: "data/Geology_etc/51and49CurzonRdDrainageEasement.png",
+      bounds: [[-32.922542, 151.704410],   //SW
 	           [-32.922675, 151.704878]],  //NE
       hoverHtml: `
         <div style="width:520px">
