@@ -3311,7 +3311,7 @@ wireInteractiveImageOverlayLayer({
 	           [-32.922674, 151.705641]],  //NE
       hoverHtml: `
         <div style="width:520px">
-          <div style="font-size:12px;margin-bottom:6px; overflow:auto">The dashed white outline on the map describes CoN easements for water drainage at 45 Curzon Rd. Council budgeted $300,000 to re-do this infrastructure, part of that at number 47 as well as works on Curzon Rd itself in 2014 (source: Council's 2014-15 Operation Plan). The image shown in this tooltip is from the publicly-available DA plans for development at 2/45 Curzon (DA2023/00424).</div>
+          <div style="font-size:12px;margin-bottom:6px; overflow:auto">The dashed white outline on the map describes CoN easements for water drainage at 45 Curzon Rd. White hatching marks stormwater pits. Council budgeted $300,000 to re-do this infrastructure, part of that at number 47 as well as works on Curzon Rd itself in 2014 (source: Council's 2014-15 Operation Plan). The image shown in this tooltip is from the publicly-available DA plans for development at 2/45 Curzon (DA2023/00424).</div>
           <img src="data/documents/Easements/45CurzonRdEasementsSnip.jpg" style="width:100%;height:auto;display:block; border:1px solid #ccc">
           <div style="font-size:12px;margin-top:6px">Click to download engineering plans from the DA for 2/45 Curzon (DA2023/00424), showing precise easement locations.</div>
         </div>
@@ -3334,6 +3334,21 @@ wireInteractiveImageOverlayLayer({
       `,
       downloadUrl: "data/documents/Operational_Plan_2014-15_web.pdf",
       downloadName: "Operational_Plan_2014-15_web.pdf"
+    },
+
+    {
+      imageUrl: "data/Geology_etc/33CurzonRdDrainageEasement.png",
+      bounds: [[-32.923037, 151.706332],   //SW
+	           [-32.922993, 151.706550]],  //NE
+      hoverHtml: `
+        <div style="width:520px">
+          <div style="font-size:12px;margin-bottom:6px">The white dashed lines on the map describe a 4m-wide drainage easement over 33 Curzon Rd. The white hatching marks stormwater pit locations. The claim over the easement is assumed to be granted to CoN.div>
+          <img src="data/documents/Easements/ScreenshotFromDA2024_00616_33Curzon.jpg" style="width:100%;height:auto;display:block; border:1px solid #ccc">
+          <div style="font-size:12px;margin-top:6px">Click to download DA2024/00616.pdf, which has engineering plans showing the location for said easement for drainage through the Creek across 33 Curzon. The plans also say "CREEK BDY (VIDE D.P. 380340)", meaning "Creek Boundary (see Deposited Plan number 380340)".</div>
+        </div>
+      `,
+      downloadUrl: "data/documents/Stamped approved plans - 33 Curzon Road New Lambton.pdf",
+      downloadName: "Stamped approved plans - 33 Curzon Road New Lambton.pdf"
     },
 	  
 	   {
