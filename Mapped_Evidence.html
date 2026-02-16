@@ -133,7 +133,7 @@
   <div class="layer-item">
     <div class="layer-row">
       <input type="checkbox" id="layer-drainageeasements-imagery-pack">
-      <label for="layer-drainageeasements-imagery-pack">Interactive images of drainage easement boundaries. </label>
+      <label for="layer-drainageeasements-imagery-pack">Interactive layer showing some Council drainage easement boundaries, stormwater pits and overland flows upstream of the landslide.</label>
       <button type="button" id="zoom-drainageeasements-imagery-pack">Zoom to</button>
     </div>
     <input type="range" id="opacity-drainageeasements-imagery-pack" min="0" max="1" step="0.05" value="0.7">
@@ -3308,16 +3308,16 @@ wireInteractiveImageOverlayLayer({
 	    {
       imageUrl: "data/Geology_etc/45CurzonRdDrainageEasement.png",
       bounds: [[-32.923151, 151.705405],   //SW
-	           [-32.922674, 151.705561]],  //NE
+	           [-32.922674, 151.705571]],  //NE
       hoverHtml: `
         <div style="width:520px">
           <div style="font-size:12px;margin-bottom:6px">CoN easements for water drainage. Council budgeted $300,000 to re-do this infrastructure and part of that at number 47 in 2014..</div>
-          <img src="data/documents/Easements/45CurzonRdEasementsSnip.jpg" style="width:100%;height:auto;display:block;border:1px solid #ccc">
-          <div style="font-size:12px;margin-top:6px">Click to download </div>
+          <img src="data/documents/Easements/45CurzonRdEasementsSnip.jpg" style="width:100%;height:auto;display:block; overflow:auto; border:1px solid #ccc">
+          <div style="font-size:12px;margin-top:6px">Click to download source for easement boundary (DA2023/00424, PDF). For a source for the drainage responsibility ownership and cost & scope of works undertaken in 2014, they are on the Documents & more page.</div>
         </div>
       `,
-      downloadUrl: "data/documents/",
-      downloadName: ".png"
+      downloadUrl: "data/documents/Public Stamped Plans - DA2019-00592 - 47A Curzon Road New Lambton_ShowingEasementAt47B.pdf",
+      downloadName: "Public Stamped Plans - DA2019-00592 - 47A Curzon Road New Lambton_ShowingEasementAt47B.pdf"
     },
 	  
 	   {
