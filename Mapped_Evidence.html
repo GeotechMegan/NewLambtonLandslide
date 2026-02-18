@@ -121,8 +121,16 @@
 <div class="layer-note">Creek location has been placed as accurately as possible using site visits, discussions with locals and examination of imagery & DBYDs. Pale blue=piped, dark blue=natural, green=900mm Hunter Water concrete pipe, brown=Hunter Water Easement.</div>
 -->
 
-
 		
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="VideosOfTheCreekCheckbox">
+    <label for="VideosOfTheCreekCheckbox">Videos of the Creek</label>
+    <button type="button" id="VideosOfTheCreekZoomBtn">Zoom to</button>
+  </div>
+</div>
+<div class="layer-note">Click a square marker to play/download video</div>
+
 		
  <div class="layer-item">
     <div class="layer-row">
@@ -3031,6 +3039,701 @@ wireOverlayLayer({
     [-32.922486, 151.709572]  // NE
   ]
 });
+
+
+/* ===================== Videos of the Creek (ONE layer -> 59 markers) ===================== */
+/* Assumes:
+   - Leaflet is loaded
+   - `map` already exists (your Leaflet map instance)
+   - CSS class `.white-square-marker` exists (you already have it)
+*/
+
+(function initVideosOfTheCreekLayer() {
+  'use strict';
+
+  const cb = document.getElementById('VideosOfTheCreekCheckbox');
+  const zoomBtn = document.getElementById('VideosOfTheCreekZoomBtn');
+  if (!cb || !zoomBtn) {
+    console.warn('Videos of the Creek UI elements missing');
+    return;
+  }
+  if (typeof L === 'undefined' || typeof map === 'undefined') {
+    console.warn('Leaflet `L` or global `map` is missing');
+    return;
+  }
+
+  const CREEK_VIDEO_POINTS = [
+  {
+    title: "CreekVideo104_20250909_LookingUpstreamTowardsBaker.mp4",
+    lat: -32.923406,
+    lng: 151.706689,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo104_20250909_LookingUpstreamTowardsBaker.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo104_20250909_LookingUpstreamTowardsBaker.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo105_20250909_LookingUpstreamTowardsBakerThenSThenToW.mp4",
+    lat: -32.923484,
+    lng: 151.706772,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo105_20250909_LookingUpstreamTowardsBakerThenSThenToW.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo105_20250909_LookingUpstreamTowardsBakerThenSThenToW.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo106_20260202_UnderBakerStAtTheToe.mp4",
+    lat: -32.923333,
+    lng: 151.708129,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo106_20260202_UnderBakerStAtTheToe.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo106_20260202_UnderBakerStAtTheToe.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo107_20250118_TheThreewayFlowing.mp4",
+    lat: -32.923700,
+    lng: 151.708628,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo107_20250118_TheThreewayFlowing.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo107_20250118_TheThreewayFlowing.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo108_20250909_LandslideToeAt17Curzon.mp4",
+    lat: -32.923827,
+    lng: 151.708711,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo108_20250909_LandslideToeAt17Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo108_20250909_LandslideToeAt17Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo109_20250913_DroneFtge_134RussellTo21Curzon.mp4",
+    lat: -32.923370,
+    lng: 151.708641,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo109_20250913_DroneFtge_134RussellTo21Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo109_20250913_DroneFtge_134RussellTo21Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo110_20250908_136RussellInCreekPanningTo25Curzon.mp4",
+    lat: -32.923457,
+    lng: 151.708630,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo110_20250908_136RussellInCreekPanningTo25Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo110_20250908_136RussellInCreekPanningTo25Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo111_20250913_DroneFtge_136CurzonNearSAC.mp4",
+    lat: -32.923420,
+    lng: 151.708564,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo111_20250913_DroneFtge_136CurzonNearSAC.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo111_20250913_DroneFtge_136CurzonNearSAC.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo112_20250913_DroneFtge_Erosion136Russel.mp4",
+    lat: -32.923406,
+    lng: 151.708597,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo112_20250913_DroneFtge_Erosion136Russel.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo112_20250913_DroneFtge_Erosion136Russel.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo113_20250825_DroneFtge_27Curzon.mp4",
+    lat: -32.923272,
+    lng: 151.708467,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo113_20250825_DroneFtge_27Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo113_20250825_DroneFtge_27Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo114_20250908_138RussellShowingTheirSWOutlets.mp4",
+    lat: -32.923389,
+    lng: 151.708559,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo114_20250908_138RussellShowingTheirSWOutlets.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo114_20250908_138RussellShowingTheirSWOutlets.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo115_20250908_29Curzon_PanningFromPoolFootingsToDownstream.mp4",
+    lat: -32.923288,
+    lng: 151.708459,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo115_20250908_29Curzon_PanningFromPoolFootingsToDownstream.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo115_20250908_29Curzon_PanningFromPoolFootingsToDownstream.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo116_20250908_29Curzon_UnderPoolShowingHeadcut.mp4",
+    lat: -32.923288,
+    lng: 151.708459,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo116_20250908_29Curzon_UnderPoolShowingHeadcut.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo116_20250908_29Curzon_UnderPoolShowingHeadcut.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo117_20250908_TheWeirBetween29And31Curzon.mp4",
+    lat: -32.923161,
+    lng: 151.708358,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo117_20250908_TheWeirBetween29And31Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo117_20250908_TheWeirBetween29And31Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo118_20250908_LookingUpstreamFromTheWeirBetween29And31Curzon.mp4",
+    lat: -32.923161,
+    lng: 151.708358,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo118_20250908_LookingUpstreamFromTheWeirBetween29And31Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo118_20250908_LookingUpstreamFromTheWeirBetween29And31Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo119_20250908_31Curzon.mp4",
+    lat: -32.923099,
+    lng: 151.708311,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo119_20250908_31Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo119_20250908_31Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo120_20250908_142ARussellMovingUpstreamTowardsOldSewerAcross31Curzon.mp4",
+    lat: -32.923042,
+    lng: 151.708263,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo120_20250908_142ARussellMovingUpstreamTowardsOldSewerAcross31Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo120_20250908_142ARussellMovingUpstreamTowardsOldSewerAcross31Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo121_20250908_142ARussellAtOutletPanningDownCreek.mp4",
+    lat: -32.923017,
+    lng: 151.708244,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo121_20250908_142ARussellAtOutletPanningDownCreek.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo121_20250908_142ARussellAtOutletPanningDownCreek.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo122_20250908_OutletMeasurementsUnlabelled.mp4",
+    lat: -32.922991,
+    lng: 151.708224,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo122_20250908_OutletMeasurementsUnlabelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo122_20250908_OutletMeasurementsUnlabelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo123_20260118_BrettSt.mp4",
+    lat: -32.921624,
+    lng: 151.704105,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo123_20260118_BrettSt.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo123_20260118_BrettSt.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek00_TheThreewayLabelled_1.mp4",
+    lat: -32.923700,
+    lng: 151.708628,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek00_TheThreewayLabelled_1.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek00_TheThreewayLabelled_1.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek01_TheThreeway_2_HeadingWestLabelled.mp4",
+    lat: -32.923682,
+    lng: 151.708610,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek01_TheThreeway_2_HeadingWestLabelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek01_TheThreeway_2_HeadingWestLabelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek01_TheThreeway_2_HeadingWestNoLabels.mp4",
+    lat: -32.923682,
+    lng: 151.708610,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek01_TheThreeway_2_HeadingWestNoLabels.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek01_TheThreeway_2_HeadingWestNoLabels.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek1_11Curzon.mp4",
+    lat: -32.923682,
+    lng: 151.708610,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek1_11Curzon.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek1_11Curzon.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek2_6Baker_Labelled.mp4",
+    lat: -32.923653,
+    lng: 151.708585,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek2_6Baker_Labelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek2_6Baker_Labelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek6_6Baker_ErodedSiltAndClayDeposits.mp4",
+    lat: -32.923516,
+    lng: 151.708472,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek6_6Baker_ErodedSiltAndClayDeposits.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek6_6Baker_ErodedSiltAndClayDeposits.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek7_6Baker_ShowingFallenTreeEastOfFallenHouse.mp4",
+    lat: -32.923485,
+    lng: 151.708446,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek7_6Baker_ShowingFallenTreeEastOfFallenHouse.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek7_6Baker_ShowingFallenTreeEastOfFallenHouse.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek8_6Baker_CreekBedThenTyreWallVisible.mp4",
+    lat: -32.923453,
+    lng: 151.708420,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek8_6Baker_CreekBedThenTyreWallVisible.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek8_6Baker_CreekBedThenTyreWallVisible.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek9_6BakerShowingFallenRoof.mp4",
+    lat: -32.923422,
+    lng: 151.708395,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek9_6BakerShowingFallenRoof.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek9_6BakerShowingFallenRoof.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek10_11CurzonShowing6Baker.mp4",
+    lat: -32.923390,
+    lng: 151.708370,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek10_11CurzonShowing6Baker.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek10_11CurzonShowing6Baker.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek13_11CurzonShowingTyreRetWall.mp4",
+    lat: -32.923304,
+    lng: 151.708300,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek13_11CurzonShowingTyreRetWall.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek13_11CurzonShowingTyreRetWall.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek14_11CurzonTo6Baker.mp4",
+    lat: -32.923272,
+    lng: 151.708275,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek14_11CurzonTo6Baker.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek14_11CurzonTo6Baker.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek15_6-8Baker.mp4",
+    lat: -32.923242,
+    lng: 151.708250,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek15_6-8Baker.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek15_6-8Baker.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek16_8BakerApproaching15CurzonsBridge.mp4",
+    lat: -32.923213,
+    lng: 151.708228,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek16_8BakerApproaching15CurzonsBridge.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek16_8BakerApproaching15CurzonsBridge.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek18_15Curzon_BridgeFallenVegetationShowsToeIsAtCreek.mp4",
+    lat: -32.923157,
+    lng: 151.708185,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek18_15Curzon_BridgeFallenVegetationShowsToeIsAtCreek.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek18_15Curzon_BridgeFallenVegetationShowsToeIsAtCreek.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek21_15Curzon_ApproachingTreeSlices.mp4",
+    lat: -32.923074,
+    lng: 151.708120,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek21_15Curzon_ApproachingTreeSlices.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek21_15Curzon_ApproachingTreeSlices.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek22_15Curzon_TreeSlicesAndPanningBackDownCk.mp4",
+    lat: -32.923054,
+    lng: 151.708104,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek22_15Curzon_TreeSlicesAndPanningBackDownCk.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek22_15Curzon_TreeSlicesAndPanningBackDownCk.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek24_15Curzon_CloseUpOfLandslideOverCreek.mp4",
+    lat: -32.923014,
+    lng: 151.708072,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek24_15Curzon_CloseUpOfLandslideOverCreek.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek24_15Curzon_CloseUpOfLandslideOverCreek.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek25_15Curzon_PassingTreeSlices.mp4",
+    lat: -32.923333,
+    lng: 151.708129,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek25_15Curzon_PassingTreeSlices.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek25_15Curzon_PassingTreeSlices.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek27_15CurzonLandslideOverCreekBeforeBoulder.mp4",
+    lat: -32.922974,
+    lng: 151.708040,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek27_15CurzonLandslideOverCreekBeforeBoulder.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek27_15CurzonLandslideOverCreekBeforeBoulder.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek29_17CurzonLandslideOverCreek.mp4",
+    lat: -32.922916,
+    lng: 151.707996,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek29_17CurzonLandslideOverCreek.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek29_17CurzonLandslideOverCreek.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek31_17CurzonPanningToUprootedTreeStumpAtToe.mp4",
+    lat: -32.922873,
+    lng: 151.707964,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek31_17CurzonPanningToUprootedTreeStumpAtToe.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek31_17CurzonPanningToUprootedTreeStumpAtToe.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek33_17CurzonPanningFromUprootedTreeStumpToHouseNotLabelled.mp4",
+    lat: -32.922832,
+    lng: 151.707933,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek33_17CurzonPanningFromUprootedTreeStumpToHouseNotLabelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek33_17CurzonPanningFromUprootedTreeStumpToHouseNotLabelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek36_17CurzonPanningCkWToE.mp4",
+    lat: -32.922771,
+    lng: 151.707883,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek36_17CurzonPanningCkWToE.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek36_17CurzonPanningCkWToE.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek38_19Curzon_UnderSoakawayPanningWestToSouth.mp4",
+    lat: -32.922729,
+    lng: 151.707850,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek38_19Curzon_UnderSoakawayPanningWestToSouth.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek38_19Curzon_UnderSoakawayPanningWestToSouth.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek39_19Curzon_SoakawayViewedFromWest.mp4",
+    lat: -32.922709,
+    lng: 151.707835,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek39_19Curzon_SoakawayViewedFromWest.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek39_19Curzon_SoakawayViewedFromWest.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek41_19Curzon_BouldersAndBankWestOfSoakaway2.mp4",
+    lat: -32.922672,
+    lng: 151.707808,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek41_19Curzon_BouldersAndBankWestOfSoakaway2.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek41_19Curzon_BouldersAndBankWestOfSoakaway2.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek42_19Curzon_CloserShotOfSoakaway.mp4",
+    lat: -32.922652,
+    lng: 151.707793,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek42_19Curzon_CloserShotOfSoakaway.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek42_19Curzon_CloserShotOfSoakaway.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek43_19Curzon_CavitiesInCreekBank.mp4",
+    lat: -32.922633,
+    lng: 151.707777,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek43_19Curzon_CavitiesInCreekBank.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek43_19Curzon_CavitiesInCreekBank.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek45_17CurzonFallenTreeInCreekAndSoakaway.mp4",
+    lat: -32.922593,
+    lng: 151.707747,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek45_17CurzonFallenTreeInCreekAndSoakaway.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek45_17CurzonFallenTreeInCreekAndSoakaway.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek46_21Curzon_BrokenSewerPanningToCreek.mp4",
+    lat: -32.922571,
+    lng: 151.707732,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek46_21Curzon_BrokenSewerPanningToCreek.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek46_21Curzon_BrokenSewerPanningToCreek.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek47_19Curzon_BankWestOfSoakawayPanningWestToCreekPanningNorthTo134RussellUnlabelled.mp4",
+    lat: -32.922552,
+    lng: 151.707717,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek47_19Curzon_BankWestOfSoakawayPanningWestToCreekPanningNorthTo134RussellUnlabelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek47_19Curzon_BankWestOfSoakawayPanningWestToCreekPanningNorthTo134RussellUnlabelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek49_21Curzon_PanningUpstreamToDownstream1Unlabelled.mp4",
+    lat: -32.922515,
+    lng: 151.707689,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek49_21Curzon_PanningUpstreamToDownstream1Unlabelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek49_21Curzon_PanningUpstreamToDownstream1Unlabelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek50_21Curzon_PanningUpstreamToDownstream2Unlabelled.mp4",
+    lat: -32.922496,
+    lng: 151.707675,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek50_21Curzon_PanningUpstreamToDownstream2Unlabelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek50_21Curzon_PanningUpstreamToDownstream2Unlabelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek51_InTheBackyardOf19CurzonUnlabelled.mp4",
+    lat: -32.922475,
+    lng: 151.707659,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek51_InTheBackyardOf19CurzonUnlabelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek51_InTheBackyardOf19CurzonUnlabelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "20260216_HeadingWestInTheCreek52_19Curzon_SoakawayToLeaningOverSoakawayTreeUnlabelled.mp4",
+    lat: -32.922455,
+    lng: 151.707644,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek52_19Curzon_SoakawayToLeaningOverSoakawayTreeUnlabelled.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/20260216_HeadingWestInTheCreek52_19Curzon_SoakawayToLeaningOverSoakawayTreeUnlabelled.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo101_20250909_HeadwallNoSound.mp4",
+    lat: -32.923629,
+    lng: 151.706871,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo101_20250909_HeadwallNoSound.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo101_20250909_HeadwallNoSound.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo102_20250909_LookingDownstreamTowardsHeadwall.mp4",
+    lat: -32.923590,
+    lng: 151.706833,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo102_20250909_LookingDownstreamTowardsHeadwall.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo102_20250909_LookingDownstreamTowardsHeadwall.mp4",
+    mime: "video/mp4",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+  {
+    title: "CreekVideo103_20260118_59PortlandPl_CreekFlowing.MOV",
+    lat: -32.923638,
+    lng: 151.706837,
+    posterUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo103_20260118_59PortlandPl_CreekFlowing.jpg",
+    videoUrl: "data/documents/PhotosAndVideos/VideosOfTheCreek/CreekVideo103_20260118_59PortlandPl_CreekFlowing.MOV",
+    mime: "video/quicktime",
+    zoom: 19,
+    markerType: 'whiteSquare'
+  },
+];
+  function makeWhiteSquareIcon() {
+    return L.divIcon({
+      className: '',
+      html: '<div class="white-square-marker"></div>',
+      iconSize: [12, 12],
+      iconAnchor: [6, 6]
+    });
+  }
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+  function buildVideoPopupHtml(cfg) {
+    const safeTitle = escapeHtml(cfg.title || '');
+    const poster = cfg.posterUrl || '';
+    const video = cfg.videoUrl || '';
+    const mime = cfg.mime || 'video/mp4';
+    const width = 520;
+
+    return `
+      <div style="width:${width}px;">
+        <div style="margin:0 0 8px 0;">${safeTitle}</div>
+        <video
+          width="${width}"
+          controls
+          playsinline
+          preload="metadata"
+          poster="${poster}"
+          style="border:1px solid #000; display:block;"
+        >
+          <source src="${video}" type="${mime}">
+        </video>
+        <div style="margin-top:8px;">
+          <a href="${video}" download style="color:#0000ee; text-decoration:underline;">
+            Download video
+          </a>
+        </div>
+      </div>
+    `;
+  }
+  const icon = makeWhiteSquareIcon();
+  // Build markers once, then toggle them as a group
+  const markers = [];
+  const boundsPts = [];
+  for (const cfg of CREEK_VIDEO_POINTS) {
+    const latlng = L.latLng(cfg.lat, cfg.lng);
+    boundsPts.push(latlng);
+
+    const marker = L.marker(latlng, { icon, interactive: true });
+    marker.bindPopup(buildVideoPopupHtml(cfg), {
+      className: 'video-popup',
+      maxWidth: 560,
+      closeButton: true,
+      autoPan: true,
+      closeOnClick: false
+    });
+
+    markers.push(marker);
+  }
+  const creekVideosLayer = L.layerGroup(markers);
+  cb.addEventListener('change', () => {
+    if (cb.checked) {
+      creekVideosLayer.addTo(map);
+    } else {
+      map.removeLayer(creekVideosLayer);
+    }
+  });
+  zoomBtn.addEventListener('click', () => {
+    if (!boundsPts.length) return;
+    map.fitBounds(L.latLngBounds(boundsPts), { padding: [20, 20], maxZoom: 20 });
+  });
+
+})(); 
+	
+
+	
 
   // ---------- Erosion Protection (single image overlay) ----------
 wireOverlayLayer({
