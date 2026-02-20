@@ -113,18 +113,15 @@
 <!-- Creek + Landmarks (3x GeoJSON as 1 layer) -->
 <div class="layer-item">
   <div class="layer-row">
-    <label for="CreekAndLandmarksLayer">
-      Creek alignment + landmarks (QGIS import)
-    </label>
+	<input type="checkbox" id="CreekAndLandmarksLayer">
+    <label for="CreekAndLandmarksLayer">The Creek, and various landmarks along it.</label>
     <button type="button" id="CreekAndLandmarksZoomBtn">Zoom to</button>
   </div>
-
   <div class="layer-row" style="gap:10px;align-items:center;">
     <input type="range" id="CreekAndLandmarksOpacity" min="0" max="1" step="0.05" value="1" style="flex:1;" aria-label="Creek and landmarks opacity">
     <span id="CreekAndLandmarksOpacityValue" style="min-width:40px;text-align:right;">1.00</span>
   </div>
 </div>
-
 <style>
 /* Label buffer (readable on any background) */
 .leaflet-tooltip.label-buffer {
