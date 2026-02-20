@@ -39,6 +39,14 @@
 .interactive-image-overlay { pointer-events: auto; }
 .leaflet-tooltip.img-hover-tooltip{max-width: 520px; background: #fff; border: 1px solid #000; box-shadow: none; padding: 8px;}
 .leaflet-tooltip.img-hover-tooltip img{ max-width:100%; height:auto; display:block; }
+	  .white-circle-marker { background: transparent; border: 0; box-shadow: none; }
+.white-circle-marker__dot{
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  box-sizing: border-box;
+}
+
 
   </style>
 </head>
@@ -109,6 +117,21 @@
 </div>
       <div class="layer-note">Note: there's an error in the way that some house numbers are being centred in their lot areas. E.g. 136 Russell covers 2 lots, and the "136" for the western lot is showing up over the flats at number 138.</div>
 
+
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="The2025LandslideObsLayer">
+    <label for="The2025LandslideObsLayer">
+      Location of 2025 landslide (determined by observation only) and images of damage at various locations
+    </label>
+    <button type="button" id="The2025LandslideObsZoomBtn">Zoom to</button>
+  </div>
+  <div class="layer-row">
+    <input id="The2025LandslideObsOpacity" type="range" min="0" max="1" step="0.01" value="1">
+  </div>
+</div>
+
+		
 
 <!-- Creek + Landmarks (3x GeoJSON as 1 layer) -->
 <div class="layer-item">
@@ -3253,7 +3276,122 @@ if (!lotsCb || !lotsZoomBtn) {
   }
 })();
 
+// 2025 Landslide location=====================================================
 
+let The2025LandslideObsGroup = null;
+let The2025LandslideObsPolygon = null;
+let The2025LandslideObsMarkers = [];
+
+const Checkbox_The2025LandslideObs = document.getElementById('The2025LandslideObsLayer');
+const ZoomBtn_The2025LandslideObs = document.getElementById('The2025LandslideObsZoomBtn');
+const Opacity_The2025LandslideObs = document.getElementById('The2025LandslideObsOpacity');
+
+const The2025LandslideObs_GeoJsonUrl =
+  'data/Geology_etc/The2025LandslideLocation_BasedOnObservationsOnly.geojson';
+
+const The2025LandslideObs_DamagePoints = [
+  { lat:-32.922687, lng:151.708284, img:'data/documents/Damage/Damage_ScarpFacingEast_130RussellRdInForeground.png', caption:'Scarp at rear of houses along Russell Road. 130 Russell Rd is in foreground.' },
+  { lat:-32.922773, lng:151.708962, img:'data/documents/Damage/DamageEasementBakerSt.png', caption:'The scarp at the easement and Baker St. 124 Russell Rd can be seen on right.' },
+  { lat:-32.923320, lng:151.709450, img:'data/documents/Damage/DamageVicStFacingN_120RussellRdInForeground.png', caption:'Damage to Victoria Street and lower part of 120 Russell Road.' },
+  { lat:-32.923600, lng:151.709450, img:'data/documents/Damage/Damage122VicSt.png', caption:'Damage to 122 Victoria Street.' },
+  { lat:-32.923780, lng:151.708990, img:'data/documents/Damage/Damage57PortlandPl.png', caption:'Damage to 57 Portland Place.' },
+  { lat:-32.923137, lng:151.707584, img:'data/documents/Damage/Damage136RussellRdFacingW.png', caption:'Landslide boundary, 136 Russell Road facing west.' }
+];
+
+function makeWhiteCircleIcon(sizePx = 12, borderPx = 2) {
+  const s = Number(sizePx) || 12;
+  const b = Number(borderPx) || 2;
+  return L.divIcon({
+    className: 'white-circle-marker',
+    html: `<div class="white-circle-marker__dot" style="width:${s}px;height:${s}px;border:${b}px solid #000;"></div>`,
+    iconSize: [s, s],
+    iconAnchor: [s/2, s/2]
+  });
+}
+
+const WHITE_CIRCLE_ICON = makeWhiteCircleIcon(12,2);
+
+function makeHoverHtml(caption,imgUrl){
+  return `
+    <div style="width:520px">
+      <div style="font-size:12px;margin-bottom:6px">${caption}</div>
+      <img src="${imgUrl}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+    </div>`;
+}
+
+function applyOpacity(){
+  const a=Math.max(0,Math.min(1,parseFloat(Opacity_The2025LandslideObs.value||'1')));
+  if(The2025LandslideObsPolygon){
+    The2025LandslideObsPolygon.setStyle({color:'#11ff00',weight:2,opacity:a,fillColor:'#11ff00',fillOpacity:a});
+  }
+  The2025LandslideObsMarkers.forEach(m=>m.setOpacity(a));
+}
+
+async function buildLayer(){
+  if(The2025LandslideObsGroup) return;
+  The2025LandslideObsGroup=L.layerGroup();
+
+  const res=await fetch(The2025LandslideObs_GeoJsonUrl,{cache:'no-store'});
+  const gj=await res.json();
+  The2025LandslideObsPolygon=L.geoJSON(gj,{
+    style:()=>({color:'#11ff00',weight:2,opacity:1,fillColor:'#11ff00',fillOpacity:1})
+  }).addTo(The2025LandslideObsGroup);
+
+  The2025LandslideObsMarkers=The2025LandslideObs_DamagePoints.map(p=>{
+    const marker=L.marker([p.lat,p.lng],{icon:WHITE_CIRCLE_ICON});
+    marker.bindTooltip(makeHoverHtml(p.caption,p.img),{
+      direction:'top',
+      sticky:true,
+      opacity:0.98,
+      interactive:true,
+      className:'img-hover-tooltip'
+    });
+    marker.addTo(The2025LandslideObsGroup);
+    return marker;
+  });
+
+  applyOpacity();
+}
+
+function getBounds(){
+  if(!The2025LandslideObsGroup) return null;
+  const layers=The2025LandslideObsGroup.getLayers();
+  let b=null;
+  layers.forEach(l=>{
+    if(l.getBounds){
+      const lb=l.getBounds();
+      if(lb&&lb.isValid&&lb.isValid()) b=b?b.extend(lb):lb;
+    }else if(l.getLatLng){
+      const ll=l.getLatLng();
+      if(ll) b=b?b.extend(ll):L.latLngBounds([ll,ll]);
+    }
+  });
+  return b&&b.isValid&&b.isValid()?b:null;
+}
+
+Checkbox_The2025LandslideObs.addEventListener('change',async()=>{
+  if(Checkbox_The2025LandslideObs.checked){
+    await buildLayer();
+    The2025LandslideObsGroup.addTo(map);
+  }else{
+    if(The2025LandslideObsGroup) map.removeLayer(The2025LandslideObsGroup);
+  }
+});
+
+ZoomBtn_The2025LandslideObs.addEventListener('click',async()=>{
+  if(!Checkbox_The2025LandslideObs.checked){
+    Checkbox_The2025LandslideObs.checked=true;
+    await buildLayer();
+    The2025LandslideObsGroup.addTo(map);
+  }
+  const b=getBounds();
+  if(b) map.fitBounds(b,{padding:[20,20]});
+});
+
+Opacity_The2025LandslideObs.addEventListener('input',applyOpacity);
+
+
+	
 
 
 /* ===================== Videos of the Creek (ONE layer -> 59 markers) ===================== */
