@@ -131,6 +131,20 @@
   </div>
 </div>
 
+
+		<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="The2022LandslideApproxLayer">
+    <label for="The2022LandslideApproxLayer">
+      Location of 2022 landslide (approximate) and images of damage at various locations
+    </label>
+    <button type="button" id="The2022LandslideApproxZoomBtn">Zoom to</button>
+  </div>
+  <div class="layer-row">
+    <input id="The2022LandslideApproxOpacity" type="range" min="0" max="1" step="0.01" value="1">
+  </div>
+</div>
+
 		
 
 <!-- Creek + Landmarks (3x GeoJSON as 1 layer) -->
@@ -3389,6 +3403,143 @@ ZoomBtn_The2025LandslideObs.addEventListener('click',async()=>{
 });
 
 Opacity_The2025LandslideObs.addEventListener('input',applyOpacity);
+
+
+	//2022 Landslide location=====================================================================================
+let The2022LandslideApproxGroup = null;
+let The2022LandslideApproxPolygon = null;
+let The2022LandslideApproxMarkers = [];
+
+const Checkbox_The2022LandslideApprox = document.getElementById('The2022LandslideApproxLayer');
+const ZoomBtn_The2022LandslideApprox = document.getElementById('The2022LandslideApproxZoomBtn');
+const Opacity_The2022LandslideApprox = document.getElementById('The2022LandslideApproxOpacity');
+
+const The2022LandslideApprox_GeoJsonUrl =
+  'data/Geology_etc/The2022Landslide_ApproximateLocation.geojson';
+
+const The2022LandslideApprox_DamagePoints = [
+  {
+    lat: -32.922890,
+    lng: 151.708330,
+    img: 'data/documents/Damage/Landslide2022Damage_12BakerStPlanView.png',
+    caption: 'Image taken from www.fnnewcastle.com.au'
+  },
+  {
+    lat: -32.922920,
+    lng: 151.707930,
+    img: 'data/documents/Damage/Landslide2022Damage_AerialShotFacingE.png',
+    caption: 'Image taken from www.fnnewcastle.com.au'
+  }
+];
+
+function makeWhiteCircleIcon_2022(sizePx = 12, borderPx = 2) {
+  const s = Number(sizePx) || 12;
+  const b = Number(borderPx) || 2;
+  return L.divIcon({
+    className: 'white-circle-marker',
+    html: `<div class="white-circle-marker__dot" style="width:${s}px;height:${s}px;border:${b}px solid #000;"></div>`,
+    iconSize: [s, s],
+    iconAnchor: [s / 2, s / 2]
+  });
+}
+
+const WHITE_CIRCLE_ICON_2022 = makeWhiteCircleIcon_2022(12, 2);
+
+function makeHoverHtml_2022(caption, imgUrl) {
+  return `
+    <div style="width:520px">
+      <div style="font-size:12px;margin-bottom:6px">${caption}</div>
+      <img src="${imgUrl}" style="width:100%;height:auto;display:block;border:1px solid #ccc">
+    </div>`;
+}
+
+function applyOpacity_2022() {
+  const a = Math.max(0, Math.min(1, parseFloat(Opacity_The2022LandslideApprox.value || '1')));
+  if (The2022LandslideApproxPolygon) {
+    The2022LandslideApproxPolygon.setStyle({
+      color: '#00ffbe',
+      weight: 2,
+      opacity: a,
+      fillColor: '#00ffbe',
+      fillOpacity: a
+    });
+  }
+  The2022LandslideApproxMarkers.forEach(m => m.setOpacity(a));
+}
+
+async function buildLayer_2022() {
+  if (The2022LandslideApproxGroup) return;
+
+  The2022LandslideApproxGroup = L.layerGroup();
+
+  const res = await fetch(The2022LandslideApprox_GeoJsonUrl, { cache: 'no-store' });
+  const gj = await res.json();
+
+  The2022LandslideApproxPolygon = L.geoJSON(gj, {
+    style: () => ({
+      color: '#00ffbe',
+      weight: 2,
+      opacity: 1,
+      fillColor: '#00ffbe',
+      fillOpacity: 1
+    })
+  }).addTo(The2022LandslideApproxGroup);
+
+  The2022LandslideApproxMarkers = The2022LandslideApprox_DamagePoints.map(p => {
+    const marker = L.marker([p.lat, p.lng], { icon: WHITE_CIRCLE_ICON_2022 });
+    marker.bindTooltip(makeHoverHtml_2022(p.caption, p.img), {
+      direction: 'top',
+      sticky: true,
+      opacity: 0.98,
+      interactive: true,
+      className: 'img-hover-tooltip'
+    });
+    marker.addTo(The2022LandslideApproxGroup);
+    return marker;
+  });
+
+  applyOpacity_2022();
+}
+
+function getBounds_2022() {
+  if (!The2022LandslideApproxGroup) return null;
+  const layers = The2022LandslideApproxGroup.getLayers();
+  let b = null;
+
+  layers.forEach(l => {
+    if (l.getBounds) {
+      const lb = l.getBounds();
+      if (lb && lb.isValid && lb.isValid()) b = b ? b.extend(lb) : lb;
+    } else if (l.getLatLng) {
+      const ll = l.getLatLng();
+      if (ll) b = b ? b.extend(ll) : L.latLngBounds([ll, ll]);
+    }
+  });
+
+  return b && b.isValid && b.isValid() ? b : null;
+}
+
+Checkbox_The2022LandslideApprox.addEventListener('change', async () => {
+  if (Checkbox_The2022LandslideApprox.checked) {
+    await buildLayer_2022();
+    The2022LandslideApproxGroup.addTo(map);
+  } else {
+    if (The2022LandslideApproxGroup) map.removeLayer(The2022LandslideApproxGroup);
+  }
+});
+
+ZoomBtn_The2022LandslideApprox.addEventListener('click', async () => {
+  if (!Checkbox_The2022LandslideApprox.checked) {
+    Checkbox_The2022LandslideApprox.checked = true;
+    await buildLayer_2022();
+    The2022LandslideApproxGroup.addTo(map);
+  }
+  const b = getBounds_2022();
+  if (b) map.fitBounds(b, { padding: [20, 20] });
+});
+
+Opacity_The2022LandslideApprox.addEventListener('input', applyOpacity_2022);
+
 
 
 	
