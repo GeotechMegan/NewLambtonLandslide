@@ -119,8 +119,7 @@
   </div>
   <div class="layer-row" style="gap:10px;align-items:center;">
     <input type="range" id="CreekAndLandmarksOpacity" min="0" max="1" step="0.05" value="1" style="flex:1;" aria-label="Creek and landmarks opacity">
-    <span id="CreekAndLandmarksOpacityValue" style="min-width:40px;text-align:right;">1.00</span>
-  </div>
+  	</div>
 </div>
 <style>
 /* Label buffer (readable on any background) */
@@ -3057,7 +3056,6 @@ if (!lotsCb || !lotsZoomBtn) {
   const checkbox = document.getElementById('CreekAndLandmarksLayer');
   const zoomBtn  = document.getElementById('CreekAndLandmarksZoomBtn');
   const slider   = document.getElementById('CreekAndLandmarksOpacity');
-  const sliderVal= document.getElementById('CreekAndLandmarksOpacityValue');
 
   const GEOJSONS = [
     {
@@ -3224,10 +3222,9 @@ if (!lotsCb || !lotsZoomBtn) {
 
   if (slider) {
     const apply = () => {
-      const a = toNum01(slider.value);
-      if (sliderVal) sliderVal.textContent = a.toFixed(2);
-      setGroupOpacity(a);
-    };
+  const a = toNum01(slider.value);
+  setGroupOpacity(a);
+};
     slider.addEventListener('input', apply);
     apply();
   }
