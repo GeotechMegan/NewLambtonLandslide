@@ -110,15 +110,43 @@
       <div class="layer-note">Note: there's an error in the way that some house numbers are being centred in their lot areas. E.g. 136 Russell covers 2 lots, and the "136" for the western lot is showing up over the flats at number 138.</div>
 
 
+<!-- Creek + Landmarks (3x GeoJSON as 1 layer) -->
 <div class="layer-item">
-    <div class="layer-row">
-      <input type="checkbox" id="layer-thecreek">
-      <label for="layer-thecreek">The Creek post-2025 landslide, the landslide toe and various landmarks.</label>
-      <button type="button" id="zoom-thecreek">Zoom to</button>
-    </div>
-    <input type="range" id="opacity-thecreek" min="0" max="1" step="0.05" value="0.7">
+  <div class="layer-row">
+    <label for="CreekAndLandmarksLayer">
+      Creek alignment + landmarks (QGIS import)
+    </label>
+    <button type="button" id="CreekAndLandmarksZoomBtn">Zoom to</button>
   </div>
-<div class="layer-note">Locations have been placed as accurately as possible using site visits, discussions with locals and examination of footage, imagery & DBYDs. Accuracy would improve with survey data.</div>
+
+  <div class="layer-row" style="gap:10px;align-items:center;">
+    <input type="range" id="CreekAndLandmarksOpacity" min="0" max="1" step="0.05" value="1" style="flex:1;" aria-label="Creek and landmarks opacity">
+    <span id="CreekAndLandmarksOpacityValue" style="min-width:40px;text-align:right;">1.00</span>
+  </div>
+</div>
+
+<style>
+/* Label buffer (readable on any background) */
+.leaflet-tooltip.label-buffer {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: #111;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0;
+  text-shadow:
+    -2px -2px 0 #fff,
+     2px -2px 0 #fff,
+    -2px  2px 0 #fff,
+     2px  2px 0 #fff,
+    -2px  0px 0 #fff,
+     2px  0px 0 #fff,
+     0px -2px 0 #fff,
+     0px  2px 0 #fff;
+}
+</style>
+
 		
 		
 <div class="layer-item">
@@ -3027,17 +3055,187 @@ if (!lotsCb || !lotsZoomBtn) {
     if (lotsBounds && lotsBounds.isValid()) map.fitBounds(lotsBounds, { maxZoom: 20 });  });}
 
 
-// ---------- The Creek (single image overlay) ----------
-wireOverlayLayer({
-  checkboxId: 'layer-thecreek',
-  sliderId: 'opacity-thecreek',
-  zoomBtnId: 'zoom-thecreek',
-  imageUrl: 'data/Geology_etc/TheCreekCorrected1.png',
-  bounds: [
-    [-32.924631, 151.703966], // SW
-    [-32.922486, 151.709572]  // NE
-  ]
-});
+// Creek + Landmarks (3x GeoJSON as 1 layer)=================================================================================
+(() => {
+  const checkbox = document.getElementById('CreekAndLandmarksLayer');
+  const zoomBtn  = document.getElementById('CreekAndLandmarksZoomBtn');
+  const slider   = document.getElementById('CreekAndLandmarksOpacity');
+  const sliderVal= document.getElementById('CreekAndLandmarksOpacityValue');
+
+  const GEOJSONS = [
+    {
+      url: 'data/Geology_etc/AboveGroundCreekLocationPostLandslide.geojson',
+      type: 'line',
+      color: '#4d1c45',
+      weightPx: 4,            // ~1.06mm at typical screen DPI
+      labelField: 'label'
+    },
+    {
+      url: 'data/Geology_etc/AboveGroundCreekLocation_LittleLandslideInteraction.geojson',
+      type: 'line',
+      color: '#0004FF',
+      weightPx: 4,            // ~1.06mm
+      labelField: 'label'
+    },
+    {
+      url: 'data/Geology_etc/Landmarks.geojson',
+      type: 'point',
+      color: '#808080',
+      radiusPx: 4,
+      labelField: 'label'     // will label if present; safe if missing
+    }
+  ];
+
+  let creekAndLandmarksGroup = null;
+  let groupBounds = null;
+  let isLoaded = false;
+
+  function toNum01(v) {
+    const n = Number(v);
+    if (Number.isFinite(n)) return Math.max(0, Math.min(1, n));
+    return 1;
+  }
+
+  function setGroupOpacity(alpha) {
+    if (!creekAndLandmarksGroup) return;
+
+    creekAndLandmarksGroup.eachLayer(layer => {
+      if (layer && typeof layer.setStyle === 'function') {
+        layer.setStyle({
+          opacity: alpha,
+          fillOpacity: alpha
+        });
+      }
+
+      // If this is a point layer built as circleMarker, setStyle handles it.
+      // Tooltips don't have per-tooltip opacity cleanly; handle via CSS on the element if present.
+      if (layer && layer.getTooltip && layer.getTooltip()) {
+        const tt = layer.getTooltip();
+        const el = tt.getElement ? tt.getElement() : null;
+        if (el) el.style.opacity = String(alpha);
+      }
+    });
+  }
+
+  async function loadOnce() {
+    if (isLoaded) return;
+    isLoaded = true;
+
+    creekAndLandmarksGroup = L.featureGroup();
+    groupBounds = null;
+
+    const alpha = toNum01(slider?.value ?? 1);
+
+    const fetches = GEOJSONS.map(async spec => {
+      const res = await fetch(spec.url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Failed to load ${spec.url} (${res.status})`);
+      const gj = await res.json();
+
+      let layer;
+
+      if (spec.type === 'line') {
+        layer = L.geoJSON(gj, {
+          style: () => ({
+            color: spec.color,
+            weight: spec.weightPx,
+            opacity: alpha
+          }),
+          onEachFeature: (feature, lyr) => {
+            const val = feature?.properties?.[spec.labelField];
+            if (val !== undefined && val !== null && String(val).trim() !== '') {
+              lyr.bindTooltip(String(val), {
+                permanent: true,
+                direction: 'center',
+                className: 'label-buffer',
+                interactive: false
+              });
+            }
+          }
+        });
+      } else {
+        layer = L.geoJSON(gj, {
+          pointToLayer: (feature, latlng) => {
+            return L.circleMarker(latlng, {
+              radius: spec.radiusPx,
+              color: spec.color,
+              weight: 1,
+              opacity: alpha,
+              fillColor: spec.color,
+              fillOpacity: alpha
+            });
+          },
+          onEachFeature: (feature, lyr) => {
+            const val = feature?.properties?.[spec.labelField];
+            if (val !== undefined && val !== null && String(val).trim() !== '') {
+              lyr.bindTooltip(String(val), {
+                permanent: true,
+                direction: 'top',
+                offset: [0, -6],
+                className: 'label-buffer',
+                interactive: false
+              });
+            }
+          }
+        });
+      }
+
+      creekAndLandmarksGroup.addLayer(layer);
+
+      const b = layer.getBounds ? layer.getBounds() : null;
+      if (b && b.isValid && b.isValid()) {
+        groupBounds = groupBounds ? groupBounds.extend(b) : b;
+      }
+    });
+
+    await Promise.all(fetches);
+  }
+
+  async function showLayer() {
+    await loadOnce();
+    if (!map.hasLayer(creekAndLandmarksGroup)) creekAndLandmarksGroup.addTo(map);
+    setGroupOpacity(toNum01(slider?.value ?? 1));
+  }
+
+  function hideLayer() {
+    if (creekAndLandmarksGroup && map.hasLayer(creekAndLandmarksGroup)) {
+      map.removeLayer(creekAndLandmarksGroup);
+    }
+  }
+
+  if (checkbox) {
+    checkbox.addEventListener('change', async () => {
+      if (checkbox.checked) {
+        try { await showLayer(); } catch (e) { console.error(e); checkbox.checked = false; }
+      } else {
+        hideLayer();
+      }
+    });
+  }
+
+  if (zoomBtn) {
+    zoomBtn.addEventListener('click', async () => {
+      try {
+        await loadOnce();
+        if (groupBounds && groupBounds.isValid && groupBounds.isValid()) {
+          map.fitBounds(groupBounds, { padding: [20, 20] });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  }
+
+  if (slider) {
+    const apply = () => {
+      const a = toNum01(slider.value);
+      if (sliderVal) sliderVal.textContent = a.toFixed(2);
+      setGroupOpacity(a);
+    };
+    slider.addEventListener('input', apply);
+    apply();
+  }
+})();
+
 
 
 /* ===================== Videos of the Creek (ONE layer -> 59 markers) ===================== */
