@@ -114,6 +114,11 @@
 <div class="layer-item">
   <div class="layer-row">
 	<input type="checkbox" id="CreekAndLandmarksLayer">
+<div class="layer-row" style="margin-left:22px;">
+  <input type="checkbox" id="CreekAndLandmarksLabels" checked>
+  <label for="CreekAndLandmarksLabels">Show labels</label>
+</div>
+
     <label for="CreekAndLandmarksLayer">The Creek, and various landmarks along it.</label>
     <button type="button" id="CreekAndLandmarksZoomBtn">Zoom to</button>
   </div>
@@ -3051,25 +3056,25 @@ if (!lotsCb || !lotsZoomBtn) {
     if (lotsBounds && lotsBounds.isValid()) map.fitBounds(lotsBounds, { maxZoom: 20 });  });}
 
 
-// Creek + Landmarks (3x GeoJSON as 1 layer)=================================================================================
+// Creek + Landmarks (3x GeoJSON as 1 layer, with label toggle)============================================================
 (() => {
   const checkbox = document.getElementById('CreekAndLandmarksLayer');
+  const labelsCheckbox = document.getElementById('CreekAndLandmarksLabels');
   const zoomBtn  = document.getElementById('CreekAndLandmarksZoomBtn');
   const slider   = document.getElementById('CreekAndLandmarksOpacity');
-
   const GEOJSONS = [
     {
       url: 'data/Geology_etc/AboveGroundCreekLocationPostLandslide.geojson',
       type: 'line',
       color: '#4d1c45',
-      weightPx: 4,            // ~1.06mm at typical screen DPI
+      weightPx: 4,
       labelField: 'label'
     },
     {
       url: 'data/Geology_etc/AboveGroundCreekLocation_LittleLandslideInteraction.geojson',
       type: 'line',
       color: '#0004FF',
-      weightPx: 4,            // ~1.06mm
+      weightPx: 4,
       labelField: 'label'
     },
     {
@@ -3077,13 +3082,14 @@ if (!lotsCb || !lotsZoomBtn) {
       type: 'point',
       color: '#808080',
       radiusPx: 4,
-      labelField: 'label'     // will label if present; safe if missing
+      labelField: 'label'
     }
   ];
 
   let creekAndLandmarksGroup = null;
   let groupBounds = null;
   let isLoaded = false;
+  let labelLayers = [];
 
   function toNum01(v) {
     const n = Number(v);
@@ -3101,13 +3107,17 @@ if (!lotsCb || !lotsZoomBtn) {
           fillOpacity: alpha
         });
       }
+    });
+  }
 
-      // If this is a point layer built as circleMarker, setStyle handles it.
-      // Tooltips don't have per-tooltip opacity cleanly; handle via CSS on the element if present.
-      if (layer && layer.getTooltip && layer.getTooltip()) {
-        const tt = layer.getTooltip();
-        const el = tt.getElement ? tt.getElement() : null;
-        if (el) el.style.opacity = String(alpha);
+  function setLabelsVisible(visible) {
+    labelLayers.forEach(layer => {
+      if (visible) {
+        if (!layer.getTooltip()) return;
+        layer.openTooltip();
+      } else {
+        if (!layer.getTooltip()) return;
+        layer.closeTooltip();
       }
     });
   }
@@ -3118,6 +3128,7 @@ if (!lotsCb || !lotsZoomBtn) {
 
     creekAndLandmarksGroup = L.featureGroup();
     groupBounds = null;
+    labelLayers = [];
 
     const alpha = toNum01(slider?.value ?? 1);
 
@@ -3144,6 +3155,7 @@ if (!lotsCb || !lotsZoomBtn) {
                 className: 'label-buffer',
                 interactive: false
               });
+              labelLayers.push(lyr);
             }
           }
         });
@@ -3169,6 +3181,7 @@ if (!lotsCb || !lotsZoomBtn) {
                 className: 'label-buffer',
                 interactive: false
               });
+              labelLayers.push(lyr);
             }
           }
         });
@@ -3183,6 +3196,10 @@ if (!lotsCb || !lotsZoomBtn) {
     });
 
     await Promise.all(fetches);
+
+    if (labelsCheckbox && !labelsCheckbox.checked) {
+      setLabelsVisible(false);
+    }
   }
 
   async function showLayer() {
@@ -3204,6 +3221,12 @@ if (!lotsCb || !lotsZoomBtn) {
       } else {
         hideLayer();
       }
+    });
+  }
+
+  if (labelsCheckbox) {
+    labelsCheckbox.addEventListener('change', () => {
+      setLabelsVisible(labelsCheckbox.checked);
     });
   }
 
@@ -3229,6 +3252,7 @@ if (!lotsCb || !lotsZoomBtn) {
     apply();
   }
 })();
+
 
 
 
