@@ -1,0 +1,17 @@
+{
+"type": "FeatureCollection",
+"name": "Landmarks",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "label": "Ironbark in creek" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.707915968921213, -32.923276340470601 ] ] } },
+{ "type": "Feature", "properties": { "id": 2, "label": "Uprooted tree stump" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.708049287981993, -32.923300787731137 ] ] } },
+{ "type": "Feature", "properties": { "id": 3, "label": "Uprooted trees over creek" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.708091266536712, -32.923313428614485 ] ] } },
+{ "type": "Feature", "properties": { "id": 4, "label": "Boulder" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.708107572061834, -32.923321883331219 ] ] } },
+{ "type": "Feature", "properties": { "id": 5, "label": "Timber slices" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.708152279374701, -32.923345183612362 ] ] } },
+{ "type": "Feature", "properties": { "id": 6, "label": "15 Curzon's bridge over creek" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.708267222610772, -32.923388766070047 ] ] } },
+{ "type": "Feature", "properties": { "id": 7, "label": "Timber bench" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.708307214617093, -32.923387735069312 ] ] } },
+{ "type": "Feature", "properties": { "id": 8, "label": "Flat bridge over creek" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.708332748240878, -32.923421698148793 ] ] } },
+{ "type": "Feature", "properties": { "id": 9, "label": "Upright gum tree" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.708332031812972, -32.923394832102304 ] ] } },
+{ "type": "Feature", "properties": { "id": 10, "label": "Weir" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 151.706726856180097, -32.923051329446352 ] ] } }
+]
+}
