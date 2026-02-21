@@ -5,11 +5,10 @@
   <title>Case Studies</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    a { color: #0000ee;}
-    /* NOTE: CHANGE FONT SIZE HERE */
+    a { color: #0000ee; }
+
     body{
       margin:0;
-      /* NOTE: CHANGE MARGIN WIDTH HERE (left/right padding) */
       padding:30px 20px;
       font-family:Arial,Helvetica,sans-serif;
       background:#fff;
@@ -17,63 +16,66 @@
       font-size:1rem;
       line-height:1.6;
     }
+
     h1{
       text-align:center;
       margin:0 0 20px 0;
       font-size:2.2rem;
       font-weight:normal;
     }
+
     nav{
       display:flex;
       justify-content:space-between;
-      /* NOTE: CHANGE CONTENT WIDTH HERE */
       max-width:1200px;
       margin:0 auto 20px auto;
       flex-wrap:wrap;
       gap:10px;
     }
+
     nav a{
       text-decoration:none;
       color:#000;
       font-size:1.2rem;
     }
+
     nav a:hover{ text-decoration:underline; }
+
     .content{
-      /* NOTE: CHANGE CONTENT WIDTH HERE */
       max-width:1200px;
       margin:0 auto;
     }
-    .message{
-      margin:0 0 20px 0;
-    }
+
     h2{
       margin:22px 0 10px 0;
       font-size:1.4rem;
       font-weight:bold;
     }
+
     hr{
       border:0;
       border-top:1px solid #000;
       margin:26px 0;
     }
+
     .comment-thread{
-  margin:20px 0;
-  padding:12px;
-  border:1px solid #000;
-  width: 100%;
-  box-sizing: border-box;
-      }
+      margin:20px 0;
+      padding:12px;
+      border:1px solid #000;
+      width:100%;
+      box-sizing:border-box;
+    }
+
     .comment-thread textarea{
-  width: 100%;
-  box-sizing: border-box;
-}
-
-
+      width:100%;
+      box-sizing:border-box;
+    }
   </style>
 </head>
 
 <body id="top">
   <h1>New Lambton Landslide</h1>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="Mapped_Evidence.html">Mapped Evidence</a>
@@ -82,28 +84,97 @@
     <a href="Case_Studies.html">Case Studies</a>
   </nav>
 
+  <div class="content">
 
-    <h2>McCrae</h2>      
-<p>From the Mornington Peninsula Shire council webpage: "A significant landslide occurred at McCrae on Tuesday, 14 January 2025. The landslide has affected multiple properties, leading to evacuations and road closures. An exclusion zone has been set up with temporary fencing around the affected area." <a href="https://www.mornpen.vic.gov.au/Your-Property/Fire-Emergency/Emergency-Management-Information/McCrae-landslide">MPS McCrae landslide update page</a></p>
-<p>Report from the Victorian Board of Inquiry: <a href="https://www.mccraeinquiry.vic.gov.au/report">McCrae Inquiry Report</a></p>
+    <h2 id="McCrae">McCrae</h2>
+    <p>
+      From the Mornington Peninsula Shire council webpage:
+      “A significant landslide occurred at McCrae on Tuesday, 14 January 2025. 
+      The landslide has affected multiple properties, leading to evacuations and road closures. 
+      An exclusion zone has been set up with temporary fencing around the affected area.”
+      <a href="https://www.mornpen.vic.gov.au/Your-Property/Fire-Emergency/Emergency-Management-Information/McCrae-landslide">
+        MPS McCrae landslide update page
+      </a>
+    </p>
+    <p>
+      <a href="https://www.mccraeinquiry.vic.gov.au/report">McCrae Inquiry Report</a>
+    </p>
     <div class="comment-thread" data-thread="/Case_Studies.html#McCrae"></div>
-
-   <hr>
-    <h2>Nimbin, 2023</h2>
-    <p><a href="https://www.abc.net.au/news/2023-07-17/landslip-survivors-northern-nsw-flood-homeless-await-buyback/102604260">ABC article: Landslip survivors in limbo as they wait for buyback of homes condemned after northern NSW flood</a></p>
-<div class="comment-thread" data-thread="/Case_Studies.html#Nimbin"></div>
-  
-    <br>
-    
-
-
 
     <hr>
 
-   
+    <h2 id="Nimbin">Nimbin, 2023</h2>
+    <p>
+      <a href="https://www.abc.net.au/news/2023-07-17/landslip-survivors-northern-nsw-flood-homeless-await-buyback/102604260">
+        ABC article: Landslip survivors in limbo as they wait for buyback of homes condemned after northern NSW flood
+      </a>
+    </p>
+    <div class="comment-thread" data-thread="/Case_Studies.html#Nimbin"></div>
+
+    <hr>
+
+    <h2 id="Collaroy2016">Collaroy Beach, 2016</h2>
+    <p>
+      Similarities:
+      Oversaturation of soil, elevated groundwater table leading to excess pore water pressure,
+      lack of pore pressure relief mechanisms, and increased erosion susceptibility associated
+      with elevated pore pressures.
+    </p>
+    <p>
+      <a href="https://www.coastalconference.com/2016/papers2016/Angus%20Gordon%20Full%20Paper%202.pdf">
+        Coastal Conference Paper (Angus Gordon)
+      </a>
+    </p>
+    <div class="comment-thread" data-thread="/Case_Studies.html#Collaroy2016"></div>
+
+    <hr>
+
+    <h2 id="Towradgi1998">Towradgi Creek (Wollongong), 1998</h2>
+    <p>
+      Similarities:
+      Catchment pre-loaded with water, channel capacity degradation feedback loops,
+      and extreme rainfall acting on an already saturated system.
+    </p>
+    <p>
+      <a href="data/documents/wollongong-august-1998-storms.pdf">
+        Wollongong August 1998 Storms Report (PDF)
+      </a>
+    </p>
+    <div class="comment-thread" data-thread="/Case_Studies.html#Towradgi1998"></div>
+
+    <hr>
+
+    <h2 id="CherryTree2022">Upper Cherry Tree Road Landslide, 2022 (Richmond)</h2>
+    <p>
+      Similarities:
+      Sensitive receiving environments (Cherry Tree Creek) degraded by stormwater discharge
+      without appropriate safeguards in place.
+    </p>
+    <p>
+      <a href="https://richmondvalley.nsw.gov.au/wp-content/uploads/2024/10/SIGNED-24322-TERANIA-Upper-Cherry-Tree-Road-Landslip-REF-Amended-Version-4.10.2024.pdf">
+        Richmond Valley Council Report
+      </a>
+    </p>
+    <div class="comment-thread" data-thread="/Case_Studies.html#CherryTree2022"></div>
+
+    <hr>
+
+    <h2 id="Glenorchy1872">Glenorchy, Tasmania, 1872</h2>
+    <p>
+      Historical landslide event. Not closely analogous in mechanism,
+      but significant as a documented early Australian landslide disaster.
+    </p>
+    <p>
+      <a href="https://www.abc.net.au/news/2023-12-22/glenorchy-landslide-disaster-1872-used-to-model-future-risk/103158874">
+        ABC Article
+      </a>
+    </p>
+    <div class="comment-thread" data-thread="/Case_Studies.html#Glenorchy1872"></div>
+
   </div>
- <script src="/comments.js"></script>
-<script>initComments();</script>
+
+  <script src="/comments.js"></script>
+  <script>initComments();</script>
 
 </body>
 </html>
