@@ -46,6 +46,19 @@
   box-shadow: 0 0 2px rgba(0,0,0,0.5);
   box-sizing: border-box;
 }
+	  .hw-label{
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  color: #fde9ce;
+  font-size: 11px;
+  font-weight: normal;
+  text-shadow: 0 0 2px #000000, 0 0 4px #000000;
+  pointer-events: none;
+}
+
 
 
   </style>
@@ -117,6 +130,20 @@
   </div>
 </div>
       <div class="layer-note">Note: there's an error in the way that some house numbers are being centred in their lot areas. E.g. 136 Russell covers 2 lots, and the "136" for the western lot is showing up over the flats at number 138.</div>
+
+		
+<div class="layer-item">
+  <div class="layer-row">
+    <input type="checkbox" id="layer-hunter-water-dbyds">
+    <label for="layer-hunter-water-dbyds">Hunter Water sewer locations (note: accuracy not guaranteed)</label>
+    <button type="button" id="zoom-hunter-water-dbyds">Zoom to</button>
+  </div>
+  <div class="layer-row" style="margin-top:4px">
+    <input type="checkbox" id="labels-hunter-water-dbyds">
+    <label for="labels-hunter-water-dbyds">Show labels</label>
+  </div>
+  <input type="range" id="opacity-hunter-water-dbyds" min="0" max="1" step="0.01" value="1">
+</div>
 
 
 <div class="layer-item">
@@ -3093,6 +3120,166 @@ if (!lotsCb || !lotsZoomBtn) {
   lotsZoomBtn.addEventListener('click', () => {
     if (lotsBounds && lotsBounds.isValid()) map.fitBounds(lotsBounds, { maxZoom: 20 });  });}
 
+
+
+// Hunter Water DBYDs (lines + points) with optional labels
+let hwDBYDsGroup = null;
+let hwDBYDsLines = null;
+let hwDBYDsPoints = null;
+let hwDBYDsLabels = null;
+let hwDBYDsBounds = null;
+
+const hwDBYDsCheckbox = document.getElementById('layer-hunter-water-dbyds');
+const hwDBYDsLabelsCheckbox = document.getElementById('labels-hunter-water-dbyds');
+const hwDBYDsZoomBtn = document.getElementById('zoom-hunter-water-dbyds');
+const hwDBYDsOpacity = document.getElementById('opacity-hunter-water-dbyds');
+
+function hwPxFromMm(mm){ return mm * 3.7795275591; } // 96 dpi CSS px approximation
+
+function hwSetOpacity(o){
+  if (hwDBYDsLines) hwDBYDsLines.setStyle({ opacity: o });
+  if (hwDBYDsPoints) hwDBYDsPoints.setStyle({ opacity: o, fillOpacity: o });
+}
+
+function hwMakeLabelMarker(latlng, text){
+  if (!text) return null;
+  return L.marker(latlng, {
+    interactive: false,
+    icon: L.divIcon({
+      className: 'hw-label',
+      html: String(text),
+      iconSize: null
+    })
+  });
+}
+
+function hwAddLineLabels(geojson, targetGroup){
+  if (!geojson || !geojson.features) return;
+  geojson.features.forEach(f => {
+    const props = f.properties || {};
+    const labelText = props.descr;
+    if (!labelText) return;
+
+    const g = f.geometry;
+    if (!g) return;
+
+    let latlng = null;
+
+    if (g.type === 'LineString' && Array.isArray(g.coordinates) && g.coordinates.length){
+      const mid = g.coordinates[Math.floor(g.coordinates.length / 2)];
+      if (mid && mid.length >= 2) latlng = L.latLng(mid[1], mid[0]);
+    }
+
+    if (g.type === 'MultiLineString' && Array.isArray(g.coordinates) && g.coordinates.length){
+      const firstLine = g.coordinates[0];
+      if (Array.isArray(firstLine) && firstLine.length){
+        const mid = firstLine[Math.floor(firstLine.length / 2)];
+        if (mid && mid.length >= 2) latlng = L.latLng(mid[1], mid[0]);
+      }
+    }
+
+    if (!latlng) return;
+
+    const m = hwMakeLabelMarker(latlng, labelText);
+    if (m) targetGroup.addLayer(m);
+  });
+}
+
+function hwAddPointLabels(geojson, targetGroup){
+  if (!geojson || !geojson.features) return;
+  geojson.features.forEach(f => {
+    const props = f.properties || {};
+    const labelText = props.label;
+    if (!labelText) return;
+
+    const g = f.geometry;
+    if (!g || g.type !== 'Point' || !Array.isArray(g.coordinates) || g.coordinates.length < 2) return;
+
+    const latlng = L.latLng(g.coordinates[1], g.coordinates[0]);
+    const m = hwMakeLabelMarker(latlng, labelText);
+    if (m) targetGroup.addLayer(m);
+  });
+}
+
+async function hwLoadDBYDsIfNeeded(){
+  if (hwDBYDsGroup) return;
+
+  hwDBYDsGroup = L.layerGroup();
+  hwDBYDsLabels = L.layerGroup();
+
+  const lineWeightPx = hwPxFromMm(0.86); // 0.86mm
+  const pointRadiusPx = hwPxFromMm(3.0) / 2; // 3.0mm diameter -> radius
+
+  const [linesRes, pointsRes] = await Promise.all([
+    fetch('data/Geology_etc/Hunter_Water_DBYDs.geojson'),
+    fetch('data/Geology_etc/Hunter_Water_DBYDs_Points.geojson')
+  ]);
+
+  const [linesJson, pointsJson] = await Promise.all([linesRes.json(), pointsRes.json()]);
+
+  hwDBYDsLines = L.geoJSON(linesJson, {
+    style: () => ({
+      color: '#fde9ce',
+      weight: lineWeightPx,
+      opacity: parseFloat(hwDBYDsOpacity.value || '1')
+    })
+  });
+
+  hwDBYDsPoints = L.geoJSON(pointsJson, {
+    pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+      radius: pointRadiusPx,
+      color: '#fde9ce',
+      weight: 1,
+      fillColor: '#fde9ce',
+      fillOpacity: parseFloat(hwDBYDsOpacity.value || '1'),
+      opacity: parseFloat(hwDBYDsOpacity.value || '1')
+    })
+  });
+
+  hwDBYDsGroup.addLayer(hwDBYDsLines);
+  hwDBYDsGroup.addLayer(hwDBYDsPoints);
+
+  hwDBYDsBounds = hwDBYDsGroup.getBounds();
+
+  hwAddLineLabels(linesJson, hwDBYDsLabels);
+  hwAddPointLabels(pointsJson, hwDBYDsLabels);
+}
+
+hwDBYDsCheckbox.addEventListener('change', async () => {
+  if (hwDBYDsCheckbox.checked) {
+    await hwLoadDBYDsIfNeeded();
+    hwDBYDsGroup.addTo(map);
+    if (hwDBYDsLabelsCheckbox.checked) hwDBYDsLabels.addTo(map);
+    hwSetOpacity(parseFloat(hwDBYDsOpacity.value || '1'));
+  } else {
+    if (hwDBYDsGroup) map.removeLayer(hwDBYDsGroup);
+    if (hwDBYDsLabels) map.removeLayer(hwDBYDsLabels);
+  }
+});
+
+hwDBYDsLabelsCheckbox.addEventListener('change', async () => {
+  if (!hwDBYDsCheckbox.checked) return;
+  await hwLoadDBYDsIfNeeded();
+  if (hwDBYDsLabelsCheckbox.checked) {
+    hwDBYDsLabels.addTo(map);
+  } else {
+    map.removeLayer(hwDBYDsLabels);
+  }
+});
+
+hwDBYDsOpacity.addEventListener('input', () => {
+  const o = parseFloat(hwDBYDsOpacity.value || '1');
+  hwSetOpacity(o);
+});
+
+hwDBYDsZoomBtn.addEventListener('click', async () => {
+  await hwLoadDBYDsIfNeeded();
+  if (hwDBYDsBounds && hwDBYDsBounds.isValid()) map.fitBounds(hwDBYDsBounds.pad(0.08));
+});
+
+
+
+	
 
 // Creek + Landmarks (3x GeoJSON as 1 layer, with label toggle)============================================================
 (() => {
