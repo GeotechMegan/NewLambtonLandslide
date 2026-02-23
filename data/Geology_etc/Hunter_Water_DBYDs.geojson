@@ -1,0 +1,33 @@
+{
+"type": "FeatureCollection",
+"name": "Hunter_Water_DBYDs",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": 1, "descr": "150 VC" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.708641499286898, -32.922823180794254 ], [ 151.708581556974934, -32.922828859539599 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 2, "descr": "150 VC Pipe Relined" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.708236368677063, -32.922677834292827 ], [ 151.708581319610204, -32.922828811560656 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 3, "descr": "150 VC Pipe Relined" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.708581462982835, -32.922828832082551 ], [ 151.708377063863367, -32.923033639048668 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 4, "descr": "150 VC Pipe Relined" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.708377062173838, -32.923033639051859 ], [ 151.708318875991068, -32.923248750662694 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 5, "descr": "150 VC Pipe Relined" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.708318872895802, -32.923248757101689 ], [ 151.708734144607718, -32.92334904484408 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 6, "descr": "150 VC" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.708734229862188, -32.923349058228979 ], [ 151.708757476815492, -32.923371835070711 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 7, "descr": "150 Cast Iron" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.70875747654074, -32.9233718351432 ], [ 151.708950420659107, -32.923563515892198 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 8, "descr": "150 VC" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.708950565517938, -32.923563630071961 ], [ 151.70997193213492, -32.923691025533564 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 9, "descr": "150 CI Copper Lined" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.708318875820453, -32.923248754647986 ], [ 151.70786842895231, -32.92317984389031 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 10, "descr": "150 UPVC SN8" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.707868469479649, -32.923179843890317 ], [ 151.707867938086025, -32.92317981436846 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 11, "descr": "150 Vitreous Clay" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.707867938086025, -32.92317981436846 ], [ 151.707518474771717, -32.923124757890832 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 12, "descr": "Overflow" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.707518474771717, -32.923124757890832 ], [ 151.70753131017409, -32.923176099500303 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 13, "descr": "150 VC Pipe Relined" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.707518475858564, -32.923124765747112 ], [ 151.707042189510958, -32.922946326380412 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 14, "descr": "150 VC Pipe Relined" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.707042191065938, -32.92294633116002 ], [ 151.706593081576102, -32.923059629405884 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 15, "descr": "150 UPVC-SN8" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.707042188388129, -32.922946334689989 ], [ 151.70710367868341, -32.922645801314694 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 16, "descr": "150 Concrete" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.70710362391759, -32.922645700831552 ], [ 151.70724332261068, -32.922664377822684 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 17, "descr": "150 UPVC-SN8" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.707243365120604, -32.922664756628251 ], [ 151.707422140096241, -32.922641758132244 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 18, "descr": "150 Concrete" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.707422134678126, -32.922641756684179 ], [ 151.707742572016514, -32.922577126046882 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 19, "descr": "Dead End" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.709242502174135, -32.922880025650315 ], [ 151.709243140580895, -32.922918010851753 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 20, "descr": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.709243520345183, -32.92290810423949 ], [ 151.709279332745552, -32.922897872125105 ], [ 151.709279332745552, -32.922897872125105 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 21, "descr": "150 VC" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.709243139822661, -32.922918010678416 ], [ 151.709185779773804, -32.923178860436934 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 22, "descr": "150 UPVC-SN8" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.709177402422881, -32.923190093702964 ], [ 151.709614660317754, -32.923253505740831 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 23, "descr": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.709608496987642, -32.923241912194619 ], [ 151.709614678696425, -32.923253245327409 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 24, "descr": "150 VC" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.709614678696425, -32.923253245327409 ], [ 151.709824963426627, -32.92328513269856 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 25, "descr": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.709824963426627, -32.92328513269856 ], [ 151.709817417799371, -32.923274729797932 ] ] ] } },
+{ "type": "Feature", "properties": { "fid": 26, "descr": "150 VC Concrete Encased" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 151.709379859407335, -32.924061980101328 ], [ 151.708950494830759, -32.923563585114771 ] ] ] } }
+]
+}
